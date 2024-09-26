@@ -1,0 +1,78 @@
+body
+{
+    font-family: 'Times New Roman', Times, serif;
+    background: none;
+}
+
+header
+{
+    border: 1px solid black;
+    height: 100%;
+}
+
+.banner
+{
+    border: 1px solid black;
+    width: 100%;
+    height: 100px;
+}
+
+.taskBar
+{
+    border: 1px solid black;
+    width: 100%;
+    height: 50px;
+}
+
+.mainContent
+{
+    border: 1px solid black;
+    width: 100%;
+    height: 100%;
+    display: flex;
+}
+
+.contentContainer
+{
+    border: 1px solid black;
+    width: 70%;
+    height: 50px;
+    margin-right: 10px;
+}
+
+.sideBar
+{
+    border: 1px solid black;
+    width: 30%;
+    height: 50px;
+}
+
+footer
+{
+    border: 1px solid black;
+    height: auto;
+}
+
+.upRow
+{
+    border: 1px solid black;
+    display: flex;
+}
+
+.contact
+{
+    border: 1px solid black;
+    width: 35%;
+}
+
+.footerContent
+{
+    border: 1px solid black;
+    width: 65%;
+}
+
+.copyright
+{
+    text-align: center;
+    height: auto;
+}
