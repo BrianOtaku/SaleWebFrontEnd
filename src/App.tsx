@@ -1,44 +1,26 @@
+// import library
 import React from 'react';
-import './styles/test.css';
+
+// import templates
+import Header from './templates/header';
+import Content from './templates/content';
+import Footer from './templates/footer';
+import Taskbar from './templates/taskbar';
+
+// import styles
+import './styles/layout.css';
+import './styles/header.css';
+import './styles/taskbar.css';
+import './styles/content.css';
+import './styles/footer.css';
 
 function App() {
   return (
     <body>
-
-      {/* HEADER */}
-      <header>
-        <div className='banner'>
-          <h1>Banner</h1>
-        </div>
-        <div className='taskBar'>
-          <h1>taskBar</h1>
-        </div>
-      </header>
-
-      {/* CONTENT */}
-      <div className='mainContent'>
-        <div className='contentContainer'>
-          <h1>contenContainer</h1>
-        </div>
-        <div className='sideBar'>
-          <h1>sideBar</h1>
-        </div>
-      </div>
-
-      {/* FOOTER */}
-      <footer>
-        <div className='upRow'>
-          <div className='contact'>
-            <h1>contact</h1>
-          </div>
-          <div className='footerContent'>
-            <h1>footerContain</h1>
-          </div>
-        </div>
-        <div className='copyright'>
-          copyright
-        </div>
-      </footer>
+      <Taskbar />
+      <Header />
+      <Content />
+      <Footer />
     </body>
   );
 }
