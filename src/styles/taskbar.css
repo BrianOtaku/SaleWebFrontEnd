@@ -2,57 +2,82 @@
 {
     background-color: rgb(243, 243, 243);
     width: 100%;
-    padding: 10px 0px 10px 0px;
-    /* border: 1px solid rgb(207, 207, 207);
-    border-left: none;
-    border-right: none; */
-    display: flex;
-    justify-content: space-around;
     position: sticky; 
     top: 0;
     z-index: 1000; 
 }
 
-.taskBar input 
+.logo
 {
-    font-size: 1.2rem;
-    width: 400px;
-    height: 5vh;
+    margin-right: 10px;
+    width: auto;
+    height: auto;
+    border: none;
+    background-color: inherit;
+}
+
+.logo img
+{
+    background-image: center;
+    width: 20vh;
+    height: 9vh;
+}
+
+.logo:hover
+{
+    cursor: pointer;
+}
+
+.function
+{
+    display: flex;
+    align-items: center;
+    width: 90%;
+    margin: 0px 5% 0px 5%;
+}
+
+.function input 
+{
     border: none;
     border-bottom: 1px solid black;
+    font-size: 1rem;
+    width: 400px;
+    height: 5vh;
     outline: none;
     padding: 0 10px;
     border-radius: 20px;
-    transition: border-color 0.3s ease, background-color 0.3s ease; 
+    transition: border-color 0.3s , background-color 0.3s ease; 
 }
 
-.taskBar input:hover 
+.function input:hover 
 {
     box-shadow: 0 2px 5px rgb(175, 175, 175);
 }
 
 
-.SignButton 
+.TaskBarButton
 {
     display: flex;
     gap: 10px;
+    margin-left: auto;
 }
 
 .signInButton, .signUpButton, .searchButton, .Menu
 {
-    border: 1px solid white;
-    height: 5.5vh;
+    border: none;
+    border-bottom: 1px solid black;
+    height: 5vh;
     background-color: black;
     color: white;
     font-size: medium;
-    padding: 5px;
+    /* padding: 5px; */
     border-radius: 10px;
-    transition: background-color 0.2s;
+    transition: border-color 0.3s , background-color 0.2s;
 }
 
 .searchButton
 {
-    width: 5.5vh;
+    width: 5vh;
     border-radius: 20px;
     font-size: large;
 }
@@ -61,11 +86,15 @@
 {
     font-size: larger;
     width: 6vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .searchButton:hover, .signInButton:hover, .signUpButton:hover, .Menu:hover
 {
-    border: 1px solid black;
+    border: none;
+    border-bottom: 1px solid white;
     box-shadow: 0 2px 5px gray;
     background-color: white;
     color: black;

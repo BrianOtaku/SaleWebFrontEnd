@@ -1,11 +1,15 @@
+import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react';
 
 const images = [
-    '/image/banner.png',
+    '/image/banner.jpg',
     '/image/banner1.png',
-    '/image/banner2.jpeg',
+    '/image/banner2.jpg',
+    '/image/banner5.jpg',
     '/image/banner3.png',
-    '/image/banner4.jpeg',
+    '/image/banner4.png',
+    '/image/banner6.png',
 ];
 
 function Header() {
@@ -14,10 +18,18 @@ function Header() {
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
-        }, 4500);
+        }, 6000);
 
         return () => clearInterval(interval);
     }, []);
+
+    const nextImage = () => {
+        setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+    };
+
+    const previousImage = () => {
+        setCurrentImageIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
+    };
 
     return (
         <div className="banner">
@@ -28,6 +40,12 @@ function Header() {
                     style={{ backgroundImage: `url(${image})` }}
                 />
             ))}
+            <button className="prev" onClick={previousImage}>
+                <FontAwesomeIcon icon={faChevronLeft} className='iconfaChevronLeft' />
+            </button>
+            <button className="next" onClick={nextImage}>
+                <FontAwesomeIcon icon={faChevronRight} className='iconfaChevronRight' />
+            </button>
         </div>
     );
 }
