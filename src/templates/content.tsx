@@ -6,9 +6,9 @@ function Content() {
             <div className='contentContainer'>
                 <h1>contenContainer</h1>
             </div>
-            <div className='sideBar'>
+            {/* <div className='sideBar'>
                 <h1>sideBar</h1>
-            </div>
+            </div> */}
         </div>
     );
 }

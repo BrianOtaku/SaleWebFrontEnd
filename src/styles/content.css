@@ -9,12 +9,12 @@
 .contentContainer
 {
     border: 1px solid black;
-    width: 69%;
-    margin-right: 1%;
+    width: 80%;
+    margin: 0px 10% 0px 10%;
 }
 
-.sideBar
+/* .sideBar
 {
     border: 1px solid black;
     width: 30%;
-}
+} */

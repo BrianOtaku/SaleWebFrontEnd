@@ -1,10 +1,9 @@
 .banner 
 {
     position: relative; 
-    width: 80%; 
-    height: calc(80vw * 9 / 16);
+    width: 100%; 
+    height: calc(100vw * 9 / 16);
     overflow: hidden; 
-    margin: 0px 10% 0px 10%;
 }
 
 .image 
