@@ -1,7 +1,6 @@
-import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useEffect, useState } from 'react';
-
+import React from 'react';
+import Carousel from 'react-bootstrap/Carousel';
+import 'bootstrap/dist/css/bootstrap.min.css';
 const images = [
     '/image/banner.jpg',
     '/image/banner1.png',
@@ -13,40 +12,18 @@ const images = [
 ];
 
 function Header() {
-    const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
-        }, 6000);
-
-        return () => clearInterval(interval);
-    }, []);
-
-    const nextImage = () => {
-        setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
-    };
-
-    const previousImage = () => {
-        setCurrentImageIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
-    };
-
     return (
-        <div className="banner">
+        <Carousel fade>
             {images.map((image, index) => (
-                <div
-                    key={index}
-                    className={`image ${index === currentImageIndex ? 'visible' : ''}`}
-                    style={{ backgroundImage: `url(${image})` }}
-                />
+                <Carousel.Item key={index} interval={3000}>
+                    <img
+                        className="banner"
+                        src={image}
+                        alt={`Slide ${index + 1}`}
+                    />
+                </Carousel.Item>
             ))}
-            <button className="prev" onClick={previousImage}>
-                <FontAwesomeIcon icon={faChevronLeft} className='iconfaChevronLeft' />
-            </button>
-            <button className="next" onClick={nextImage}>
-                <FontAwesomeIcon icon={faChevronRight} className='iconfaChevronRight' />
-            </button>
-        </div>
+        </Carousel>
     );
 }
 

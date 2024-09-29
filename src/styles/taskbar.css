@@ -54,7 +54,7 @@
     box-shadow: 0 2px 5px rgb(175, 175, 175);
 }
 
-
+/* Buttons */
 .TaskBarButton
 {
     display: flex;
@@ -62,7 +62,7 @@
     margin-left: auto;
 }
 
-.signInButton, .signUpButton, .searchButton, .Menu
+.signInButton, .signUpButton, .searchButton, .Menu, .MsignInButton, .MsignUpButton
 {
     border: none;
     border-bottom: 1px solid black;
@@ -70,9 +70,16 @@
     background-color: black;
     color: white;
     font-size: medium;
-    /* padding: 5px; */
     border-radius: 10px;
     transition: border-color 0.3s , background-color 0.2s;
+}
+
+.MsignInButton, .MsignUpButton
+{
+    position: relative;
+    margin-top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .searchButton
@@ -91,7 +98,7 @@
     justify-content: center;
 }
 
-.searchButton:hover, .signInButton:hover, .signUpButton:hover, .Menu:hover
+.searchButton:hover, .signInButton:hover, .signUpButton:hover, .Menu:hover, .MsignInButton:hover, .MsignUpButton:hover
 {
     border: none;
     border-bottom: 1px solid white;

@@ -2,6 +2,8 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import OffcanvasMenu from '../components/offcanvas';
+import SignIn from '../components/signIn';
+import SignUp from '../components/signUp';
 
 function Taskbar() {
     return (
@@ -11,20 +13,14 @@ function Taskbar() {
                     <img src="/image/logoSketch.png" alt="Logo" />
                 </button>
                 <form>
-                    <div className="inputGroup">
-                        <input type="text" placeholder="Search" />
-                        <button type="submit" className="searchButton" title="Search">
-                            <FontAwesomeIcon icon={faSearch} className='iconSearch' />
-                        </button>
-                    </div>
+                    <input type="text" placeholder="Search" />
+                    <button type="submit" className="searchButton" title="Search">
+                        <FontAwesomeIcon icon={faSearch} className='iconSearch' />
+                    </button>
                 </form>
                 <div className='TaskBarButton'>
-                    <button className='signInButton'>
-                        Sign In
-                    </button>
-                    <button className='signUpButton'>
-                        Sign Up
-                    </button>
+                    <SignIn />
+                    <SignUp />
                     <OffcanvasMenu />
                 </div>
             </div>
