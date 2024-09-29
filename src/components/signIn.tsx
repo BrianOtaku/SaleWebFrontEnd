@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Modal, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSignIn } from '@fortawesome/free-solid-svg-icons';
 
 function SignIn() {
     const [show, setShow] = useState(false);
@@ -32,6 +34,7 @@ function SignIn() {
 
                         <button type="submit" className="MsignInButton">
                             Sign In
+                            <FontAwesomeIcon icon={faSignIn} className='iconfaSignIn' style={{ marginLeft: '10px' }} />
                         </button>
                     </Form>
                 </Modal.Body>

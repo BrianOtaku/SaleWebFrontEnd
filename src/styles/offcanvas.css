@@ -1,0 +1,48 @@
+.offcanvas-title
+{
+    font-size: 25px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
+.offcanvas-body
+{
+    border-top: 1px solid rgb(204, 204, 204);
+    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.2) inset;
+    display: flex;
+    flex-direction: column;
+}
+
+.offcanvasContent
+{
+    width: 100%;
+    height: auto;
+    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.2);
+}
+
+.offcanvasFooter
+{
+    background-color:  rgb(119, 119, 119);
+    color: white;
+    margin-top: auto;
+    width: 100%;
+    height: auto;
+}
+
+.offcanvasFooterContact
+{
+    display: flex;
+    width: 100%;
+    padding: 10px;
+}
+
+.contact-item a
+{
+    color: white;
+    padding-left: 3vh;
+    display: flex;
+    align-items: center;
+    font-size: 17px;
+    gap: 5px;
+}

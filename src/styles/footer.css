@@ -1,31 +1,47 @@
 
 footer
 {
-    border: 1px solid black;
-    height: auto;
+    background-color:  rgb(119, 119, 119);
+    color: white;
+    margin-top: auto;
     width: 100%;
+    height: auto;
 }
 
 .upRow
 {
-    border: 1px solid black;
     display: flex;
 }
-/*HuyCUteetehskhdkhk hahahhahahah*/
-.contact
+
+.footerLogo
 {
-    border: 1px solid black;
-    width: 35%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20%;
+    border-right: 2px solid white;
+}
+
+.footerLogo button
+{
+    border: none;
+    background-color: inherit;
+}
+
+.footerLogo button img
+{
+    width: 100%;
 }
 
 .footerContent
 {
-    border: 1px solid black;
-    width: 65%;
+    width: 80%;
 }
 
 .copyright
 {
+    border-top: 2px solid white;
     text-align: center;
     height: auto;
+    padding: 5px;
 }

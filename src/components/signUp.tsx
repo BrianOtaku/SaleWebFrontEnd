@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Modal, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
 
 function SignUp() {
     const [show, setShow] = useState(false);
@@ -37,6 +39,7 @@ function SignUp() {
 
                         <button type="submit" className="MsignUpButton">
                             Sign Up
+                            <FontAwesomeIcon icon={faUserPlus} className='iconfaUserplus' style={{ marginLeft: '10px' }} />
                         </button>
                     </Form>
                 </Modal.Body>

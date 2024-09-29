@@ -11,6 +11,7 @@ import Taskbar from './templates/taskbar';
 import './styles/layout.css';
 import './styles/header.css';
 import './styles/taskbar.css';
+import './styles/offcanvas.css';
 import './styles/content.css';
 import './styles/footer.css';
 

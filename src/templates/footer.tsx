@@ -4,11 +4,13 @@ function Footer() {
     return (
         <footer>
             <div className='upRow'>
-                <div className='contact'>
-                    <h1>contact</h1>
+                <div className='footerLogo'>
+                    <button title='Home'>
+                        <img src="/image/logoSketch.png" alt="Logo" />
+                    </button>
                 </div>
                 <div className='footerContent'>
-                    <h1>footerContain</h1>
+                    <h1>footerContent</h1>
                 </div>
             </div>
             <div className='copyright'>
