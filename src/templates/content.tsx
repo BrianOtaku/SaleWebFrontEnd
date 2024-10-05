@@ -4,7 +4,7 @@ function Content() {
     return (
         <div className='mainContent'>
             <div className='contentContainer'>
-                <h1>contenContainer</h1>
+                <h1>contentContainer</h1>
             </div>
         </div>
     );

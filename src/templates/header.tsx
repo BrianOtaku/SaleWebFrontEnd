@@ -15,7 +15,7 @@ function Header() {
     return (
         <Carousel fade>
             {images.map((image, index) => (
-                <Carousel.Item key={index} interval={3000}>
+                <Carousel.Item key={index} interval={2000}>
                     <img
                         className="banner"
                         src={image}

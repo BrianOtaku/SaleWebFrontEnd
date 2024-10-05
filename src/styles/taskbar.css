@@ -1,6 +1,7 @@
 .taskBar
 {
     background-color: rgb(243, 243, 243);
+    /* background: linear-gradient(to bottom, rgb(0, 53, 0), rgb(0, 88, 0), rgb(0, 102, 0)); */
     width: 100%;
     position: sticky; 
     top: 0;
