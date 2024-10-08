@@ -4,6 +4,7 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import OffcanvasMenu from '../components/offcanvas';
 import SignIn from '../components/signIn';
 import SignUp from '../components/signUp';
+import Accordion from 'react-bootstrap/Accordion';
 
 function Taskbar() {
     return (
@@ -18,6 +19,31 @@ function Taskbar() {
                         <FontAwesomeIcon icon={faSearch} className='iconSearch' />
                     </button>
                 </form>
+                <div className='taskList'>
+                    <Accordion flush>
+                        <Accordion.Item eventKey="0">
+                            <Accordion.Header>MANUFACTURER</Accordion.Header>
+                            <Accordion.Body>
+                                <li>Asus</li>
+                                <li>Apple</li>
+                                <li>Lenovo</li>
+                                <li>MSI</li>
+                            </Accordion.Body>
+                        </Accordion.Item>
+                    </Accordion>
+                </div>
+                <div className='taskList'>
+                    <Accordion flush>
+                        <Accordion.Item eventKey="0">
+                            <Accordion.Header>PRODUCT TYPE</Accordion.Header>
+                            <Accordion.Body>
+                                <li>Laptop</li>
+                                <li>Gaming Laptop</li>
+                                <li>Gear</li>
+                            </Accordion.Body>
+                        </Accordion.Item>
+                    </Accordion>
+                </div>
                 <div className='TaskBarButton'>
                     <SignIn />
                     <SignUp />
