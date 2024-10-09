@@ -5,6 +5,7 @@ import React from 'react';
 import Header from './templates/header';
 import Content from './templates/content';
 import Footer from './templates/footer';
+import Taskbar from './templates/taskbar';
 
 // import styles
 import './styles/layout.css';
@@ -17,6 +18,7 @@ import './styles/footer.css';
 function App() {
   return (
     <body>
+      <Taskbar />
       <Header />
       <Content />
       <Footer />
