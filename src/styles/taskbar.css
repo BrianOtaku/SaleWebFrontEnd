@@ -10,7 +10,7 @@
 
 .logo
 {
-    margin-right: 10px;
+    margin-right: 29.25px;
     width: auto;
     height: auto;
     border: none;
@@ -19,7 +19,7 @@
 
 .logo img
 {
-    width: 20vh;
+    width: 20v;
     height: 9vh;
 }
 
@@ -31,9 +31,9 @@
 .function
 {
     display: flex;
-    align-items: center;
-    width: 90%;
-    margin: 0px 5% 0px 5%;
+    align-items: baseline;
+    width: 95%;
+    margin: auto;
 }
 
 .function input 
@@ -41,18 +41,66 @@
     border: none;
     border-bottom: 1px solid black;
     font-size: 1rem;
-    width: 400px;
+    width: 325px;
     height: 5vh;
     outline: none;
     padding: 0 10px;
     border-radius: 20px;
-    transition: border-color 0.3s , background-color 0.3s ease; 
+    transition: all 0.5 ease; 
 }
 
 .function input:hover 
 {
     box-shadow: 0 2px 5px rgb(175, 175, 175);
 }
+
+
+
+/* List */
+.taskList
+{
+    width: 200px;
+    margin-left: 10px;
+    /* border-radius: 30px; */
+}
+
+.taskList .accordion
+{
+    margin-bottom: 15px;
+    border-radius: 10px;
+    overflow: hidden;
+    border-bottom: 1px solid black;
+    /* box-shadow: 0 4px 5px rgba(0, 0, 0, 0.2); */
+}
+
+.taskList .accordion:hover
+{
+    box-shadow: 0 2px 5px rgb(175, 175, 175);
+}
+
+.taskList .accordion-body
+{
+    border-top: 2px solid rgb(220, 220, 220);
+    border-radius: 0px 0px 10px 10px;
+}
+
+.taskList .accordion-button
+{
+    height: 5vh;
+}
+
+.taskList .accordion-button:not(.collapsed)
+{
+    box-shadow: none;
+    background-color: inherit;
+}
+
+.taskList .accordion-button:focus
+{
+    box-shadow: none;
+}
+
+
 
 /* Buttons */
 .TaskBarButton
@@ -86,7 +134,7 @@
 .searchButton
 {
     width: 5vh;
-    border-radius: 20px;
+    border-radius: 50%;
     font-size: large;
 }
 
