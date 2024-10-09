@@ -100,6 +100,7 @@ function Content() {
                     </div>
                 ))}
             </Slider>
+
         </div>
     );
 }

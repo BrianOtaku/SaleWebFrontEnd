@@ -16,8 +16,23 @@ function List() {
                 <Accordion.Header>PRODUCT TYPE</Accordion.Header>
                 <Accordion.Body>
                     <li>Laptop</li>
-                    <li>Gaming Lapptop</li>
+                    <li>Gaming Laptop</li>
                     <li>Gear</li>
+                </Accordion.Body>
+            </Accordion.Item>
+            <Accordion.Item eventKey="2">
+                <Accordion.Header>CONTACT US</Accordion.Header>
+                <Accordion.Body>
+                </Accordion.Body>
+            </Accordion.Item>
+            <Accordion.Item eventKey="3">
+                <Accordion.Header>SUPPORT US</Accordion.Header>
+                <Accordion.Body>
+                </Accordion.Body>
+            </Accordion.Item>
+            <Accordion.Item eventKey="4">
+                <Accordion.Header>SETTING</Accordion.Header>
+                <Accordion.Body>
                 </Accordion.Body>
             </Accordion.Item>
         </Accordion>
