@@ -1,6 +1,7 @@
 import React from 'react';
 import Carousel from 'react-bootstrap/Carousel';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Taskbar from './taskbar';
 const images = [
     '/image/banner.jpg',
     '/image/banner1.png',
@@ -13,17 +14,20 @@ const images = [
 
 function Header() {
     return (
-        <Carousel fade>
-            {images.map((image, index) => (
-                <Carousel.Item key={index} interval={2000}>
-                    <img
-                        className="banner"
-                        src={image}
-                        alt={`Slide ${index + 1}`}
-                    />
-                </Carousel.Item>
-            ))}
-        </Carousel>
+        <div>
+            <Taskbar />
+            <Carousel fade>
+                {images.map((image, index) => (
+                    <Carousel.Item key={index} interval={2000}>
+                        <img
+                            className="banner"
+                            src={image}
+                            alt={`Slide ${index + 1}`}
+                        />
+                    </Carousel.Item>
+                ))}
+            </Carousel>
+        </div>
     );
 }
 

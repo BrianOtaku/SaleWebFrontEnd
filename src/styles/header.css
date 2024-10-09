@@ -2,6 +2,6 @@
 {
     position: relative; 
     width: 100%; 
-    height: calc(95vw * 9 / 16);
+    height: calc(100vw * 9 / 16);
     overflow: hidden; 
 }

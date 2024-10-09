@@ -33,7 +33,7 @@
     display: flex;
     align-items: baseline;
     width: 95%;
-    margin: 0px 2.5% 0px 2.5%;
+    margin: auto;
 }
 
 .function input 
@@ -80,7 +80,7 @@
 
 .taskList .accordion-body
 {
-    border-top: 1px solid rgb(220, 220, 220);
+    border-top: 2px solid rgb(220, 220, 220);
     border-radius: 0px 0px 10px 10px;
 }
 
@@ -91,6 +91,7 @@
 
 .taskList .accordion-button:not(.collapsed)
 {
+    box-shadow: none;
     background-color: inherit;
 }
 
