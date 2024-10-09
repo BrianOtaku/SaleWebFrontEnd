@@ -1,0 +1,75 @@
+.product-slider {
+    padding: 20px;
+}
+
+.product-card {
+    text-align: center;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    margin: 0 10px;
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover {
+    transform: scale(1.05);
+}
+
+.product-image {
+    width: 100%;
+    height: auto;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.product-name {
+    font-size: 18px;
+    margin: 10px 0;
+    font-weight: bold;
+}
+
+.product-price {
+    color: #f05a28;
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+.add-to-cart-button {
+    background-color: #ff5722;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.add-to-cart-button:hover {
+    background-color: #e64a19;
+}
+
+.specs {
+    list-style-type: none;
+    padding: 0;
+    font-size: 14px;
+    color: #666;
+}
+
+.specs li {
+    margin: 5px 0;
+}
+.slick-arrow {
+    background-color: #f05a28; /* Màu nền của nút */
+    color: white; /* Màu chữ */
+    border-radius: 50%;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 1; /* Đảm bảo mũi tên không bị che khuất */
+}
+
+.slick-arrow:hover {
+    background-color: #e64a19; /* Màu nền khi hover */
+}

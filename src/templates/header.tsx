@@ -11,8 +11,6 @@ const images = [
     '/image/banner6.png',
 ];
 
-// ljnrfg
-
 function Header() {
     return (
         <Carousel fade>
