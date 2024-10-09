@@ -1,5 +1,5 @@
 import React from 'react';
-import 'slick-carousel/slick/slick.css'; 
+import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Slider from 'react-slick';
 import '../styles/content.css'; // File CSS tùy chỉnh style
@@ -80,23 +80,25 @@ function Content() {
     };
 
     return (
-        <div className="product-slider">
-            {/* Truyền trực tiếp các props vào Slider */}
-            <Slider {...settings}>
-                {products.map(product => (
-                    <div key={product.id} className="product-card">
-                        <img src={product.image} alt={product.name} className="product-image" />
-                        <h2 className="product-name">{product.name}</h2>
-                        <p className="product-price">{product.price}</p>
-                        <ul className="specs">
-                            {product.specs.map((spec, index) => (
-                                <li key={index}>{spec}</li>
-                            ))}
-                        </ul>
-                        <button className="add-to-cart-button">Thêm vào giỏ hàng</button>
-                    </div>
-                ))}
-            </Slider>
+        <div className='contentContainer'>
+            <div className="product-slider">
+                {/* Truyền trực tiếp các props vào Slider */}
+                <Slider {...settings}>
+                    {products.map(product => (
+                        <div key={product.id} className="product-card">
+                            <img src={product.image} alt={product.name} className="product-image" />
+                            <h2 className="product-name">{product.name}</h2>
+                            <p className="product-price">{product.price}</p>
+                            <ul className="specs">
+                                {product.specs.map((spec, index) => (
+                                    <li key={index}>{spec}</li>
+                                ))}
+                            </ul>
+                            <button className="add-to-cart-button">Thêm vào giỏ hàng</button>
+                        </div>
+                    ))}
+                </Slider>
+            </div>
         </div>
     );
 }
