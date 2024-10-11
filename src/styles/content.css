@@ -3,15 +3,42 @@
     background-color: black;
     padding: 20px;
 }
+/* style cho thanh menu */
+.laptop-menu {
+    margin-top: 10px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex; 
+    justify-content: space-around; 
+    align-items: center;
+    font-size: 0.8em;
+    width: 90%;
+    margin-left: 5%;
+}
 
+.laptop-menu ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+.laptop-menu li {
+    padding: 10px;
+    transition: background-color 0.3s;
+}
+
+/* style cho slide sản phẩm bán chạy */
 .product-slider {
     padding: 20px;
-    width: 90%; /* Giới hạn chiều rộng */
-    margin: auto; /* Căn giữa slider */
-    border: 2px solid #ddd; /* Thêm border */
-    border-radius: 10px; /* Bo tròn các góc */
-    background-color: #fff; /* Màu nền trắng cho khung */
-    box-shadow: 0 8px 16px white; /* Đổ bóng nhẹ */
+    width: 90%; 
+    margin: auto; 
+    border: 2px solid #ddd; 
+    border-radius: 10px; 
+    background-color: #fff; 
+    
 }
 
 .product-card {
@@ -46,28 +73,94 @@
     margin-bottom: 15px;
 }
 
+/* style cho danh sách sản phẩm */
+.product-categories {
+    background-color: #f8f9fa; 
+    border-radius: 8px;
+    margin-bottom: 0px;
+    margin-left:5%;
+    width: 90%;
+    height: 11.5vh;
+    display: flex;
+    align-items: center;
+}
+
+.product-categories h4 {
+    color: #343a40; 
+    margin: 0; 
+}
+
+.product-slider {
+    margin-bottom: 40px; 
+}
+
+.product-list {
+    list-style: none;
+    padding: 0; 
+    display: flex; 
+    overflow-x: auto; 
+}
+
+.product-item {
+    margin-right: 20px;
+    text-align: center;
+    flex: 0 0 auto; 
+    width: 150px; 
+    transition: transform 0.2s;
+}
+
+.product-item:hover {
+    transform: scale(1.05); 
+}
+
+.product-image {
+    width: 100%; 
+    height: auto; 
+    border-radius: 5px; 
+}
+
+.product-name {
+    display: block;
+    margin-top: 8px;
+    font-size: 16px;
+    color: #495057;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap; 
+}
+
+/* style button */
+.button{
+    display: flex;
+    justify-content: center;
+}
 .add-to-cart-button {
-    background-color: #ff5722;
+    background-color: #13d8df;
     color: white;
-    padding: 10px 20px;
+    padding: 0px 8px;
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    width: 40%;
+    margin: 1% ;
+    font-size: 0.7em;
+    
 }
 
 .add-to-cart-button:hover {
-    background-color: #e64a19;
+    background-color: #ff5722;
 }
 
+/* style cho dấu mũi tên và khung thông tin sản phẩm */
 .specs-box {
-    border: 1px solid #ddd; /* Viền bao quanh khung specs */
-    border-radius: 5px; /* Bo tròn góc */
-    padding: 10px; /* Khoảng cách bên trong */
-    background-color: #f1f1f1; /* Màu nền nhạt */
-    margin-bottom: 15px; /* Khoảng cách giữa specs và nút 'Thêm vào giỏ hàng' */
-    max-width: 80%; /* Giới hạn chiều rộng khung specs */
-    margin: 0 auto; /* Căn giữa khung specs */
+    border: 1px solid #ddd; 
+    border-radius: 5px; 
+    padding: 10px; 
+    background-color: #f1f1f1; 
+    margin-bottom: 15px; 
+    max-width: 80%;
+    margin: 0 auto;
     margin-bottom: 20px;
 }
 
@@ -83,32 +176,36 @@
     margin: 5px 0;
 }
 
-.slick-arrow {
-    background-color: #f05a28; /* Màu nền của nút */
-    color: white; /* Màu chữ */
-    border-radius: 50%;
-    padding: 10px;
-    cursor: pointer;
-    z-index: 1; /* Đảm bảo mũi tên không bị che khuất */
-}
-
-.slick-arrow:hover {
-    background-color: #e64a19; /* Màu nền khi hover */
-}
-
 .slick-prev, .slick-next {
-    background-color: #f05a28; /* Màu nền của mũi tên */
-    color: white; /* Màu chữ */
-    border-radius: 50%;
-    padding: 10px;
+    font-size: 2rem;
+    color: white;
     z-index: 1;
-    transition: background-color 0.3s ease;
+    position: absolute; 
+    background-color: transparent;
+    border: none; 
+    width: auto; 
+    height: auto;
+}
+
+.slick-prev {
+    left: -2%; 
+}
+
+.slick-next {
+    right: -2%; 
 }
 
 .slick-prev:hover, .slick-next:hover {
-    background-color: #e64a19; /* Màu nền khi hover */
+    color: #ce1952; 
 }
 
 .slick-prev:before, .slick-next:before {
-    color: rgb(248, 29, 9); /* Đổi màu dấu mũi tên */
+    content: none; 
+}
+
+.slick-prev:after, .slick-next:after {
+    font-size: 2rem;
+    color: rgb(0, 0, 0);
+    position: relative;
+    top: -1px; 
 }
