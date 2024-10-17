@@ -1,12 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import OffcanvasMenu from '../components/offcanvas';
 import SignIn from '../components/signIn';
 import SignUp from '../components/signUp';
 import Accordion from 'react-bootstrap/Accordion';
+import UserConfig from '../API/userConfig';
 
 function Taskbar() {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    const handleLogin = () => {
+        setIsLoggedIn(true);
+        // Không cần làm gì thêm với token ở đây
+    };
+
     return (
         <div className='taskBar'>
             <div className='function'>
@@ -45,8 +53,14 @@ function Taskbar() {
                     </Accordion>
                 </div>
                 <div className='TaskBarButton'>
-                    <SignIn />
-                    <SignUp />
+                    {!isLoggedIn ? ( // Kiểm tra trạng thái đăng nhập
+                        <>
+                            <SignIn onLogin={handleLogin} /> {/* Truyền hàm handleLogin xuống SignIn */}
+                            <SignUp />
+                        </>
+                    ) : (
+                        <UserConfig /> // Không truyền gì vào UserConfig
+                    )}
                     <OffcanvasMenu />
                 </div>
             </div>

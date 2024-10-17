@@ -3,23 +3,36 @@ import { Modal, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { signUp } from '../API/apiAccount';
 
 function SignUp() {
     const [show, setShow] = useState(false);
+    const [userName, setUserName] = useState(''); // Đổi thành userName
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [passwordError, setPasswordError] = useState('');
+    const [error, setError] = useState('');
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (password !== confirmPassword) {
             setPasswordError('Passwords do not match');
         } else {
             setPasswordError('');
-            // Xử lý logic đăng ký tài khoản ở đây
+            try {
+                const userData = { userName, email, password }; // Sử dụng userName ở đây
+                const response = await signUp(userData); // Gọi API đăng ký
+                console.log('Registration successful:', response);
+                handleClose(); // Đóng modal sau khi đăng ký thành công
+                alert('Registration successful!'); // Hiển thị thông báo thành công
+            } catch (err) {
+                console.error('Error registering account:', err);
+                setError('Registration failed. Please try again.');
+            }
         }
     };
 
@@ -35,14 +48,24 @@ function SignUp() {
                 </Modal.Header>
                 <Modal.Body>
                     <Form onSubmit={handleSubmit}>
-                        <Form.Group controlId="formBasicUsername">
-                            <Form.Label>Username</Form.Label>
-                            <Form.Control type="text" placeholder="Enter username" />
+                        <Form.Group controlId="formBasicUserName">
+                            <Form.Label>User Name</Form.Label>
+                            <Form.Control
+                                type="text"
+                                placeholder="Enter user name"
+                                value={userName} // Sử dụng userName ở đây
+                                onChange={(e) => setUserName(e.target.value)}
+                            />
                         </Form.Group>
 
                         <Form.Group controlId="formBasicEmail" className="mt-3">
                             <Form.Label>Email address</Form.Label>
-                            <Form.Control type="email" placeholder="Enter email" />
+                            <Form.Control
+                                type="email"
+                                placeholder="Enter email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                            />
                         </Form.Group>
 
                         <Form.Group controlId="formBasicPassword" className="mt-3">
@@ -67,6 +90,10 @@ function SignUp() {
 
                         {passwordError && (
                             <p style={{ color: 'red', marginTop: '10px' }}>{passwordError}</p>
+                        )}
+
+                        {error && (
+                            <p style={{ color: 'red', marginTop: '10px' }}>{error}</p>
                         )}
 
                         <button type="submit" className="MsignUpButton">

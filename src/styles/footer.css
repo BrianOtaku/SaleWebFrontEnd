@@ -68,6 +68,11 @@ footer
     padding: 9px;
 }
 
+.footerIcons:hover
+{
+    cursor: pointer;
+}
+
 .footerTaskBar
 {
     display: flex;

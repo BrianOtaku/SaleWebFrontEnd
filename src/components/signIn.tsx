@@ -3,12 +3,42 @@ import { Modal, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignIn } from '@fortawesome/free-solid-svg-icons';
+import { signIn } from '../API/apiAccount';
 
-function SignIn() {
+// Định nghĩa kiểu cho props
+interface SignInProps {
+    onLogin: () => void; // Hàm onLogin không nhận tham số và không trả về giá trị
+}
+
+function SignIn({ onLogin }: SignInProps) { // Áp dụng kiểu cho tham số
     const [show, setShow] = useState(false);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        try {
+            const loginData = { email, password };
+            const response = await signIn(loginData);
+            console.log('Login successful:', response.result.token);
+
+            // Lưu token vào localStorage
+            if (response.result.token) {
+                localStorage.setItem('token', response.result.token); // Giả sử token được trả về trong response
+            }
+
+            onLogin(); // Gọi hàm onLogin từ props
+            handleClose();
+            alert('Sign in successful!');
+        } catch (err) {
+            console.error('Error logging in:', err);
+            setError('Login failed. Please check your credentials.');
+        }
+    };
 
     return (
         <>
@@ -21,16 +51,30 @@ function SignIn() {
                     <Modal.Title>Sign In</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form>
+                    <Form onSubmit={handleSubmit}>
                         <Form.Group controlId="formBasicEmail">
                             <Form.Label>Email address</Form.Label>
-                            <Form.Control type="email" placeholder="Enter email" />
+                            <Form.Control
+                                type="email"
+                                placeholder="Enter email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                            />
                         </Form.Group>
 
                         <Form.Group controlId="formBasicPassword" className="mt-3">
                             <Form.Label>Password</Form.Label>
-                            <Form.Control type="password" placeholder="Password" />
+                            <Form.Control
+                                type="password"
+                                placeholder="Password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                            />
                         </Form.Group>
+
+                        {error && (
+                            <p style={{ color: 'red', marginTop: '10px' }}>{error}</p>
+                        )}
 
                         <button type="submit" className="MsignInButton">
                             Sign In
@@ -38,11 +82,6 @@ function SignIn() {
                         </button>
                     </Form>
                 </Modal.Body>
-                {/* <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                        Close
-                    </Button>
-                </Modal.Footer> */}
             </Modal>
         </>
     );

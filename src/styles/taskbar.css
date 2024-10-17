@@ -4,7 +4,7 @@
     /* background: linear-gradient(to bottom, rgb(0, 53, 0), rgb(0, 88, 0), rgb(0, 102, 0)); */
     width: 100%;
     position: sticky; 
-    top: 0;
+    top: 0px;
     z-index: 1000; 
 }
 
@@ -46,7 +46,7 @@
     outline: none;
     padding: 0 10px;
     border-radius: 20px;
-    transition: all 0.5 ease; 
+    transition: all 0.2s ease; 
 }
 
 .function input:hover 
@@ -54,14 +54,12 @@
     box-shadow: 0 2px 5px rgb(175, 175, 175);
 }
 
-
-
 /* List */
 .taskList
 {
     width: 200px;
     margin-left: 10px;
-    /* border-radius: 30px; */
+    z-index: 1000;
 }
 
 .taskList .accordion
@@ -70,7 +68,7 @@
     border-radius: 10px;
     overflow: hidden;
     border-bottom: 1px solid black;
-    /* box-shadow: 0 4px 5px rgba(0, 0, 0, 0.2); */
+    transition: all 0.3s ease;
 }
 
 .taskList .accordion:hover
@@ -110,7 +108,7 @@
     margin-left: auto;
 }
 
-.signInButton, .signUpButton, .searchButton, .Menu, .MsignInButton, .MsignUpButton
+.signInButton, .signUpButton, .searchButton, .Menu, .MsignInButton, .MsignUpButton, .UserIcon
 {
     border: none;
     border-bottom: 1px solid black;
@@ -119,7 +117,7 @@
     color: white;
     font-size: medium;
     border-radius: 10px;
-    transition: border-color 0.3s , background-color 0.2s;
+    transition: all 0.3s ease;
 }
 
 .MsignInButton, .MsignUpButton
@@ -147,7 +145,7 @@
     justify-content: center;
 }
 
-.searchButton:hover, .signInButton:hover, .signUpButton:hover, .Menu:hover, .MsignInButton:hover, .MsignUpButton:hover
+.searchButton:hover, .signInButton:hover, .signUpButton:hover, .Menu:hover, .MsignInButton:hover, .MsignUpButton:hover, .UserIcon:hover
 {
     border: none;
     border-bottom: 1px solid white;
@@ -163,4 +161,14 @@
     position: relative;
     left: 50%;
     transform: translateX(-50%);
+}
+
+.UserIcon
+{
+    font-size: large;
+}
+
+.UserIcon span 
+{
+    display: inline-block;
 }

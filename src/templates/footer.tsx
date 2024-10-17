@@ -13,11 +13,11 @@ function Footer() {
                 </div>
                 <div className='footerContent'>
                     <div className='contactIcons'>
-                        <span><FontAwesomeIcon icon={faFacebook} className='footerIcons' /></span>
-                        <span><FontAwesomeIcon icon={faTwitter} className='footerIcons' /></span>
-                        <span><FontAwesomeIcon icon={faYoutube} className='footerIcons' /></span>
-                        <span><FontAwesomeIcon icon={faGoogle} className='footerIcons' /></span>
-                        <span><FontAwesomeIcon icon={faDiscord} className='footerIcons' /></span>
+                        <span><FontAwesomeIcon icon={faFacebook} className='footerIcons' title='Facebook' /></span>
+                        <span><FontAwesomeIcon icon={faTwitter} className='footerIcons' title='Twitter' /></span>
+                        <span><FontAwesomeIcon icon={faYoutube} className='footerIcons' title='Youtube' /></span>
+                        <span><FontAwesomeIcon icon={faGoogle} className='footerIcons' title='Google' /></span>
+                        <span><FontAwesomeIcon icon={faDiscord} className='footerIcons' title='Discord' /></span>
                     </div>
                     <div className='footerTaskBar'>
                         <p>RECOMMEND</p>
