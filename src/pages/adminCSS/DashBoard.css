@@ -1,0 +1,59 @@
+.adminPage
+{
+    height: 80%;
+    color: white;
+    font-size: 10vh;
+    width: 100%;
+    padding: 5%;
+    margin: 10% 0px 10% 0px;
+    text-decoration: underline;
+}
+
+.admin 
+{
+    display: flex;
+    height: 100vh;
+}
+
+.adminSideBar 
+{
+    z-index: 1;
+    width: 20%;
+    background: linear-gradient(60deg, rgb(86, 8, 102), rgb(30, 11, 139));
+    padding: 20px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 10px 0px 20px rgba(0, 0, 0, 0.3);
+}
+
+
+.adminSideBar h1 
+{
+    margin-bottom: 20px;
+}
+
+.adminSideBar button 
+{
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.adminContent 
+{
+    height: auto;
+    width: 80%;
+    flex-grow: 1;
+    padding: 20px;
+    background: linear-gradient(60deg, rgb(11, 11, 136), rgb(134, 14, 158))
+}
+
+.adminContent h2
+{
+    color: white;
+}
+
+.adminLogout
+{
+    margin-top: auto;
+}

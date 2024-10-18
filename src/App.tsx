@@ -9,7 +9,7 @@ import Footer from './templates/footer';
 import Taskbar from './templates/taskbar';
 
 // import admin pages
-import AdminPage from './pages/admin/DashBoard';
+import DashBoard from './pages/admin/DashBoard';
 
 // import styles
 import './styles/layout.css';
@@ -42,7 +42,7 @@ function App() {
       <Routes>
         {role === 'Admin' ? (
           <>
-            <Route path="/admin" element={<AdminPage />} />
+            <Route path="/admin" element={<DashBoard />} />
             <Route path="*" element={<Navigate to="/admin" />} />
           </>
         ) : (

@@ -43,3 +43,4 @@ export const getUserRoleFromToken = (token: string): string | null => {
     const decodedToken = decodeToken(token);
     return decodedToken ? decodedToken.scope : null;
 };
+

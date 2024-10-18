@@ -17,7 +17,7 @@ function UserConfig() {
     return (
         <button className='UserIcon'>
             <FontAwesomeIcon icon={faUserCircle} />
-            <span>{userName}</span>
+            <span style={{ marginLeft: '7px' }}>{userName}</span>
         </button>
     );
 }
