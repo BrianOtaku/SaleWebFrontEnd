@@ -1,8 +1,32 @@
 import { AxiosInstance } from "./axiosConfig";
 
-export const getAllUsers = async () => {
+const getAuthHeaders = () => {
+    const token = localStorage.getItem('token');
+    return {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+    };
+};
+
+export const getUserProfile = async (token: string) => {
     try {
-        const response = await AxiosInstance.get('/account');
+        const response = await AxiosInstance.get('/account/myInfo', {
+            headers: getAuthHeaders()
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching user profile:', error);
+        throw error;
+    }
+};
+
+export const getAllUsers = async (token: string) => {
+    try {
+        const response = await AxiosInstance.get('/account', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
         return response.data;
     } catch (error) {
         console.error('Error fetching all users:', error);

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getAllProducts } from '../../API/apiGetInfomations';
+import { useSelect } from '../hooks/useSelect';
 
 interface Category {
     categoryId: number;
@@ -16,6 +17,9 @@ interface Product {
 
 function ProductManagement() {
     const [products, setProducts] = useState<Product[]>([]);
+    const { selectedItems, selectAll, handleSelectItem, handleSelectAll } = useSelect(
+        products.map(product => product.productId)
+    );
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -42,6 +46,13 @@ function ProductManagement() {
                         <th>Cost</th>
                         <th>Category ID</th>
                         <th>Category Name</th>
+                        <th className='checkBox'>
+                            <input
+                                type="checkbox"
+                                checked={selectAll}
+                                onChange={handleSelectAll}
+                            />
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -53,6 +64,13 @@ function ProductManagement() {
                             <td>{product.cost}</td>
                             <td>{product.category.categoryId}</td>
                             <td>{product.category.categoryName}</td>
+                            <td className='checkBox'>
+                                <input
+                                    type="checkbox"
+                                    checked={selectedItems.includes(product.productId)}
+                                    onChange={() => handleSelectItem(product.productId)}
+                                />
+                            </td>
                         </tr>
                     ))}
                 </tbody>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { getAllCategories } from '../../API/apiGetInfomations'; // Đảm bảo bạn có hàm này trong apiAccount để lấy danh mục
+import { getAllCategories } from '../../API/apiGetInfomations';
+import { useSelect } from '../hooks/useSelect';
 
 interface Category {
     categoryId: number;
@@ -8,6 +9,9 @@ interface Category {
 
 function CategoryManagement() {
     const [categories, setCategories] = useState<Category[]>([]);
+    const { selectedItems, selectAll, handleSelectItem, handleSelectAll } = useSelect(
+        categories.map(category => category.categoryId)
+    );
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -30,6 +34,13 @@ function CategoryManagement() {
                     <tr>
                         <th>Category ID</th>
                         <th>Category Name</th>
+                        <th className='checkBox'>
+                            <input
+                                type="checkbox"
+                                checked={selectAll}
+                                onChange={handleSelectAll}
+                            />
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -37,6 +48,13 @@ function CategoryManagement() {
                         <tr key={category.categoryId}>
                             <td>{category.categoryId}</td>
                             <td>{category.categoryName}</td>
+                            <td className='checkBox'>
+                                <input
+                                    type="checkbox"
+                                    checked={selectedItems.includes(category.categoryId)}
+                                    onChange={() => handleSelectItem(category.categoryId)}
+                                />
+                            </td>
                         </tr>
                     ))}
                 </tbody>

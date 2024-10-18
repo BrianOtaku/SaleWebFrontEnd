@@ -14,6 +14,7 @@ import DeliveryManagement from './DeliveryManagement';
 
 // import css
 import '../adminCSS/ManageTables.css'
+import '../adminCSS/CRUD.css'
 
 function DashBoard() {
     const navigate = useNavigate();
@@ -49,7 +50,7 @@ function DashBoard() {
     return (
         <div className='admin'>
             <div className='adminSideBar'>
-                <h1>Admin Dashboard</h1>
+                <h1>DASHBOARD</h1>
                 <Button variant="light" onClick={() => setActivePage('users')}>Manage Users</Button>
                 <Button variant="light" onClick={() => setActivePage('categories')}>Manage Categories</Button>
                 <Button variant="light" onClick={() => setActivePage('products')}>Manage Products</Button>

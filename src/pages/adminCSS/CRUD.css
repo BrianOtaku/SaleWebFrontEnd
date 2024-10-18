@@ -1,0 +1,24 @@
+.crud
+{
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.crud Button
+{
+    width: 10%;
+}
+
+.iconPlus, .iconPen, .iconDelete 
+{
+    margin-left: 10px;
+}
+
+.CreateUser
+{
+    margin-top: 10px;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}

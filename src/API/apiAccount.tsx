@@ -20,20 +20,6 @@ export const signIn = async (credentials: { email: string; password: string }) =
     }
 };
 
-export const getUserProfile = async (token: string) => {
-    try {
-        const response = await AxiosInstance.get('/account/myInfo', {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
-        return response.data;
-    } catch (error) {
-        console.error('Error fetching user profile:', error);
-        throw error;
-    }
-};
-
 export const getUserNameFromToken = (token: string): string | null => {
     const decodedToken = decodeToken(token);
     return decodedToken ? decodedToken.sub : null;

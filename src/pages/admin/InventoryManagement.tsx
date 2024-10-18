@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { getAllInventories } from '../../API/apiGetInfomations'; // Đảm bảo bạn có hàm này trong apiAccount để lấy thông tin tồn kho
+import { getAllInventories } from '../../API/apiGetInfomations';
+import { useSelect } from '../hooks/useSelect';
 
 interface Category {
     categoryId: number;
@@ -22,6 +23,9 @@ interface Inventory {
 
 function InventoryManagement() {
     const [inventories, setInventories] = useState<Inventory[]>([]);
+    const { selectedItems, selectAll, handleSelectItem, handleSelectAll } = useSelect(
+        inventories.map(inventory => inventory.inventoryId)
+    );
 
     useEffect(() => {
         const fetchInventories = async () => {
@@ -50,6 +54,13 @@ function InventoryManagement() {
                         <th>Category ID</th>
                         <th>Category Name</th>
                         <th>Product Quantity</th>
+                        <th className='checkBox'>
+                            <input
+                                type="checkbox"
+                                checked={selectAll}
+                                onChange={handleSelectAll}
+                            />
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -63,6 +74,13 @@ function InventoryManagement() {
                             <td>{inventory.product.category.categoryId}</td>
                             <td>{inventory.product.category.categoryName}</td>
                             <td>{inventory.productQuantity}</td>
+                            <td className='checkBox'>
+                                <input
+                                    type="checkbox"
+                                    checked={selectedItems.includes(inventory.inventoryId)}
+                                    onChange={() => handleSelectItem(inventory.inventoryId)}
+                                />
+                            </td>
                         </tr>
                     ))}
                 </tbody>

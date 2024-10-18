@@ -19,7 +19,7 @@
 {
     z-index: 1;
     width: 20%;
-    background: linear-gradient(60deg, rgb(86, 8, 102), rgb(30, 11, 139));
+    background: linear-gradient(60deg, rgb(110, 8, 130), rgb(34, 11, 163));
     padding: 20px;
     color: white;
     display: flex;
@@ -30,11 +30,15 @@
 
 .adminSideBar h1 
 {
+    display: flex;
+    justify-content: center;
     margin-bottom: 20px;
+    text-decoration: underline;
 }
 
 .adminSideBar button 
 {
+    box-shadow: 4px 6px 10px rgba(0, 0, 0, 0.5);
     margin-bottom: 10px;
     width: 100%;
 }
@@ -45,11 +49,12 @@
     width: 80%;
     flex-grow: 1;
     padding: 20px;
-    background: linear-gradient(60deg, rgb(11, 11, 136), rgb(134, 14, 158))
+    background: linear-gradient(60deg, rgb(34, 11, 163), rgb(146, 9, 146))
 }
 
 .adminContent h2
 {
+    text-decoration: underline;
     color: white;
 }
 
