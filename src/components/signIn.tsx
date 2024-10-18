@@ -3,14 +3,13 @@ import { Modal, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignIn } from '@fortawesome/free-solid-svg-icons';
-import { signIn } from '../API/apiAccount';
+import { signIn, getUserRoleFromToken } from '../API/apiAccount';
 
-// Định nghĩa kiểu cho props
 interface SignInProps {
-    onLogin: () => void; // Hàm onLogin không nhận tham số và không trả về giá trị
+    onLogin: () => void;
 }
 
-function SignIn({ onLogin }: SignInProps) { // Áp dụng kiểu cho tham số
+function SignIn({ onLogin }: SignInProps) {
     const [show, setShow] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -24,16 +23,22 @@ function SignIn({ onLogin }: SignInProps) { // Áp dụng kiểu cho tham số
         try {
             const loginData = { email, password };
             const response = await signIn(loginData);
-            console.log('Login successful:', response.result.token);
+            const token = response.result.token;
 
-            // Lưu token vào localStorage
-            if (response.result.token) {
-                localStorage.setItem('token', response.result.token); // Giả sử token được trả về trong response
+            if (token) {
+                localStorage.setItem('token', token);
             }
 
-            onLogin(); // Gọi hàm onLogin từ props
-            handleClose();
-            alert('Sign in successful!');
+            const role = getUserRoleFromToken(token);
+            console.log('User role:', role);
+
+            if (role === 'Admin') {
+                window.location.reload();
+            } else {
+                onLogin();
+                handleClose();
+                alert('Sign in successful!');
+            }
         } catch (err) {
             console.error('Error logging in:', err);
             setError('Login failed. Please check your credentials.');

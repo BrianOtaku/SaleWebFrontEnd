@@ -1,6 +1,5 @@
 import { AxiosInstance, decodeToken } from "./axiosConfig";
 
-// Hàm đăng ký tài khoản
 export const signUp = async (userData: { userName: string; email: string; password: string }) => {
     try {
         const response = await AxiosInstance.post('/auth/register', userData);
@@ -11,7 +10,6 @@ export const signUp = async (userData: { userName: string; email: string; passwo
     }
 };
 
-// Hàm đăng nhập
 export const signIn = async (credentials: { email: string; password: string }) => {
     try {
         const response = await AxiosInstance.post('/auth/login', credentials);
@@ -22,7 +20,6 @@ export const signIn = async (credentials: { email: string; password: string }) =
     }
 };
 
-// Hàm lấy thông tin người dùng
 export const getUserProfile = async (token: string) => {
     try {
         const response = await AxiosInstance.get('/account/myInfo', {
@@ -37,8 +34,12 @@ export const getUserProfile = async (token: string) => {
     }
 };
 
-// Hàm lấy tên người dùng từ token
 export const getUserNameFromToken = (token: string): string | null => {
     const decodedToken = decodeToken(token);
-    return decodedToken ? decodedToken.sub : null; // Lấy tên người dùng từ sub
+    return decodedToken ? decodedToken.sub : null;
+};
+
+export const getUserRoleFromToken = (token: string): string | null => {
+    const decodedToken = decodeToken(token);
+    return decodedToken ? decodedToken.scope : null;
 };

@@ -8,7 +8,6 @@ export const AxiosInstance = axios.create({
     },
 });
 
-// Định nghĩa interface cho token đã giải mã
 interface DecodedToken {
     iss: string;
     exp: number;

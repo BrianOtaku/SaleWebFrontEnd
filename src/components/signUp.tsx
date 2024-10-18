@@ -7,7 +7,7 @@ import { signUp } from '../API/apiAccount';
 
 function SignUp() {
     const [show, setShow] = useState(false);
-    const [userName, setUserName] = useState(''); // Đổi thành userName
+    const [userName, setUserName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -24,11 +24,11 @@ function SignUp() {
         } else {
             setPasswordError('');
             try {
-                const userData = { userName, email, password }; // Sử dụng userName ở đây
-                const response = await signUp(userData); // Gọi API đăng ký
+                const userData = { userName, email, password };
+                const response = await signUp(userData);
                 console.log('Registration successful:', response);
-                handleClose(); // Đóng modal sau khi đăng ký thành công
-                alert('Registration successful!'); // Hiển thị thông báo thành công
+                handleClose();
+                alert('Registration successful!');
             } catch (err) {
                 console.error('Error registering account:', err);
                 setError('Registration failed. Please try again.');
@@ -53,7 +53,7 @@ function SignUp() {
                             <Form.Control
                                 type="text"
                                 placeholder="Enter user name"
-                                value={userName} // Sử dụng userName ở đây
+                                value={userName}
                                 onChange={(e) => setUserName(e.target.value)}
                             />
                         </Form.Group>
