@@ -1,16 +1,26 @@
 import { Modal, Button, Form } from 'react-bootstrap';
 import { UserData } from '../../API/apiCRUD';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faPen } from '@fortawesome/free-solid-svg-icons';
 
 interface UserModalProps {
     show: boolean;
     handleClose: () => void;
-    onCreate: (userData: UserData) => void;
+    onCreate?: (userData: UserData) => void;
+    onUpdate?: (userData: UserData) => void;
+    isEditMode: boolean;
+    existingUserData?: UserData;
 }
 
-const UserModal: React.FC<UserModalProps> = ({ show, handleClose, onCreate }) => {
+const UserModal: React.FC<UserModalProps> = ({
+    show,
+    handleClose,
+    onCreate,
+    onUpdate,
+    isEditMode,
+    existingUserData
+}) => {
     const [userData, setUserData] = useState<UserData>({
         userId: 0,
         userName: '',
@@ -21,6 +31,12 @@ const UserModal: React.FC<UserModalProps> = ({ show, handleClose, onCreate }) =>
         role: '',
     });
 
+    useEffect(() => {
+        if (isEditMode && existingUserData) {
+            setUserData(existingUserData);
+        }
+    }, [isEditMode, existingUserData]);
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         const updatedValue = name === 'phoneNumber' ? Number(value) : value;
@@ -30,18 +46,23 @@ const UserModal: React.FC<UserModalProps> = ({ show, handleClose, onCreate }) =>
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            console.log('Creating user with data:', userData);
-            onCreate(userData);
+            if (isEditMode && onUpdate) {
+                console.log('Updating user with data:', userData);
+                onUpdate(userData);
+            } else if (onCreate) {
+                console.log('Creating user with data:', userData);
+                onCreate(userData);
+            }
             handleClose();
         } catch (error) {
-            console.error('Error creating user:', error);
+            console.error('Error submitting form:', error);
         }
     };
 
     return (
         <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
-                <Modal.Title>Create User</Modal.Title>
+                <Modal.Title>{isEditMode ? 'Update User' : 'Create User'}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form onSubmit={handleSubmit}>
@@ -75,7 +96,7 @@ const UserModal: React.FC<UserModalProps> = ({ show, handleClose, onCreate }) =>
                             name="password"
                             value={userData.password}
                             onChange={handleChange}
-                            required
+                            required={!isEditMode} // Only required when creating
                         />
                     </Form.Group>
                     <Form.Group controlId="formAddress">
@@ -91,10 +112,10 @@ const UserModal: React.FC<UserModalProps> = ({ show, handleClose, onCreate }) =>
                     <Form.Group controlId="formPhoneNumber">
                         <Form.Label>Phone Number</Form.Label>
                         <Form.Control
-                            type="text" // Keep as text to allow for any phone format
+                            type="text"
                             placeholder="Enter phone number"
                             name="phoneNumber"
-                            value={userData.phoneNumber === 0 ? '' : userData.phoneNumber} // Convert 0 to empty string for display
+                            value={userData.phoneNumber === 0 ? '' : userData.phoneNumber}
                             onChange={handleChange}
                         />
                     </Form.Group>
@@ -110,8 +131,17 @@ const UserModal: React.FC<UserModalProps> = ({ show, handleClose, onCreate }) =>
                         />
                     </Form.Group>
                     <Button variant="primary" type="submit" className='CreateUser'>
-                        Create User
-                        <FontAwesomeIcon icon={faPlus} className='iconPlus' />
+                        {isEditMode ? (
+                            <>
+                                Update User
+                                <FontAwesomeIcon icon={faPen} className='iconPen' />
+                            </>
+                        ) : (
+                            <>
+                                Create User
+                                <FontAwesomeIcon icon={faPlus} className='iconPlus' />
+                            </>
+                        )}
                     </Button>
                 </Form>
             </Modal.Body>

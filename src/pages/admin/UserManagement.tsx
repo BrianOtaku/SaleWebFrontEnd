@@ -39,20 +39,22 @@ function UserManagement() {
     }, []);
 
     const handleCreate = async (userData: UserData) => {
-        window.location.reload();
         setUsers([...users, userData]);
     };
 
-    const handleUpdate = async (updatedData: any) => {
-        // Logic cập nhật người dùng
+    const handleUpdate = async (updatedData: UserData) => {
+        setUsers(users.map(user => user.userId === updatedData.userId ? updatedData : user));
     };
 
     const handleDelete = async () => {
-        // Sử dụng selectedItems từ useSelect
         if (selectedItems.length > 0) {
-            window.location.reload();
-            console.log(selectedItems);
-            setUsers(users.filter(user => !selectedItems.includes(user.userId)));
+            try {
+                setUsers(users.filter(user => !selectedItems.includes(user.userId)));
+            } catch (error) {
+                console.error('Error deleting users:', error);
+            }
+        } else {
+            console.warn('No users selected for deletion.');
         }
     };
 
@@ -63,7 +65,14 @@ function UserManagement() {
                 pageType="user"
                 onCreate={handleCreate}
                 onUpdate={handleUpdate}
-                onDelete={handleDelete} // Truyền handleDelete vào CRUD
+                onDelete={handleDelete}
+                selectedItems={selectedItems}
+                selectedUserData={
+                    selectedItems.length === 1
+                        ? users.find(user => user.userId === selectedItems[0])
+                        : undefined
+                }
+                users={users} // Truyền danh sách người dùng vào
             />
             <table>
                 <thead>
