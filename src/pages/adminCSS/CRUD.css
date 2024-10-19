@@ -7,6 +7,7 @@
 
 .crud Button
 {
+    box-shadow: 4px 6px 10px rgba(0, 0, 0, 0.5);
     width: 10%;
 }
 

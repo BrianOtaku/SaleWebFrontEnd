@@ -39,16 +39,19 @@ function UserManagement() {
     }, []);
 
     const handleCreate = async (userData: UserData) => {
+        window.location.reload();
         setUsers([...users, userData]);
     };
 
     const handleUpdate = async (updatedData: UserData) => {
+        window.location.reload();
         setUsers(users.map(user => user.userId === updatedData.userId ? updatedData : user));
     };
 
     const handleDelete = async () => {
         if (selectedItems.length > 0) {
             try {
+                window.location.reload();
                 setUsers(users.filter(user => !selectedItems.includes(user.userId)));
             } catch (error) {
                 console.error('Error deleting users:', error);
