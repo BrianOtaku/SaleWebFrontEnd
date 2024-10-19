@@ -27,6 +27,7 @@ function UserManagement() {
             if (token) {
                 try {
                     const userData = await getAllUsers(token);
+                    console.log(userData);
                     setUsers(userData);
                 } catch (error) {
                     console.error('Error fetching users:', error);
@@ -38,21 +39,32 @@ function UserManagement() {
     }, []);
 
     const handleCreate = async (userData: UserData) => {
-        try {
-            const token = localStorage.getItem('token');
-            if (token) {
-                const userData = await getAllUsers(token);
-                setUsers(userData);
-            }
-        } catch (error) {
-            console.error('Error creating user:', error);
+        window.location.reload();
+        setUsers([...users, userData]);
+    };
+
+    const handleUpdate = async (updatedData: any) => {
+        // Logic cập nhật người dùng
+    };
+
+    const handleDelete = async () => {
+        // Sử dụng selectedItems từ useSelect
+        if (selectedItems.length > 0) {
+            window.location.reload();
+            console.log(selectedItems);
+            setUsers(users.filter(user => !selectedItems.includes(user.userId)));
         }
     };
 
     return (
         <div>
             <h2>Users Management</h2>
-            <CRUD onCreate={handleCreate} />
+            <CRUD
+                pageType="user"
+                onCreate={handleCreate}
+                onUpdate={handleUpdate}
+                onDelete={handleDelete} // Truyền handleDelete vào CRUD
+            />
             <table>
                 <thead>
                     <tr>

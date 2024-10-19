@@ -5,18 +5,23 @@ export const useSelect = (items: number[]) => {
     const [selectAll, setSelectAll] = useState<boolean>(false);
 
     const handleSelectItem = (itemId: number) => {
-        setSelectedItems(prevSelected =>
-            prevSelected.includes(itemId)
+        setSelectedItems(prevSelected => {
+            const newSelected = prevSelected.includes(itemId)
                 ? prevSelected.filter(id => id !== itemId)
-                : [...prevSelected, itemId]
-        );
+                : [...prevSelected, itemId];
+
+            console.log(newSelected); // Ghi lại trạng thái mới
+            return newSelected;
+        });
     };
 
     const handleSelectAll = () => {
         if (selectAll) {
             setSelectedItems([]);
+            // console.log([]);
         } else {
             setSelectedItems(items);
+            // console.log(items);
         }
         setSelectAll(!selectAll);
     };

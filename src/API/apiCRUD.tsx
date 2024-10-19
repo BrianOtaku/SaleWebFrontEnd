@@ -1,11 +1,12 @@
 import { AxiosInstance } from "./axiosConfig";
 
 export interface UserData {
+    userId: number;
     userName: string;
     email: string;
     password: string;
     address: string;
-    phoneNumber: string;
+    phoneNumber: number;
     role: string;
 }
 
@@ -17,38 +18,56 @@ const getAuthHeaders = () => {
     };
 };
 
-export const createUser = async (userData: UserData) => {
+const getApiUrl = (pageType: string) => {
+    switch (pageType) {
+        case 'user':
+            return '/account';
+        case 'product':
+            return '/product';
+        case 'category':
+            return '/category';
+        case 'order':
+            return '/order';
+        default:
+            throw new Error('Unknown page type');
+    }
+};
+
+export const createEntity = async (pageType: string, data: any) => {
     try {
-        const response = await AxiosInstance.post('/account', userData, {
-            headers: getAuthHeaders()
+        const apiUrl = getApiUrl(pageType);
+        const response = await AxiosInstance.post(apiUrl, data, {
+            headers: getAuthHeaders(),
         });
         return response.data;
     } catch (error) {
-        console.error('Error creating user:', error);
+        console.error(`Error creating entity for ${pageType}:`, error);
         throw error;
     }
 };
 
-export const updateUser = async (userId: number, updatedData: { userName?: string; email?: string; address?: string; phoneNumber?: string; role?: string }) => {
+export const updateEntity = async (pageType: string, entityId: number, updatedData: any) => {
     try {
-        const response = await AxiosInstance.put(`/account/${userId}`, updatedData, {
-            headers: getAuthHeaders() // Thêm headers vào yêu cầu
+        const apiUrl = getApiUrl(pageType);
+        const response = await AxiosInstance.put(`${apiUrl}/${entityId}`, updatedData, {
+            headers: getAuthHeaders(),
         });
         return response.data;
     } catch (error) {
-        console.error('Error updating user:', error);
+        console.error(`Error updating entity for ${pageType}:`, error);
         throw error;
     }
 };
 
-export const deleteUser = async (userId: number) => {
+export const deleteEntity = async (pageType: string, entityId: number) => {
     try {
-        const response = await AxiosInstance.delete(`/account/${userId}`, {
-            headers: getAuthHeaders() // Thêm headers vào yêu cầu
+        const apiUrl = getApiUrl(pageType);
+        const response = await AxiosInstance.delete(`${apiUrl}/${entityId}`, {
+            headers: getAuthHeaders(),
         });
         return response.data;
     } catch (error) {
-        console.error('Error deleting user:', error);
+        console.error(`Error deleting entity for ${pageType}:`, error);
         throw error;
     }
 };

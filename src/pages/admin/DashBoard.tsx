@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import '../adminCSS/DashBoard.css';
@@ -13,15 +13,22 @@ import OrderManagement from './OrderManagement';
 import DeliveryManagement from './DeliveryManagement';
 
 // import css
-import '../adminCSS/ManageTables.css'
-import '../adminCSS/CRUD.css'
+import '../adminCSS/ManageTables.css';
+import '../adminCSS/CRUD.css';
 
 function DashBoard() {
     const navigate = useNavigate();
-    const [activePage, setActivePage] = useState<string>('');
+    const [activePage, setActivePage] = useState<string>(() => {
+        return localStorage.getItem('activePage') || '';
+    });
+
+    useEffect(() => {
+        localStorage.setItem('activePage', activePage);
+    }, [activePage]);
 
     const handleLogout = () => {
         localStorage.removeItem('token');
+        localStorage.removeItem('activePage');
         navigate('/');
         window.location.reload();
     };
@@ -43,6 +50,9 @@ function DashBoard() {
             case 'payments':
                 return <PaymentManagement />;
             default:
+                if (activePage) {
+                    return <div>Invalid page</div>;
+                }
                 return <div className='adminPage'>Welcome to the Admin dashboard!</div>;
         }
     };

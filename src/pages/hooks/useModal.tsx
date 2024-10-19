@@ -1,5 +1,4 @@
 import { Modal, Button, Form } from 'react-bootstrap';
-import { createUser } from '../../API/apiCRUD';
 import { UserData } from '../../API/apiCRUD';
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -13,31 +12,31 @@ interface UserModalProps {
 
 const UserModal: React.FC<UserModalProps> = ({ show, handleClose, onCreate }) => {
     const [userData, setUserData] = useState<UserData>({
+        userId: 0,
         userName: '',
         email: '',
         password: '',
         address: '',
-        phoneNumber: '',
+        phoneNumber: 0,
         role: '',
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setUserData({ ...userData, [name]: value });
+        const updatedValue = name === 'phoneNumber' ? Number(value) : value;
+        setUserData({ ...userData, [name]: updatedValue });
     };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
             console.log('Creating user with data:', userData);
-            await createUser(userData); // Chỉ gọi tạo tài khoản một lần
-            onCreate(userData); // Gọi onCreate chỉ sau khi tạo thành công
-            handleClose(); // Đóng modal sau khi tạo thành công
+            onCreate(userData);
+            handleClose();
         } catch (error) {
             console.error('Error creating user:', error);
         }
     };
-
 
     return (
         <Modal show={show} onHide={handleClose}>
@@ -92,10 +91,10 @@ const UserModal: React.FC<UserModalProps> = ({ show, handleClose, onCreate }) =>
                     <Form.Group controlId="formPhoneNumber">
                         <Form.Label>Phone Number</Form.Label>
                         <Form.Control
-                            type="text"
+                            type="text" // Keep as text to allow for any phone format
                             placeholder="Enter phone number"
                             name="phoneNumber"
-                            value={userData.phoneNumber}
+                            value={userData.phoneNumber === 0 ? '' : userData.phoneNumber} // Convert 0 to empty string for display
                             onChange={handleChange}
                         />
                     </Form.Group>
