@@ -10,6 +10,27 @@ export interface UserData {
     role: string;
 }
 
+export interface CategoryData {
+    categoryId: number;
+    categoryName: string;
+}
+
+export interface ProductData {
+    productId: number;
+    productName: string;
+    manufacturer: string;
+    productDescription: string;
+    cost: number;
+    categoryId: number;
+    categoryName: string;
+}
+
+export interface InventoryData {
+    inventoryId: number;
+    productId: number;
+    productQuantity: number;
+}
+
 const getAuthHeaders = () => {
     const token = localStorage.getItem('token');
     return {
@@ -20,14 +41,14 @@ const getAuthHeaders = () => {
 
 const getApiUrl = (pageType: string) => {
     switch (pageType) {
-        case 'user':
+        case 'users':
             return '/account';
-        case 'product':
-            return '/product';
-        case 'category':
-            return '/category';
+        case 'products':
+            return '/api/products';
+        case 'categories':
+            return '/categories';
         case 'order':
-            return '/order';
+            return '/api/orders';
         default:
             throw new Error('Unknown page type');
     }

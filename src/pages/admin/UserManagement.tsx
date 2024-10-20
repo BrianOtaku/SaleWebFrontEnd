@@ -65,7 +65,7 @@ function UserManagement() {
         <div>
             <h2>Users Management</h2>
             <CRUD
-                pageType="user"
+                pageType="users"
                 onCreate={handleCreate}
                 onUpdate={handleUpdate}
                 onDelete={handleDelete}

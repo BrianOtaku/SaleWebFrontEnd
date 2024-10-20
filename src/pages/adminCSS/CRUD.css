@@ -8,7 +8,7 @@
 .crud Button
 {
     box-shadow: 4px 6px 10px rgba(0, 0, 0, 0.5);
-    width: 10%;
+    width: 15%;
 }
 
 .iconPlus, .iconPen, .iconDelete 
@@ -16,7 +16,7 @@
     margin-left: 10px;
 }
 
-.CreateUser
+.CRUDBtn
 {
     margin-top: 10px;
     position: relative;

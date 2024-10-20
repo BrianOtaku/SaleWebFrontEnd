@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { getAllCategories } from '../../API/apiGetInfomations';
 import { useSelect } from '../hooks/useSelect';
+import CRUD from '../hooks/useCRUD';
+import { CategoryData } from '../../API/apiCRUD';
+
 
 interface Category {
     categoryId: number;
@@ -9,26 +12,71 @@ interface Category {
 
 function CategoryManagement() {
     const [categories, setCategories] = useState<Category[]>([]);
+
     const { selectedItems, selectAll, handleSelectItem, handleSelectAll } = useSelect(
         categories.map(category => category.categoryId)
     );
 
     useEffect(() => {
         const fetchCategories = async () => {
-            try {
-                const categoryData = await getAllCategories(); // Lấy danh mục từ API
-                setCategories(categoryData); // Lưu trữ dữ liệu vào state
-            } catch (error) {
-                console.error('Error fetching categories:', error);
+            const token = localStorage.getItem('token');
+            if (token) {
+                try {
+                    const categoriesData = await getAllCategories(token);
+                    console.log(categoriesData);
+                    setCategories(categoriesData);
+                } catch (error) {
+                    console.error('Error fetching category:', error);
+                }
             }
         };
 
         fetchCategories();
     }, []);
 
+    const handleCreate = async (categoryData: CategoryData) => {
+        try {
+            setCategories([...categories, categoryData]);
+            window.location.reload();
+        } catch (error) {
+            console.error('Error creating category:', error);
+        }
+    };
+
+    const handleUpdate = async (updatedData: CategoryData) => {
+        window.location.reload();
+        setCategories(categories.map(category => category.categoryId === updatedData.categoryId ? updatedData : category));
+    };
+
+    const handleDelete = async () => {
+        if (selectedItems.length > 0) {
+            try {
+                window.location.reload();
+                setCategories(categories.filter(category => !selectedItems.includes(category.categoryId)));
+            } catch (error) {
+                console.error('Error deleting category:', error);
+            }
+        } else {
+            console.warn('No users selected for deletion.');
+        }
+    };
+
     return (
         <div>
             <h2>Categories Management</h2>
+            <CRUD
+                pageType="categories"
+                onCreate={handleCreate}
+                onUpdate={handleUpdate}
+                onDelete={handleDelete}
+                selectedItems={selectedItems}
+                selectedCategoryData={
+                    selectedItems.length === 1
+                        ? categories.find(category => category.categoryId === selectedItems[0])
+                        : undefined
+                }
+                categories={categories}
+            />
             <table>
                 <thead>
                     <tr>

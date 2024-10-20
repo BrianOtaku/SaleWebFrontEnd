@@ -1,8 +1,8 @@
 import { Modal, Button, Form } from 'react-bootstrap';
-import { UserData } from '../../API/apiCRUD';
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faPen } from '@fortawesome/free-solid-svg-icons';
+import { UserData } from '../../API/apiCRUD';
 
 interface UserModalProps {
     show: boolean;
@@ -130,7 +130,7 @@ const UserModal: React.FC<UserModalProps> = ({
                             required
                         />
                     </Form.Group>
-                    <Button variant="primary" type="submit" className='CreateUser'>
+                    <Button variant="primary" type="submit" className='CRUDBtn'>
                         {isEditMode ? (
                             <>
                                 Update User

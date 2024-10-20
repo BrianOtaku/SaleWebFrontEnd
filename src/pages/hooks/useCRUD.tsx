@@ -2,27 +2,59 @@ import { Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDeleteLeft, faPen, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
+
+// import CRUD functions
+import { createEntity, updateEntity, deleteEntity, InventoryData } from '../../API/apiCRUD';
+
+// import interfaces
+import { UserData, CategoryData, ProductData } from '../../API/apiCRUD';
+
+// import Modal
 import UserModal from './userModal';
-import { createEntity, updateEntity, deleteEntity } from '../../API/apiCRUD';
-import { UserData } from '../../API/apiCRUD';
+import CategoryModal from './categoryModal';
+import ProductModal from './productModal';
+import InventoryModal from './inventoryModal';
 
 export interface CRUDProps {
     pageType: string;
+
     onCreate: (data: any) => void;
     onUpdate: (data: any) => void;
     onDelete: (ids: number[]) => void;
+
     selectedItems: number[];
     selectedUserData?: UserData;
-    users: UserData[];
+    selectedCategoryData?: CategoryData;
+    selectedProductData?: ProductData;
+    selectedInventoryData?: InventoryData;
+
+    users?: UserData[];
+    categories?: CategoryData[];
+    products?: ProductData[];
+    inventories?: InventoryData[];
 }
 
-function CRUD({ pageType, onCreate, onUpdate, onDelete, selectedItems, users }: CRUDProps) {
+
+function CRUD({ pageType, onCreate, onUpdate, onDelete, selectedItems, users, categories, products, inventories }: CRUDProps) {
     const [showModal, setShowModal] = useState(false);
     const [isEditMode, setIsEditMode] = useState(false);
 
-    const selectedUserData: UserData | undefined = selectedItems.length === 1
-        ? users.find(user => user.userId === selectedItems[0])
+    const selectedUserData: UserData | undefined = selectedItems.length === 1 && pageType === 'users'
+        ? users?.find(user => user.userId === selectedItems[0])
         : undefined;
+
+    const selectedCategory: CategoryData | undefined = selectedItems.length === 1 && pageType === 'categories'
+        ? categories?.find(category => category.categoryId === selectedItems[0])
+        : undefined;
+
+    const selectedProduct: ProductData | undefined = selectedItems.length === 1 && pageType === 'products'
+        ? products?.find(product => product.productId === selectedItems[0])
+        : undefined;
+
+    const selectedInventory: InventoryData | undefined = selectedItems.length === 1 && pageType === 'inventories'
+        ? inventories?.find(inventory => inventory.inventoryId === selectedItems[0])
+        : undefined;
+
 
     const handleShowCreate = () => {
         setIsEditMode(false);
@@ -30,7 +62,7 @@ function CRUD({ pageType, onCreate, onUpdate, onDelete, selectedItems, users }: 
     };
 
     const handleShowUpdate = () => {
-        if (selectedUserData) {
+        if (selectedUserData || selectedCategory || selectedProduct) {
             setIsEditMode(true);
             setShowModal(true);
         }
@@ -49,9 +81,10 @@ function CRUD({ pageType, onCreate, onUpdate, onDelete, selectedItems, users }: 
     };
 
     const handleUpdate = async (data: any) => {
-        if (selectedUserData) {
+        const id = selectedUserData?.userId || selectedCategory?.categoryId || selectedProduct?.productId;
+        if (id !== undefined) {
             try {
-                await updateEntity(pageType, selectedUserData.userId, data);
+                await updateEntity(pageType, id, data);
                 onUpdate(data);
             } catch (error) {
                 console.error(`Error updating ${pageType}:`, error);
@@ -78,32 +111,71 @@ function CRUD({ pageType, onCreate, onUpdate, onDelete, selectedItems, users }: 
     return (
         <div className='crud'>
             <Button variant="success" onClick={handleShowCreate}>
-                Create
+                Create {pageType === 'users' ? 'User' : pageType === 'categories' ? 'Category' : 'Product'}
                 <FontAwesomeIcon icon={faPlus} className='iconPlus' />
             </Button>
-            <UserModal
-                show={showModal}
-                handleClose={handleClose}
-                onCreate={handleCreate}
-                onUpdate={handleUpdate}
-                isEditMode={isEditMode}
-                existingUserData={selectedUserData} // Truyền dữ liệu người dùng đã chọn
-            />
-            <Button variant="primary" onClick={handleShowUpdate} disabled={!selectedUserData}>
-                Update
+
+            <Button variant="primary" onClick={handleShowUpdate} disabled={selectedItems.length !== 1}>
+                Update {pageType === 'users' ? 'User' : pageType === 'categories' ? 'Category' : 'Product'}
                 <FontAwesomeIcon icon={faPen} className='iconPen' />
             </Button>
+
             <Button
                 variant="danger"
                 onClick={() => handleDelete(selectedItems)}
                 disabled={selectedItems.length === 0}
-                style={{ opacity: selectedItems.length === 0 ? 0.8 : 1 }}
             >
-                Delete
+                Delete {pageType === 'users' ? 'User' : pageType === 'categories' ? 'Category' : 'Product'}
                 <FontAwesomeIcon icon={faDeleteLeft} className='iconDelete' />
             </Button>
+
+            {pageType === 'users' && (
+                <UserModal
+                    show={showModal}
+                    handleClose={handleClose}
+                    onCreate={handleCreate}
+                    onUpdate={handleUpdate}
+                    isEditMode={isEditMode}
+                    existingUserData={selectedUserData}
+                />
+            )}
+
+            {pageType === 'categories' && (
+                <CategoryModal
+                    show={showModal}
+                    handleClose={handleClose}
+                    onCreate={handleCreate}
+                    onUpdate={handleUpdate}
+                    isEditMode={isEditMode}
+                    existingCategoryData={selectedCategory}
+                />
+            )}
+
+            {pageType === 'products' && (
+                <ProductModal
+                    show={showModal}
+                    handleClose={handleClose}
+                    onCreate={handleCreate}
+                    onUpdate={handleUpdate}
+                    isEditMode={isEditMode}
+                    existingProductData={selectedProduct}
+                />
+            )}
+
+            {pageType === 'inventories' && (
+                <InventoryModal
+                    show={showModal}
+                    handleClose={handleClose}
+                    onCreate={handleCreate}
+                    onUpdate={handleUpdate}
+                    isEditMode={isEditMode}
+                    existingInventoryData={selectedInventory}
+                />
+            )}
+
         </div>
     );
 }
 
 export default CRUD;
+
