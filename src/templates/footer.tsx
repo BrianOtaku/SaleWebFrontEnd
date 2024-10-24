@@ -6,11 +6,11 @@ function Footer() {
     return (
         <footer>
             <div className='upRow'>
-                <div className='footerLogo' title='Home'>
+                {/* <div className='footerLogo' title='Home'>
                     <button>
                         <img src="/image/logoSketch.png" alt="Logo" />
                     </button>
-                </div>
+                </div> */}
                 <div className='footerContent'>
                     <div className='contactIcons'>
                         <span><FontAwesomeIcon icon={faFacebook} className='footerIcons' title='Facebook' /></span>

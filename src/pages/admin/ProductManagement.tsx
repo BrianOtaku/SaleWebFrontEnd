@@ -41,6 +41,7 @@ function ProductManagement() {
 
     const handleCreate = async (productData: ProductData) => {
         try {
+            window.location.reload();
             setProducts([...products, productData]);
         } catch (error) {
             console.error('Error creating product:', error);

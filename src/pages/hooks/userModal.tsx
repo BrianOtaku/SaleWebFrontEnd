@@ -37,7 +37,7 @@ const UserModal: React.FC<UserModalProps> = ({
         }
     }, [isEditMode, existingUserData]);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         const updatedValue = name === 'phoneNumber' ? Number(value) : value;
         setUserData({ ...userData, [name]: updatedValue });
@@ -121,14 +121,16 @@ const UserModal: React.FC<UserModalProps> = ({
                     </Form.Group>
                     <Form.Group controlId="formRole">
                         <Form.Label>Role</Form.Label>
-                        <Form.Control
-                            type="text"
-                            placeholder="Enter role"
+                        <Form.Select
                             name="role"
                             value={userData.role}
                             onChange={handleChange}
                             required
-                        />
+                        >
+                            <option value="">Select Role:</option>
+                            <option value="User">User</option>
+                            <option value="Admin">Admin</option>
+                        </Form.Select>
                     </Form.Group>
                     <Button variant="primary" type="submit" className='CRUDBtn'>
                         {isEditMode ? (

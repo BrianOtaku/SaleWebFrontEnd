@@ -1,8 +1,14 @@
-import { Modal, Button, Form } from 'react-bootstrap';
+import { Modal, Button, Form, Row, Col } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faPen } from '@fortawesome/free-solid-svg-icons';
 import { ProductData } from '../../API/apiCRUD';
+import { getAllCategories } from '../../API/apiGetInfomations';
+
+interface CategoryData {
+    categoryId: number;
+    categoryName: string;
+}
 
 interface ProductModalProps {
     show: boolean;
@@ -31,13 +37,29 @@ const ProductModal: React.FC<ProductModalProps> = ({
         categoryName: '',
     });
 
+    const [categories, setCategories] = useState<CategoryData[]>([]);
+
     useEffect(() => {
         if (isEditMode && existingProductData) {
             setProductData(existingProductData);
         }
     }, [isEditMode, existingProductData]);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const token = localStorage.getItem('token');
+                const categoriesData = await getAllCategories(token || '');
+                setCategories(categoriesData);
+            } catch (error) {
+                console.error('Error fetching categories:', error);
+            }
+        };
+
+        fetchCategories();
+    }, []);
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setProductData({ ...productData, [name]: value });
     };
@@ -46,10 +68,8 @@ const ProductModal: React.FC<ProductModalProps> = ({
         e.preventDefault();
         try {
             if (isEditMode && onUpdate) {
-                console.log('Updating category with data:', productData);
                 onUpdate(productData);
             } else if (onCreate) {
-                console.log('Creating category with data:', productData);
                 onCreate(productData);
             }
             handleClose();
@@ -59,24 +79,85 @@ const ProductModal: React.FC<ProductModalProps> = ({
     };
 
     return (
-        <Modal show={show} onHide={handleClose}>
+        <Modal show={show} onHide={handleClose} size="lg">
             <Modal.Header closeButton>
                 <Modal.Title>{isEditMode ? 'Update Product' : 'Create Product'}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form onSubmit={handleSubmit}>
-                    <Form.Group controlId="formProductName">
-                        <Form.Label>Product Name</Form.Label>
-                        <Form.Control
-                            type="text"
-                            placeholder="Enter product name"
-                            name="productName"
-                            value={productData.productName}
-                            onChange={handleChange}
-                            required
-                        />
-                    </Form.Group>
-                    <Button variant="primary" type="submit" className='CRUDBtn'>
+                    <Row>
+                        <Col md={6}>
+                            <Form.Group controlId="formProductName">
+                                <Form.Label>Product Name</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Enter product name"
+                                    name="productName"
+                                    value={productData.productName}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </Form.Group>
+                            <Form.Group controlId="formManufacturer">
+                                <Form.Label>Manufacturer</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Enter manufacturer"
+                                    name="manufacturer"
+                                    value={productData.manufacturer}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </Form.Group>
+                            <Form.Group controlId="formCost">
+                                <Form.Label>Cost</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Enter cost"
+                                    name="cost"
+                                    value={productData.cost}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </Form.Group>
+                            <Form.Group controlId="formCategoryId">
+                                <Form.Label>Category Name</Form.Label>
+                                <Form.Select
+                                    name="categoryId"
+                                    value={productData.categoryId}
+                                    onChange={handleChange}
+                                    required
+                                >
+                                    <option value="">Select Category:</option>
+                                    {categories.map(category => (
+                                        <option key={category.categoryId} value={category.categoryId}>
+                                            {category.categoryName}
+                                        </option>
+                                    ))}
+                                </Form.Select>
+                            </Form.Group>
+                        </Col>
+
+                        <Form.Group controlId="formProductDescription" as={Col} md={6}>
+                            <Form.Label>Product Description</Form.Label>
+                            <Form.Control
+                                as="textarea"
+                                placeholder="Enter product description"
+                                name="productDescription"
+                                value={productData.productDescription}
+                                onChange={handleChange}
+                                required
+                                style={{
+                                    height: '245px',
+                                    resize: 'none',
+                                    overflowY: 'auto',
+                                }}
+                            />
+                        </Form.Group>
+
+                    </Row>
+
+                    <Button variant="primary" type="submit" className='CRUDBtn mt-3'>
                         {isEditMode ? (
                             <>
                                 Update Product
