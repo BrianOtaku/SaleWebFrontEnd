@@ -1,4 +1,4 @@
-import { Modal, Button, Form } from 'react-bootstrap';
+import { Modal, Button, Form, ModalFooter } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faPen } from '@fortawesome/free-solid-svg-icons';
@@ -96,7 +96,7 @@ const UserModal: React.FC<UserModalProps> = ({
                             name="password"
                             value={userData.password}
                             onChange={handleChange}
-                            required={!isEditMode} // Only required when creating
+                            required={!isEditMode}
                         />
                     </Form.Group>
                     <Form.Group controlId="formAddress">
@@ -132,21 +132,23 @@ const UserModal: React.FC<UserModalProps> = ({
                             <option value="Admin">Admin</option>
                         </Form.Select>
                     </Form.Group>
-                    <Button variant="primary" type="submit" className='CRUDBtn'>
-                        {isEditMode ? (
-                            <>
-                                Update User
-                                <FontAwesomeIcon icon={faPen} className='iconPen' />
-                            </>
-                        ) : (
-                            <>
-                                Create User
-                                <FontAwesomeIcon icon={faPlus} className='iconPlus' />
-                            </>
-                        )}
-                    </Button>
                 </Form>
             </Modal.Body>
+            <ModalFooter>
+                <Button variant="primary" type="submit" className='CRUDBtn'>
+                    {isEditMode ? (
+                        <>
+                            Update User
+                            <FontAwesomeIcon icon={faPen} className='iconPen' />
+                        </>
+                    ) : (
+                        <>
+                            Create User
+                            <FontAwesomeIcon icon={faPlus} className='iconPlus' />
+                        </>
+                    )}
+                </Button>
+            </ModalFooter>
         </Modal>
     );
 };

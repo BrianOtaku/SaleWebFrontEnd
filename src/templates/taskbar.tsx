@@ -5,14 +5,13 @@ import OffcanvasMenu from '../components/offcanvas';
 import SignIn from '../components/signIn';
 import SignUp from '../components/signUp';
 import Accordion from 'react-bootstrap/Accordion';
-import UserConfig from '../API/userConfig';
+import UserConfig from '../components/userConfig';
 
 function Taskbar() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     const handleLogin = () => {
         setIsLoggedIn(true);
-        // Không cần làm gì thêm với token ở đây
     };
 
     return (
@@ -53,13 +52,13 @@ function Taskbar() {
                     </Accordion>
                 </div>
                 <div className='TaskBarButton'>
-                    {!isLoggedIn ? ( // Kiểm tra trạng thái đăng nhập
+                    {!isLoggedIn ? (
                         <>
-                            <SignIn onLogin={handleLogin} /> {/* Truyền hàm handleLogin xuống SignIn */}
+                            <SignIn onLogin={handleLogin} />
                             <SignUp />
                         </>
                     ) : (
-                        <UserConfig /> // Không truyền gì vào UserConfig
+                        <UserConfig />
                     )}
                     <OffcanvasMenu />
                 </div>

@@ -20,10 +20,10 @@ export const signIn = async (credentials: { email: string; password: string }) =
     }
 };
 
-export const getUserNameFromToken = (token: string): string | null => {
-    const decodedToken = decodeToken(token);
-    return decodedToken ? decodedToken.sub : null;
-};
+// export const getUserNameFromToken = (token: string): string | null => {
+//     const decodedToken = decodeToken(token);
+//     return decodedToken ? decodedToken.sub : null;
+// };
 
 export const getUserRoleFromToken = (token: string): string | null => {
     const decodedToken = decodeToken(token);

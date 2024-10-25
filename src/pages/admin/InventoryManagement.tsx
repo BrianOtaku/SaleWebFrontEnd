@@ -64,7 +64,7 @@ function InventoryManagement() {
         <div>
             <h2>Inventories Management</h2>
             <CRUD
-                pageType="inventory"
+                pageType="inventories"
                 onCreate={handleCreate}
                 onUpdate={handleUpdate}
                 onDelete={handleDelete}

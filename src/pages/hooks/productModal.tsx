@@ -1,4 +1,4 @@
-import { Modal, Button, Form, Row, Col } from 'react-bootstrap';
+import { Modal, Button, Form, Row, Col, ModalFooter } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faPen } from '@fortawesome/free-solid-svg-icons';
@@ -157,21 +157,23 @@ const ProductModal: React.FC<ProductModalProps> = ({
 
                     </Row>
 
-                    <Button variant="primary" type="submit" className='CRUDBtn mt-3'>
-                        {isEditMode ? (
-                            <>
-                                Update Product
-                                <FontAwesomeIcon icon={faPen} className='iconPen' />
-                            </>
-                        ) : (
-                            <>
-                                Create Product
-                                <FontAwesomeIcon icon={faPlus} className='iconPlus' />
-                            </>
-                        )}
-                    </Button>
                 </Form>
             </Modal.Body>
+            <ModalFooter>
+                <Button variant="primary" type="submit" className='CRUDBtn'>
+                    {isEditMode ? (
+                        <>
+                            Update Product
+                            <FontAwesomeIcon icon={faPen} className='iconPen' />
+                        </>
+                    ) : (
+                        <>
+                            Create Product
+                            <FontAwesomeIcon icon={faPlus} className='iconPlus' />
+                        </>
+                    )}
+                </Button>
+            </ModalFooter>
         </Modal>
     );
 };

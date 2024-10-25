@@ -75,7 +75,7 @@ function UserManagement() {
                         ? users.find(user => user.userId === selectedItems[0])
                         : undefined
                 }
-                users={users} // Truyền danh sách người dùng vào
+                users={users}
             />
             <table>
                 <thead>

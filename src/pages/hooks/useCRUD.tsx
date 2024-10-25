@@ -62,7 +62,7 @@ function CRUD({ pageType, onCreate, onUpdate, onDelete, selectedItems, users, ca
     };
 
     const handleShowUpdate = () => {
-        if (selectedUserData || selectedCategory || selectedProduct) {
+        if (selectedUserData || selectedCategory || selectedProduct || selectedInventory) {
             setIsEditMode(true);
             setShowModal(true);
         }
@@ -111,12 +111,22 @@ function CRUD({ pageType, onCreate, onUpdate, onDelete, selectedItems, users, ca
     return (
         <div className='crud'>
             <Button variant="success" onClick={handleShowCreate}>
-                Create {pageType === 'users' ? 'User' : pageType === 'categories' ? 'Category' : 'Product'}
+                Create {
+                    pageType === 'users' ? 'User' :
+                        pageType === 'categories' ? 'Category' :
+                            pageType === 'products' ? 'Product' :
+                                'Inventory'
+                }
                 <FontAwesomeIcon icon={faPlus} className='iconPlus' />
             </Button>
 
             <Button variant="primary" onClick={handleShowUpdate} disabled={selectedItems.length !== 1}>
-                Update {pageType === 'users' ? 'User' : pageType === 'categories' ? 'Category' : 'Product'}
+                Update {
+                    pageType === 'users' ? 'User' :
+                        pageType === 'categories' ? 'Category' :
+                            pageType === 'products' ? 'Product' :
+                                'Inventory'
+                }
                 <FontAwesomeIcon icon={faPen} className='iconPen' />
             </Button>
 
@@ -125,7 +135,12 @@ function CRUD({ pageType, onCreate, onUpdate, onDelete, selectedItems, users, ca
                 onClick={() => handleDelete(selectedItems)}
                 disabled={selectedItems.length === 0}
             >
-                Delete {pageType === 'users' ? 'User' : pageType === 'categories' ? 'Category' : 'Product'}
+                Delete {
+                    pageType === 'users' ? 'User' :
+                        pageType === 'categories' ? 'Category' :
+                            pageType === 'products' ? 'Product' :
+                                'Inventory'
+                }
                 <FontAwesomeIcon icon={faDeleteLeft} className='iconDelete' />
             </Button>
 

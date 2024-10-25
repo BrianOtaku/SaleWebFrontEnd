@@ -28,13 +28,13 @@ function App() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      const userRole = getUserRoleFromToken(token); // Giải mã token để lấy role
+      const userRole = getUserRoleFromToken(token);
       setRole(userRole);
     }
   }, []);
 
   // if (!role) {
-  //   return <p>Loading...</p>; 
+  //   return <p>Loading...</p>;
   // }
 
   return (

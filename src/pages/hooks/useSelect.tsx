@@ -10,7 +10,7 @@ export const useSelect = (items: number[]) => {
                 ? prevSelected.filter(id => id !== itemId)
                 : [...prevSelected, itemId];
 
-            console.log(newSelected); // Ghi lại trạng thái mới
+            console.log(newSelected);
             return newSelected;
         });
     };

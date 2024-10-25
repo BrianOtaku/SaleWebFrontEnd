@@ -17,7 +17,6 @@ interface DecodedToken {
     scope: string;  // Role
 }
 
-// Hàm để giải mã token
 export const decodeToken = (token: string): DecodedToken | null => {
     try {
         return jwtDecode<DecodedToken>(token);

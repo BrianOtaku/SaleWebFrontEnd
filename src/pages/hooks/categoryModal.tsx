@@ -1,4 +1,4 @@
-import { Modal, Button, Form } from 'react-bootstrap';
+import { Modal, Button, Form, ModalFooter } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faPen } from '@fortawesome/free-solid-svg-icons';
@@ -71,21 +71,23 @@ const CategoryModal: React.FC<CategoryModalProps> = ({
                             required
                         />
                     </Form.Group>
-                    <Button variant="primary" type="submit" className='CRUDBtn'>
-                        {isEditMode ? (
-                            <>
-                                Update Category
-                                <FontAwesomeIcon icon={faPen} className='iconPen' />
-                            </>
-                        ) : (
-                            <>
-                                Create Category
-                                <FontAwesomeIcon icon={faPlus} className='iconPlus' />
-                            </>
-                        )}
-                    </Button>
                 </Form>
             </Modal.Body>
+            <ModalFooter>
+                <Button variant="primary" type="submit" className='CRUDBtn'>
+                    {isEditMode ? (
+                        <>
+                            Update Category
+                            <FontAwesomeIcon icon={faPen} className='iconPen' />
+                        </>
+                    ) : (
+                        <>
+                            Create Category
+                            <FontAwesomeIcon icon={faPlus} className='iconPlus' />
+                        </>
+                    )}
+                </Button>
+            </ModalFooter>
         </Modal>
     );
 };
