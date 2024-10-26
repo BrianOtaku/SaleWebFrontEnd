@@ -81,7 +81,7 @@ function CRUD({ pageType, onCreate, onUpdate, onDelete, selectedItems, users, ca
     };
 
     const handleUpdate = async (data: any) => {
-        const id = selectedUserData?.userId || selectedCategory?.categoryId || selectedProduct?.productId;
+        const id = selectedUserData?.userId || selectedCategory?.categoryId || selectedProduct?.productId || selectedInventory?.inventoryId;
         if (id !== undefined) {
             try {
                 await updateEntity(pageType, id, data);

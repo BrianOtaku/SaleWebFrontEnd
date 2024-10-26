@@ -19,6 +19,7 @@ function UserConfig() {
     const navigate = useNavigate();
 
     const handleLogout = () => {
+        // localStorage.removeItem('userProfile')
         localStorage.removeItem('token');
         navigate('/');
         window.location.reload();
@@ -29,8 +30,7 @@ function UserConfig() {
             try {
                 const token = localStorage.getItem('token');
                 if (token) {
-                    const dataString = localStorage.getItem('userProfile');
-                    const data = dataString ? JSON.parse(dataString) : null;
+                    const data = await getUserProfile(token);
                     setUserData({
                         userName: data.userName || 'No name',
                         userEmail: data.email || 'No email available',

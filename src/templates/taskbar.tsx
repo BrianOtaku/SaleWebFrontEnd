@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import OffcanvasMenu from '../components/offcanvas';
@@ -9,6 +9,15 @@ import UserConfig from '../components/userConfig';
 
 function Taskbar() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        const userProfile = localStorage.getItem('userProfile');
+
+        if (token || userProfile) {
+            setIsLoggedIn(true);
+        }
+    }, []);
 
     const handleLogin = () => {
         setIsLoggedIn(true);
