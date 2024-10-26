@@ -7,12 +7,13 @@ import { useState } from 'react';
 import { createEntity, updateEntity, deleteEntity } from '../../API/apiCRUD';
 
 // import interfaces
-import { UserData, CategoryData, ProductData } from '../../API/apiCRUD';
+import { UserData, CategoryData, ProductData, OrderData } from '../../API/apiCRUD';
 
 // import Modal
 import UserModal from './userModal';
 import CategoryModal from './categoryModal';
 import ProductModal from './productModal';
+import OrderModal from './orderModal';
 
 export interface CRUDProps {
     pageType: string;
@@ -25,18 +26,20 @@ export interface CRUDProps {
     selectedUserData?: UserData;
     selectedCategoryData?: CategoryData;
     selectedProductData?: ProductData;
+    selectedOrderData?: OrderData;
 
     users?: UserData[];
     categories?: CategoryData[];
     products?: ProductData[];
+    orders?: OrderData[];
 }
 
 
-function CRUD({ pageType, onCreate, onUpdate, onDelete, selectedItems, users, categories, products }: CRUDProps) {
+function CRUD({ pageType, onCreate, onUpdate, onDelete, selectedItems, users, categories, products, orders }: CRUDProps) {
     const [showModal, setShowModal] = useState(false);
     const [isEditMode, setIsEditMode] = useState(false);
 
-    const selectedUserData: UserData | undefined = selectedItems.length === 1 && pageType === 'users'
+    const selectedUser: UserData | undefined = selectedItems.length === 1 && pageType === 'users'
         ? users?.find(user => user.userId === selectedItems[0])
         : undefined;
 
@@ -48,13 +51,17 @@ function CRUD({ pageType, onCreate, onUpdate, onDelete, selectedItems, users, ca
         ? products?.find(product => product.productId === selectedItems[0])
         : undefined;
 
+    const selectedOrder: OrderData | undefined = selectedItems.length === 1 && pageType === 'orders'
+        ? orders?.find(order => order.orderId === selectedItems[0])
+        : undefined;
+
     const handleShowCreate = () => {
         setIsEditMode(false);
         setShowModal(true);
     };
 
     const handleShowUpdate = () => {
-        if (selectedUserData || selectedCategory || selectedProduct) {
+        if (selectedUser || selectedCategory || selectedProduct || selectedOrder) {
             setIsEditMode(true);
             setShowModal(true);
         }
@@ -73,7 +80,7 @@ function CRUD({ pageType, onCreate, onUpdate, onDelete, selectedItems, users, ca
     };
 
     const handleUpdate = async (data: any) => {
-        const id = selectedUserData?.userId || selectedCategory?.categoryId || selectedProduct?.productId;
+        const id = selectedUser?.userId || selectedCategory?.categoryId || selectedProduct?.productId || selectedOrder?.orderId;
         if (id !== undefined) {
             try {
                 await updateEntity(pageType, id, data);
@@ -102,11 +109,12 @@ function CRUD({ pageType, onCreate, onUpdate, onDelete, selectedItems, users, ca
 
     return (
         <div className='crud'>
-            <Button variant="success" onClick={handleShowCreate}>
+            <Button variant="success" onClick={handleShowCreate} disabled={pageType === 'orders'}>
                 Create {
                     pageType === 'users' ? 'User' :
                         pageType === 'categories' ? 'Category' :
-                            'Product'
+                            pageType === 'orders' ? 'Order' :
+                                'Product'
                 }
                 <FontAwesomeIcon icon={faPlus} className='iconPlus' />
             </Button>
@@ -115,7 +123,8 @@ function CRUD({ pageType, onCreate, onUpdate, onDelete, selectedItems, users, ca
                 Update {
                     pageType === 'users' ? 'User' :
                         pageType === 'categories' ? 'Category' :
-                            'Product'
+                            pageType === 'orders' ? 'Order' :
+                                'Product'
                 }
                 <FontAwesomeIcon icon={faPen} className='iconPen' />
             </Button>
@@ -128,7 +137,8 @@ function CRUD({ pageType, onCreate, onUpdate, onDelete, selectedItems, users, ca
                 Delete {
                     pageType === 'users' ? 'User' :
                         pageType === 'categories' ? 'Category' :
-                            'Product'
+                            pageType === 'orders' ? 'Order' :
+                                'Product'
                 }
                 <FontAwesomeIcon icon={faDeleteLeft} className='iconDelete' />
             </Button>
@@ -140,7 +150,7 @@ function CRUD({ pageType, onCreate, onUpdate, onDelete, selectedItems, users, ca
                     onCreate={handleCreate}
                     onUpdate={handleUpdate}
                     isEditMode={isEditMode}
-                    existingUserData={selectedUserData}
+                    existingUserData={selectedUser}
                 />
             )}
 
@@ -163,6 +173,17 @@ function CRUD({ pageType, onCreate, onUpdate, onDelete, selectedItems, users, ca
                     onUpdate={handleUpdate}
                     isEditMode={isEditMode}
                     existingProductData={selectedProduct}
+                />
+            )}
+
+            {pageType === 'orders' && (
+                <OrderModal
+                    show={showModal}
+                    handleClose={handleClose}
+                    onCreate={handleCreate}
+                    onUpdate={handleUpdate}
+                    isEditMode={isEditMode}
+                    existingOrderData={selectedOrder}
                 />
             )}
 

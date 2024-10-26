@@ -63,13 +63,45 @@ export const getAllProducts = async (token: string) => {
     }
 };
 
-// export const getAllOrders = async () => {
-//     try {
-//         const response = await AxiosInstance.get('/account');
-//         return response.data;
-//     } catch (error) {
-//         console.error('Error fetching all users:', error);
-//         throw error;
-//     }
-// };
+export const getAllOrders = async (token: string) => {
+    try {
+        const response = await AxiosInstance.get('/api/orders', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching all orders:', error);
+        throw error;
+    }
+};
+
+export const getAllPayments = async (token: string) => {
+    try {
+        const response = await AxiosInstance.get('/update-status/', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching all payments:', error);
+        throw error;
+    }
+};
+
+export const getAllDeliveries = async (token: string) => {
+    try {
+        const response = await AxiosInstance.get('/api/delivery', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching all orders:', error);
+        throw error;
+    }
+};
 

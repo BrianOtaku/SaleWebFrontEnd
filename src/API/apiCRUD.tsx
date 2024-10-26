@@ -27,6 +27,19 @@ export interface ProductData {
     productQuantity: 0;
 }
 
+export interface OrderData {
+    orderId: number;
+    productName: string;
+    userName: string;
+    orderQuantity: number;
+    deliveryAddress: string;
+    totalCost: number;
+    orderState: string;
+    paymentMethod: string;
+    paymentStatus: string;
+    deliveryStatus: string;
+}
+
 const getAuthHeaders = () => {
     const token = localStorage.getItem('token');
     return {
@@ -43,7 +56,7 @@ const getApiUrl = (pageType: string) => {
             return '/api/products';
         case 'categories':
             return '/categories';
-        case 'order':
+        case 'orders':
             return '/api/orders';
         default:
             throw new Error('Unknown page type');

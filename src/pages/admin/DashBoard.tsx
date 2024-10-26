@@ -8,7 +8,6 @@ import UserManagement from './UserManagement';
 import CategoryManagement from './CategoryManagement';
 import ProductManagement from './ProductManagement';
 import OrderManagement from './OrderManagement';
-import DeliveryManagement from './DeliveryManagement';
 
 // import css
 import '../adminCSS/ManageTables.css';
@@ -41,8 +40,6 @@ function DashBoard() {
                 return <ProductManagement />;
             case 'orders':
                 return <OrderManagement />;
-            case 'deliveries':
-                return <DeliveryManagement />;
             default:
                 if (activePage) {
                     return <div>Invalid page</div>;
@@ -59,7 +56,6 @@ function DashBoard() {
                 <Button variant="light" onClick={() => setActivePage('categories')}>Manage Categories</Button>
                 <Button variant="light" onClick={() => setActivePage('products')}>Manage Products</Button>
                 <Button variant="light" onClick={() => setActivePage('orders')}>Manage Orders</Button>
-                <Button variant="light" onClick={() => setActivePage('deliveries')}>Manage Deliveries</Button>
                 <Button variant="danger" onClick={handleLogout} className='adminLogout'>Log Out</Button>
             </div>
             <div className='adminContent'>
