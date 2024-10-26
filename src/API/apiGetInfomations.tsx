@@ -63,20 +63,6 @@ export const getAllProducts = async (token: string) => {
     }
 };
 
-export const getAllInventories = async (token: string) => {
-    try {
-        const response = await AxiosInstance.get('/api/inventories', {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
-        return response.data;
-    } catch (error) {
-        console.error('Error fetching all inventories:', error);
-        throw error;
-    }
-};
-
 // export const getAllOrders = async () => {
 //     try {
 //         const response = await AxiosInstance.get('/account');

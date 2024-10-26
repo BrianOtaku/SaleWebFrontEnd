@@ -7,8 +7,6 @@ import '../adminCSS/DashBoard.css';
 import UserManagement from './UserManagement';
 import CategoryManagement from './CategoryManagement';
 import ProductManagement from './ProductManagement';
-import PaymentManagement from './PaymentManagement';
-import InventoryManagement from './InventoryManagement';
 import OrderManagement from './OrderManagement';
 import DeliveryManagement from './DeliveryManagement';
 
@@ -41,14 +39,10 @@ function DashBoard() {
                 return <CategoryManagement />;
             case 'products':
                 return <ProductManagement />;
-            case 'inventories':
-                return <InventoryManagement />;
             case 'orders':
                 return <OrderManagement />;
             case 'deliveries':
                 return <DeliveryManagement />;
-            case 'payments':
-                return <PaymentManagement />;
             default:
                 if (activePage) {
                     return <div>Invalid page</div>;
@@ -64,10 +58,8 @@ function DashBoard() {
                 <Button variant="light" onClick={() => setActivePage('users')}>Manage Users</Button>
                 <Button variant="light" onClick={() => setActivePage('categories')}>Manage Categories</Button>
                 <Button variant="light" onClick={() => setActivePage('products')}>Manage Products</Button>
-                <Button variant="light" onClick={() => setActivePage('inventories')}>Manage Inventories</Button>
                 <Button variant="light" onClick={() => setActivePage('orders')}>Manage Orders</Button>
                 <Button variant="light" onClick={() => setActivePage('deliveries')}>Manage Deliveries</Button>
-                <Button variant="light" onClick={() => setActivePage('payments')}>Manage Payments</Button>
                 <Button variant="danger" onClick={handleLogout} className='adminLogout'>Log Out</Button>
             </div>
             <div className='adminContent'>

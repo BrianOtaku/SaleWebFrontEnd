@@ -1,5 +1,5 @@
+import React, { useState, useEffect } from 'react';
 import { Modal, Button, Form, Row, Col } from 'react-bootstrap';
-import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faPen } from '@fortawesome/free-solid-svg-icons';
 import { ProductData } from '../../API/apiCRUD';
@@ -35,6 +35,8 @@ const ProductModal: React.FC<ProductModalProps> = ({
         cost: 0,
         categoryId: 0,
         categoryName: '',
+        productImage: '',
+        productQuantity: 0,
     });
 
     const [categories, setCategories] = useState<CategoryData[]>([]);
@@ -120,6 +122,17 @@ const ProductModal: React.FC<ProductModalProps> = ({
                                     required
                                 />
                             </Form.Group>
+                            <Form.Group controlId="formProductQuantity">
+                                <Form.Label>Quantity</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Enter quantity"
+                                    name="productQuantity"
+                                    value={productData.productQuantity}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </Form.Group>
                             <Form.Group controlId="formCategoryId">
                                 <Form.Label>Category Name</Form.Label>
                                 <Form.Select
@@ -138,22 +151,35 @@ const ProductModal: React.FC<ProductModalProps> = ({
                             </Form.Group>
                         </Col>
 
-                        <Form.Group controlId="formProductDescription" as={Col} md={6}>
-                            <Form.Label>Product Description</Form.Label>
-                            <Form.Control
-                                as="textarea"
-                                placeholder="Enter product description"
-                                name="productDescription"
-                                value={productData.productDescription}
-                                onChange={handleChange}
-                                required
-                                style={{
-                                    height: '245px',
-                                    resize: 'none',
-                                    overflowY: 'auto',
-                                }}
-                            />
-                        </Form.Group>
+                        <Col md={6}>
+                            <Form.Group controlId="formProductImage">
+                                <Form.Label>Image</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Enter image URL"
+                                    name="productImage"
+                                    value={productData.productImage}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </Form.Group>
+                            <Form.Group controlId="formProductDescription">
+                                <Form.Label>Product Description</Form.Label>
+                                <Form.Control
+                                    as="textarea"
+                                    placeholder="Enter product description"
+                                    name="productDescription"
+                                    value={productData.productDescription}
+                                    onChange={handleChange}
+                                    required
+                                    style={{
+                                        minHeight: '245.5px',
+                                        resize: 'none',
+                                        overflowY: 'auto',
+                                    }}
+                                />
+                            </Form.Group>
+                        </Col>
                     </Row>
                     <Button variant="primary" type="submit" className='CRUDBtn'>
                         {isEditMode ? (

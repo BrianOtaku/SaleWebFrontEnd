@@ -12,6 +12,8 @@ interface Product {
     cost: number;
     categoryId: number;
     categoryName: string;
+    productImage: string;
+    productQuantity: 0;
 }
 
 function ProductManagement() {
@@ -49,6 +51,7 @@ function ProductManagement() {
     };
 
     const handleUpdate = async (updatedData: ProductData) => {
+        window.location.reload();
         setProducts(products.map(product => product.productId === updatedData.productId ? updatedData : product));
     };
 
@@ -89,6 +92,8 @@ function ProductManagement() {
                         <th>Manufacturer</th>
                         <th>Description</th>
                         <th>Cost</th>
+                        <th>Image URL</th>
+                        <th>Quantity</th>
                         <th>Category ID</th>
                         <th>Category Name</th>
                         <th className='checkBox'>
@@ -106,8 +111,18 @@ function ProductManagement() {
                             <td>{product.productId}</td>
                             <td>{product.productName}</td>
                             <td>{product.manufacturer}</td>
-                            <td>{product.productDescription}</td>
+                            <td>
+                                {product.productDescription.length > 20 ?
+                                    product.productDescription.slice(0, 20) + '...' :
+                                    product.productDescription}
+                            </td>
                             <td>{product.cost}</td>
+                            <td>
+                                {product.productImage.length > 15 ?
+                                    product.productImage.slice(0, 15) + '...' :
+                                    product.productImage}
+                            </td>
+                            <td>{product.productQuantity}</td>
                             <td>{product.categoryId}</td>
                             <td>{product.categoryName}</td>
                             <td className='checkBox'>
@@ -120,6 +135,7 @@ function ProductManagement() {
                         </tr>
                     ))}
                 </tbody>
+
             </table>
         </div>
     );

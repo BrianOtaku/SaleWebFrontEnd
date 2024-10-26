@@ -23,12 +23,8 @@ export interface ProductData {
     cost: number;
     categoryId: number;
     categoryName: string;
-}
-
-export interface InventoryData {
-    inventoryId: number;
-    productId: number;
-    productQuantity: number;
+    productImage: string;
+    productQuantity: 0;
 }
 
 const getAuthHeaders = () => {
@@ -49,8 +45,6 @@ const getApiUrl = (pageType: string) => {
             return '/categories';
         case 'order':
             return '/api/orders';
-        case 'inventories':
-            return '/api/inventories';
         default:
             throw new Error('Unknown page type');
     }
