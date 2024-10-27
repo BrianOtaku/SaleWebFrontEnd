@@ -56,12 +56,32 @@ export const getAllProducts = async (token: string) => {
                 Authorization: `Bearer ${token}`,
             },
         });
-        return response.data;
+
+        // Chắc chắn rằng dữ liệu được trả về là một mảng sản phẩm
+        return response.data.map((product: any) => ({
+            id: product.product_id,
+            name: product.product_name,
+            price: product.cost,
+            image: product.product_image || process.env.PUBLIC_URL + '/image/sp2.png', // Giữ lại hình ảnh mẫu nếu không có hình từ DB
+            specs: [product.product_description], // Bạn có thể chỉnh sửa lại để lấy thêm thông tin nếu cần
+        }));
     } catch (error) {
         console.error('Error fetching all products:', error);
         throw error;
     }
 };
+
+export const getProductDetail = async (productId: string) => {
+    try {
+      const response = await AxiosInstance.get(`/api/products/${productId}`, {
+        headers: getAuthHeaders(),
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching product detail:', error);
+      throw error;
+    }
+  };  
 
 export const getAllOrders = async (token: string) => {
     try {
