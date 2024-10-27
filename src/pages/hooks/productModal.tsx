@@ -2,13 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Button, Form, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faPen } from '@fortawesome/free-solid-svg-icons';
-import { ProductData } from '../../API/apiCRUD';
+import { ProductData, CategoryData } from '../../API/apiCRUD';
 import { getAllCategories } from '../../API/apiGetInfomations';
-
-interface CategoryData {
-    categoryId: number;
-    categoryName: string;
-}
 
 interface ProductModalProps {
     show: boolean;

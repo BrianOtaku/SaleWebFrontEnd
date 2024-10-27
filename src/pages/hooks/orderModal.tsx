@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faPen } from '@fortawesome/free-solid-svg-icons';
 import { OrderData } from '../../API/apiCRUD';
-import { updateDeliveryStatus, updatePaymentStatus } from '../../API/apiCRUD';
+import { updateEntity } from '../../API/apiCRUD';
 
 interface OrderModalProps {
     show: boolean;
@@ -54,19 +54,23 @@ const OrderModal: React.FC<OrderModalProps> = ({
     };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        // e.preventDefault();
+        e.preventDefault();
         try {
             if (isEditMode && onUpdate) {
                 console.log("Updating order data:", orderData);
                 onUpdate(orderData);
+
+                // Cập nhật trạng thái giao hàng
                 if (onUpdateDeliveryStatus) {
                     console.log("Updating Delivery Status", orderData.deliveryStatus);
-                    await updateDeliveryStatus(orderData.orderId, orderData.deliveryStatus);
+                    await updateEntity('delivery', orderData.orderId, { deliveryStatus: orderData.deliveryStatus });
                     onUpdateDeliveryStatus(orderData.orderId, orderData.deliveryStatus);
                 }
+
+                // Cập nhật trạng thái thanh toán
                 if (onUpdatePaymentStatus) {
                     console.log("Updating Payment Status", orderData.paymentStatus);
-                    await updatePaymentStatus(orderData.orderId, orderData.paymentStatus);
+                    await updateEntity('payment', orderData.orderId, { paymentStatus: orderData.paymentStatus });
                     onUpdatePaymentStatus(orderData.orderId, orderData.paymentStatus);
                 }
             }
@@ -75,7 +79,6 @@ const OrderModal: React.FC<OrderModalProps> = ({
             console.error('Error submitting form:', error);
         }
     };
-
 
     return (
         <Modal show={show} onHide={handleClose}>

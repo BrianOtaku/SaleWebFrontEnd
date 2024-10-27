@@ -21,6 +21,20 @@ export const getUserProfile = async (token: string) => {
     }
 };
 
+export const getUserProfileById = async (id: number, token: string) => {
+    try {
+        const apiUrl = `/account/${id}`;
+        const response = await AxiosInstance.get(apiUrl, {
+            headers: getAuthHeaders()
+        });
+        // localStorage.setItem("userProfile", JSON.stringify(response.data));
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching user profile:', error);
+        throw error;
+    }
+};
+
 export const getAllUsers = async (token: string) => {
     try {
         const response = await AxiosInstance.get('/account', {

@@ -41,6 +41,14 @@ export interface OrderData {
     deliveryStatus: string;
 }
 
+export interface DeliveryData {
+    deliveryState: string;
+}
+
+export interface PaymentData {
+    paymentStatus: string,
+}
+
 const getApiUrl = (pageType: string) => {
     switch (pageType) {
         case 'users':
@@ -51,6 +59,10 @@ const getApiUrl = (pageType: string) => {
             return '/categories';
         case 'orders':
             return '/api/orders';
+        case 'delivery':
+            return '/api/delivery'
+        case 'payment':
+            return '/update-status'
         default:
             throw new Error('Unknown page type');
     }
