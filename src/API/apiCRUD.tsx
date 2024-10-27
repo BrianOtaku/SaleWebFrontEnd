@@ -1,4 +1,5 @@
 import { AxiosInstance } from "./axiosConfig";
+import { getAuthHeaders } from "./apiGetInfomations";
 
 export interface UserData {
     userId: number;
@@ -39,14 +40,6 @@ export interface OrderData {
     paymentStatus: string;
     deliveryStatus: string;
 }
-
-const getAuthHeaders = () => {
-    const token = localStorage.getItem('token');
-    return {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-    };
-};
 
 const getApiUrl = (pageType: string) => {
     switch (pageType) {
@@ -101,3 +94,30 @@ export const deleteEntity = async (pageType: string, entityId: number) => {
         throw error;
     }
 };
+
+export const updateDeliveryStatus = async (orderId: number, deliveryStatus: string) => {
+    try {
+        const apiUrl = `/api/delivery/${orderId}`;
+        const response = await AxiosInstance.put(apiUrl, { deliveryStatus }, {
+            headers: getAuthHeaders(),
+        });
+        return response.data;
+    } catch (error) {
+        console.error(`Error updating delivery status for order ${orderId}:`, error);
+        throw error;
+    }
+};
+
+export const updatePaymentStatus = async (orderId: number, paymentStatus: string) => {
+    try {
+        const apiUrl = `/update-status/${orderId}`;
+        const response = await AxiosInstance.put(apiUrl, { paymentStatus }, {
+            headers: getAuthHeaders(),
+        });
+        return response.data;
+    } catch (error) {
+        console.error(`Error updating payment status for order ${orderId}:`, error);
+        throw error;
+    }
+};
+

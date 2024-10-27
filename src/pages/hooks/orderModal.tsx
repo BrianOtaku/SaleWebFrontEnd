@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faPen } from '@fortawesome/free-solid-svg-icons';
 import { OrderData } from '../../API/apiCRUD';
+import { updateDeliveryStatus, updatePaymentStatus } from '../../API/apiCRUD';
 
 interface OrderModalProps {
     show: boolean;
@@ -11,6 +12,8 @@ interface OrderModalProps {
     onUpdate?: (orderData: OrderData) => void;
     isEditMode: boolean;
     existingOrderData?: OrderData;
+    onUpdateDeliveryStatus?: (orderId: number, status: string) => void;
+    onUpdatePaymentStatus?: (orderId: number, status: string) => void;
 }
 
 const OrderModal: React.FC<OrderModalProps> = ({
@@ -19,7 +22,9 @@ const OrderModal: React.FC<OrderModalProps> = ({
     onCreate,
     onUpdate,
     isEditMode,
-    existingOrderData
+    existingOrderData,
+    onUpdateDeliveryStatus,
+    onUpdatePaymentStatus
 }) => {
     const [orderData, setOrderData] = useState<OrderData>({
         orderId: 0,
@@ -34,32 +39,43 @@ const OrderModal: React.FC<OrderModalProps> = ({
         deliveryStatus: '',
     });
 
+    const paymentOptions = ['chưa trả', 'đã trả'];
+    const deliveryOptions = ['chưa giao', 'đang giao', 'đã giao'];
+
     useEffect(() => {
         if (isEditMode && existingOrderData) {
             setOrderData(existingOrderData);
         }
     }, [isEditMode, existingOrderData]);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setOrderData({ ...orderData, [name]: value });
     };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+        // e.preventDefault();
         try {
             if (isEditMode && onUpdate) {
-                console.log('Updating category with data:', orderData);
+                console.log("Updating order data:", orderData);
                 onUpdate(orderData);
-            } else if (onCreate) {
-                console.log('Creating order with data:', orderData);
-                onCreate(orderData);
+                if (onUpdateDeliveryStatus) {
+                    console.log("Updating Delivery Status", orderData.deliveryStatus);
+                    await updateDeliveryStatus(orderData.orderId, orderData.deliveryStatus);
+                    onUpdateDeliveryStatus(orderData.orderId, orderData.deliveryStatus);
+                }
+                if (onUpdatePaymentStatus) {
+                    console.log("Updating Payment Status", orderData.paymentStatus);
+                    await updatePaymentStatus(orderData.orderId, orderData.paymentStatus);
+                    onUpdatePaymentStatus(orderData.orderId, orderData.paymentStatus);
+                }
             }
             handleClose();
         } catch (error) {
             console.error('Error submitting form:', error);
         }
     };
+
 
     return (
         <Modal show={show} onHide={handleClose}>
@@ -68,16 +84,33 @@ const OrderModal: React.FC<OrderModalProps> = ({
             </Modal.Header>
             <Modal.Body>
                 <Form onSubmit={handleSubmit}>
-                    <Form.Group controlId="formOrderQuantity">
-                        <Form.Label>Quantity</Form.Label>
-                        <Form.Control
-                            type="text"
-                            placeholder="Enter order quantity"
-                            name="orderQuantity"
-                            value={orderData.orderQuantity}
+                    <Form.Group controlId="formPaymentStatus">
+                        <Form.Label>Payment Status</Form.Label>
+                        <Form.Select
+                            name="paymentStatus"
+                            value={orderData.paymentStatus}
                             onChange={handleChange}
                             required
-                        />
+                        >
+                            <option value="">Select Payment Status:</option>
+                            {paymentOptions.map((option, index) => (
+                                <option key={index} value={option}>{option}</option>
+                            ))}
+                        </Form.Select>
+                    </Form.Group>
+                    <Form.Group controlId="formDeliveryStatus">
+                        <Form.Label>Delivery Status</Form.Label>
+                        <Form.Select
+                            name="deliveryStatus"
+                            value={orderData.deliveryStatus}
+                            onChange={handleChange}
+                            required
+                        >
+                            <option value="">Select Delivery Status:</option>
+                            {deliveryOptions.map((option, index) => (
+                                <option key={index} value={option}>{option}</option>
+                            ))}
+                        </Form.Select>
                     </Form.Group>
                     <Button variant="primary" type="submit" className='CRUDBtn'>
                         {isEditMode ? (

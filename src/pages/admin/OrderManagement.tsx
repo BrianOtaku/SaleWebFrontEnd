@@ -91,7 +91,7 @@ function OrderManagement() {
                         <th>Order ID</th>
                         <th>User Name</th>
                         <th>Product Name</th>
-                        <th>Order Quantity</th>
+                        <th>Quantity</th>
                         <th>Total Cost</th>
                         <th>Order State</th>
                         <th>Payment Method</th>

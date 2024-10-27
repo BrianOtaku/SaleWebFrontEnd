@@ -12,9 +12,8 @@ function Taskbar() {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-        const userProfile = localStorage.getItem('userProfile');
 
-        if (token || userProfile) {
+        if (token) {
             setIsLoggedIn(true);
         }
     }, []);
