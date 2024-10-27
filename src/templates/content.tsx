@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../styles/content.css";
 import { getProductsDetail, Product } from "../API/apiGetProductDetail";
+import { useCart } from "./CartContext"; // Import useCart
 
 function Content() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -10,7 +11,9 @@ function Content() {
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 10;
 
-  // Placeholder khi sản phẩm đang tải
+  const { addToCart } = useCart(); // Access CartContext
+
+  // Placeholder for loading products
   const placeholderProducts: Product[] = Array.from(
     { length: productsPerPage },
     (_, index) => ({
@@ -56,10 +59,19 @@ function Content() {
     setCurrentPage(pageNumber);
   };
 
-  // Hàm để lấy 3 thông tin đầu tiên từ mô tả
   const getShortDescription = (description: string) => {
-    const parts = description.split(",").slice(0, 3); // Lấy 3 thông tin đầu tiên
+    const parts = description.split(",").slice(0, 3);
     return parts.join(", ");
+  };
+
+  const handleAddToCart = (product: Product) => {
+    addToCart({
+      productId: product.productId,
+      productName: product.productName,
+      productImage: product.productImage,
+      cost: product.cost,
+      quantity: 1, // Default to 1 when adding to cart
+    });
   };
 
   return (
@@ -75,7 +87,7 @@ function Content() {
           </ul>
         </div>
       </div>
-  
+
       {isLoading ? (
         <p>Đang tải...</p>
       ) : error ? (
@@ -90,28 +102,36 @@ function Content() {
                   alt={product.productName}
                   className="product-image"
                 />
-                <h2 className="product-name">{product.productName}</h2>
-                <div className="specs-box">
-                  <ul>
-                    <li className="product-description">
-                      {getShortDescription(product.productDescription)}
-                    </li>
-                    <li className="product-description">
-                      Nhà sản xuất: {product.manufacturer}
-                    </li>
-                    <li className="product-description">
-                      Số lượng: {product.productQuantity}
-                    </li>
-                  </ul>
-                </div>
-                <p className="product-price">
-                  {product.cost} VND
-                </p>
-                <div className="button">
-                  <button className="add-to-cart-button">Mua</button>
-                  <button className="add-to-cart-button">Thêm vào giỏ hàng</button>
-                </div>
               </Link>
+              <h2 className="product-name">{product.productName}</h2>
+              <div className="specs-box">
+                <ul>
+                  <li className="product-description">
+                    {getShortDescription(product.productDescription)}
+                  </li>
+                  <li className="product-description">
+                    Nhà sản xuất: {product.manufacturer}
+                  </li>
+                  <li className="product-description">
+                    Số lượng: {product.productQuantity}
+                  </li>
+                </ul>
+              </div>
+              <p className="product-price">{product.cost} VND</p>
+              <div className="button">
+                <button
+                  className="add-to-cart-button"
+                  onClick={() => handleAddToCart(product)}
+                >
+                  Mua
+                </button>
+                <button
+                  className="add-to-cart-button"
+                  onClick={() => handleAddToCart(product)}
+                >
+                  Thêm vào giỏ hàng
+                </button>
+              </div>
             </div>
           ))}
         </div>
@@ -125,8 +145,7 @@ function Content() {
           <p>Không có sản phẩm nào.</p>
         </div>
       )}
-  
-      {/* Hiển thị phân trang */}
+
       <div className="pagination">
         {Array.from({ length: totalPages }, (_, index) => (
           <button

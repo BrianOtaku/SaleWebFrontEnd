@@ -5,7 +5,8 @@ import Content from './templates/content';
 import Footer from './templates/footer';
 import Taskbar from './templates/taskbar';
 import DashBoard from './pages/admin/DashBoard';
-import ProductDetail from './templates/productDetail'; // Thêm import cho ProductDetail
+import ProductDetail from './templates/productDetail'; // Import for ProductDetail
+import { CartProvider } from './templates/CartContext'; // Import CartProvider
 import './styles/layout.css';
 import './styles/header.css';
 import './styles/taskbar.css';
@@ -16,6 +17,7 @@ import { getUserRoleFromToken } from './API/apiAccount';
 
 function App() {
   const [role, setRole] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true); // State to handle loading
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -23,31 +25,41 @@ function App() {
       const userRole = getUserRoleFromToken(token);
       setRole(userRole);
     }
+    setLoading(false); // Set loading to false after determining role
   }, []);
+
+  if (loading) {
+    return <div>Loading...</div>; // Loading state
+  }
 
   return (
     <Router>
-      <Routes>
-        {role === 'Admin' ? (
-          <>
-            <Route path="/admin" element={<DashBoard />} />
-            <Route path="*" element={<Navigate to="/admin" />} />
-          </>
-        ) : (
-          <>
-            <Route path="/" element={
-              <>
-                <Taskbar />
-                <Header />
-                <Content />
-                <Footer />
-              </>
-            } />
-            <Route path="/product/:productId" element={<ProductDetail />} /> {/* Thêm tuyến đường cho chi tiết sản phẩm */}
-            <Route path="*" element={<Navigate to="/" />} />
-          </>
-        )}
-      </Routes>
+      <CartProvider> {/* Wrap everything with CartProvider */}
+        <Routes>
+          {role === 'Admin' ? (
+            <>
+              <Route path="/admin" element={<DashBoard />} />
+              <Route path="*" element={<Navigate to="/admin" />} />
+            </>
+          ) : (
+            <>
+              <Route
+                path="/"
+                element={
+                  <>
+                    <Taskbar />
+                    <Header />
+                    <Content />
+                    <Footer />
+                  </>
+                }
+              />
+              <Route path="/product/:productId" element={<ProductDetail />} /> {/* Route for product detail */}
+              <Route path="*" element={<Navigate to="/" />} />
+            </>
+          )}
+        </Routes>
+      </CartProvider>
     </Router>
   );
 }

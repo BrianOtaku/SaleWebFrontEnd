@@ -55,3 +55,12 @@ export const getProductsDetail = async (
     throw error; // Ném lại lỗi để xử lý ở nơi gọi hàm này
   }
 };
+export const getProductById = async (productId: number): Promise<Product | null> => {
+  try {
+    const response = await axios.get(`http://localhost:8080/api/products`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching product details:", error);
+    return null;
+  }
+};

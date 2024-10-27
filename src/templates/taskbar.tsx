@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import OffcanvasMenu from '../components/offcanvas';
 import SignIn from '../components/signIn';
 import SignUp from '../components/signUp';
 import Accordion from 'react-bootstrap/Accordion';
 import UserConfig from '../components/userConfig';
+import { useCart } from './CartContext'; // Import useCart
+import CartOffcanvas from './CartOffcanvas'; // Import CartOffcanvas
 
 function Taskbar() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [cartVisible, setCartVisible] = useState(false);
+    const { cartItems } = useCart(); // Sử dụng hook để truy cập CartContext
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -21,6 +25,14 @@ function Taskbar() {
 
     const handleLogin = () => {
         setIsLoggedIn(true);
+    };
+
+    const handleCartClick = () => {
+        setCartVisible(true); // Hiển thị giỏ hàng khi nhấp vào icon
+    };
+
+    const handleCloseCart = () => {
+        setCartVisible(false);
     };
 
     return (
@@ -60,6 +72,14 @@ function Taskbar() {
                         </Accordion.Item>
                     </Accordion>
                 </div>
+                <div className='taskBarIcons'>
+                    <button className='cartButton' title="Cart" onClick={handleCartClick}>
+                        <FontAwesomeIcon icon={faShoppingCart} className='iconCart' />
+                        {cartItems.length > 0 && (
+                            <span className='cart-count'>{cartItems.length}</span>
+                        )}
+                    </button>
+                </div>
                 <div className='TaskBarButton'>
                     {!isLoggedIn ? (
                         <>
@@ -72,6 +92,9 @@ function Taskbar() {
                     <OffcanvasMenu />
                 </div>
             </div>
+
+            {/* Giỏ hàng Offcanvas */}
+            <CartOffcanvas show={cartVisible} onHide={handleCloseCart} />
         </div>
     );
 }
