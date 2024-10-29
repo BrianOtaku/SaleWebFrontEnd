@@ -41,14 +41,6 @@ export interface OrderData {
     deliveryStatus: string;
 }
 
-export interface DeliveryData {
-    deliveryState: string;
-}
-
-export interface PaymentData {
-    paymentStatus: string,
-}
-
 const getApiUrl = (pageType: string) => {
     switch (pageType) {
         case 'users':
@@ -59,10 +51,6 @@ const getApiUrl = (pageType: string) => {
             return '/categories';
         case 'orders':
             return '/api/orders';
-        case 'delivery':
-            return '/api/delivery'
-        case 'payment':
-            return '/update-status'
         default:
             throw new Error('Unknown page type');
     }
@@ -107,10 +95,10 @@ export const deleteEntity = async (pageType: string, entityId: number) => {
     }
 };
 
-export const updateDeliveryStatus = async (orderId: number, deliveryStatus: string) => {
+export const updateDeliveryStatus = async (orderId: number, newState: string) => {
     try {
-        const apiUrl = `/api/delivery/${orderId}`;
-        const response = await AxiosInstance.put(apiUrl, { deliveryStatus }, {
+        const apiUrl = `/api/delivery/${orderId}/state?newState=${encodeURIComponent(newState)}`;
+        const response = await AxiosInstance.put(apiUrl, null, {
             headers: getAuthHeaders(),
         });
         return response.data;
@@ -122,8 +110,8 @@ export const updateDeliveryStatus = async (orderId: number, deliveryStatus: stri
 
 export const updatePaymentStatus = async (orderId: number, paymentStatus: string) => {
     try {
-        const apiUrl = `/update-status/${orderId}`;
-        const response = await AxiosInstance.put(apiUrl, { paymentStatus }, {
+        const apiUrl = `/update-status/${orderId}?newStatus=${encodeURIComponent(paymentStatus)}`;
+        const response = await AxiosInstance.put(apiUrl, null, {
             headers: getAuthHeaders(),
         });
         return response.data;

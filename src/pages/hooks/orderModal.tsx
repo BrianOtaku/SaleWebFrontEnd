@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faPen } from '@fortawesome/free-solid-svg-icons';
 import { OrderData } from '../../API/apiCRUD';
-import { updateEntity } from '../../API/apiCRUD';
 
 interface OrderModalProps {
     show: boolean;
@@ -23,8 +22,6 @@ const OrderModal: React.FC<OrderModalProps> = ({
     onUpdate,
     isEditMode,
     existingOrderData,
-    onUpdateDeliveryStatus,
-    onUpdatePaymentStatus
 }) => {
     const [orderData, setOrderData] = useState<OrderData>({
         orderId: 0,
@@ -38,9 +35,6 @@ const OrderModal: React.FC<OrderModalProps> = ({
         paymentStatus: '',
         deliveryStatus: '',
     });
-
-    const paymentOptions = ['chưa trả', 'đã trả'];
-    const deliveryOptions = ['chưa giao', 'đang giao', 'đã giao'];
 
     useEffect(() => {
         if (isEditMode && existingOrderData) {
@@ -57,22 +51,11 @@ const OrderModal: React.FC<OrderModalProps> = ({
         e.preventDefault();
         try {
             if (isEditMode && onUpdate) {
-                console.log("Updating order data:", orderData);
+                console.log('Updating category with data:', orderData);
                 onUpdate(orderData);
-
-                // Cập nhật trạng thái giao hàng
-                if (onUpdateDeliveryStatus) {
-                    console.log("Updating Delivery Status", orderData.deliveryStatus);
-                    await updateEntity('delivery', orderData.orderId, { deliveryStatus: orderData.deliveryStatus });
-                    onUpdateDeliveryStatus(orderData.orderId, orderData.deliveryStatus);
-                }
-
-                // Cập nhật trạng thái thanh toán
-                if (onUpdatePaymentStatus) {
-                    console.log("Updating Payment Status", orderData.paymentStatus);
-                    await updateEntity('payment', orderData.orderId, { paymentStatus: orderData.paymentStatus });
-                    onUpdatePaymentStatus(orderData.orderId, orderData.paymentStatus);
-                }
+            } else if (onCreate) {
+                console.log('Creating category with data:', orderData);
+                onCreate(orderData);
             }
             handleClose();
         } catch (error) {
@@ -87,43 +70,26 @@ const OrderModal: React.FC<OrderModalProps> = ({
             </Modal.Header>
             <Modal.Body>
                 <Form onSubmit={handleSubmit}>
-                    <Form.Group controlId="formPaymentStatus">
-                        <Form.Label>Payment Status</Form.Label>
-                        <Form.Select
-                            name="paymentStatus"
-                            value={orderData.paymentStatus}
+                    <Form.Group controlId="formDeliveryAddress">
+                        <Form.Label>Delivery Address</Form.Label>
+                        <Form.Control
+                            type="text"
+                            placeholder="Enter delivery address"
+                            name="deliveryAddress"
+                            value={orderData.deliveryAddress}
                             onChange={handleChange}
                             required
-                        >
-                            <option value="">Select Payment Status:</option>
-                            {paymentOptions.map((option, index) => (
-                                <option key={index} value={option}>{option}</option>
-                            ))}
-                        </Form.Select>
-                    </Form.Group>
-                    <Form.Group controlId="formDeliveryStatus">
-                        <Form.Label>Delivery Status</Form.Label>
-                        <Form.Select
-                            name="deliveryStatus"
-                            value={orderData.deliveryStatus}
-                            onChange={handleChange}
-                            required
-                        >
-                            <option value="">Select Delivery Status:</option>
-                            {deliveryOptions.map((option, index) => (
-                                <option key={index} value={option}>{option}</option>
-                            ))}
-                        </Form.Select>
+                        />
                     </Form.Group>
                     <Button variant="primary" type="submit" className='CRUDBtn'>
                         {isEditMode ? (
                             <>
-                                Update Order
+                                Update Category
                                 <FontAwesomeIcon icon={faPen} className='iconPen' />
                             </>
                         ) : (
                             <>
-                                Create Order
+                                Create Category
                                 <FontAwesomeIcon icon={faPlus} className='iconPlus' />
                             </>
                         )}
