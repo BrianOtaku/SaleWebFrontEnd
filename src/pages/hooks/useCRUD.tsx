@@ -4,7 +4,7 @@ import { faDeleteLeft, faPen, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 
 // import CRUD functions
-import { createEntity, updateEntity, deleteEntity } from '../../API/apiCRUD';
+import { createEntity, updateEntity, deleteEntity, deleteOrders } from '../../API/apiCRUD';
 
 // import interfaces
 import { UserData, CategoryData, ProductData, OrderData } from '../../API/apiCRUD';
@@ -92,14 +92,30 @@ function CRUD({ pageType, onCreate, onUpdate, onDelete, selectedItems, users, ca
     };
 
     const handleDelete = async (ids: number[]) => {
+
         if (ids.length === 0) {
             console.warn('No items selected for deletion.');
             return;
         }
+        const hasPendingStatus = ids.some(selectedId => {
+            const order = orders?.find(order => order.orderId === selectedId);
+            return order && (order.paymentStatus === 'Đang chờ' || order.deliveryStatus === 'Đang chờ');
+        });
+
+        const status = hasPendingStatus ? 'Đang chờ' : undefined;
 
         try {
             for (const id of ids) {
-                await deleteEntity(pageType, id);
+                if (pageType === 'orders') {
+                    try {
+                        await deleteOrders(pageType, id, status);
+                    }
+                    catch {
+                        alert('Only on PENDING order can be deleted');
+                    }
+                } else {
+                    await deleteEntity(pageType, id);
+                }
             }
             onDelete(ids);
         } catch (error) {
@@ -130,9 +146,7 @@ function CRUD({ pageType, onCreate, onUpdate, onDelete, selectedItems, users, ca
             </Button>
 
             <Button
-                variant="danger"
-                onClick={() => handleDelete(selectedItems)}
-                disabled={selectedItems.length === 0}
+                variant="danger" onClick={() => handleDelete(selectedItems)} disabled={selectedItems.length === 0}
             >
                 Delete {
                     pageType === 'users' ? 'User' :
@@ -192,4 +206,3 @@ function CRUD({ pageType, onCreate, onUpdate, onDelete, selectedItems, users, ca
 }
 
 export default CRUD;
-
