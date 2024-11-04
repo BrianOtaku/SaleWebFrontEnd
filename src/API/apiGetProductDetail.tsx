@@ -1,8 +1,6 @@
 import axios from "axios";
 
-// Định nghĩa kiểu dữ liệu cho sản phẩm
-
-
+// Product Interface
 export interface Product {
   productId: number;
   productName: string;
@@ -11,56 +9,72 @@ export interface Product {
   cost: number;
   productImage: string;
   productQuantity: number;
-   // Bao gồm cả Category trong Product
+  category: {
+    categoryId: number;
+    categoryName: string;
+  };
 }
 
-// Hàm lấy tất cả sản phẩm từ API
+// Response Interface
+interface ProductDataResponse {
+  products: Product[];
+  totalProducts: number;
+  totalPages: number;
+}
+
+// Function to fetch paginated products
 export const getProductsDetail = async (
-  category: string = "LAPTOP",
-  limit: number = 1,
-  page: number = 2
-): Promise<Product[]> => {
+  category: string = "all",
+  limit: number = 10,
+  page: number = 1
+): Promise<ProductDataResponse> => {
   try {
     const response = await axios.get("http://localhost:8080/api/products/pages", {
-      params: {
-        category:"all", // Truyền tham số category
-        limit:10,    // Truyền tham số limit
-        page:1,     // Truyền tham số page
-      },
+      params: { category, limit, page },
     });
-
     const data = response.data;
 
-    // Kiểm tra nếu content không rỗng
-    if (data.content && Array.isArray(data.content)) {
-      return data.content.map((item: any) => ({
-        productId: item.productId,
-        productName: item.productName,
-        manufacturer: item.manufacturer,
-        productDescription: item.productDescription,
-        cost: item.cost,
-        productImage: item.productImage,
-        productQuantity: item.productQuantity,
-        category: {
-          categoryId: item.category.categoryId,
-          categoryName: item.category.categoryName,
-        },
-      }));
-    }
+    const products = data.content.map((item: any) => ({
+      productId: item.productId,
+      productName: item.productName,
+      manufacturer: item.manufacturer,
+      productDescription: item.productDescription,
+      cost: item.cost,
+      productImage: item.productImage,
+      productQuantity: item.productQuantity,
+      category: {
+        categoryId: item.category.categoryId,
+        categoryName: item.category.categoryName,
+      },
+    }));
 
-    // Nếu không có sản phẩm, trả về mảng rỗng
-    return [];
+    return { products, totalProducts: data.totalElements, totalPages: data.totalPages };
   } catch (error) {
-    console.error("Lỗi khi lấy danh sách sản phẩm:", error);
-    throw error; // Ném lại lỗi để xử lý ở nơi gọi hàm này
+    console.error("Error fetching product list:", error);
+    throw error;
   }
 };
+
+// Function to fetch product by ID
 export const getProductById = async (productId: number): Promise<Product | null> => {
   try {
-    const response = await axios.get(`http://localhost:8080/api/products`);
+    const response = await axios.get(`http://localhost:8080/api/products/${productId}`);
     return response.data;
   } catch (error) {
-    console.error("Error fetching product details:", error);
+    console.error("Error fetching product details for ID", productId, ":", error);
     return null;
+  }
+};
+
+// Function to fetch products by name
+export const getProductsByName = async (name: string): Promise<Product[]> => {
+  try {
+    const response = await axios.get("http://localhost:8080/api/products/searchByName", {
+      params: { name },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching products by name:", error);
+    throw error;
   }
 };

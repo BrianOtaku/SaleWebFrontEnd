@@ -1,4 +1,5 @@
 import { AxiosInstance } from "./axiosConfig";
+import { getAuthHeaders } from "./apiGetInfomations";
 
 export interface UserData {
     userId: number;
@@ -39,14 +40,6 @@ export interface OrderData {
     paymentStatus: string;
     deliveryStatus: string;
 }
-
-const getAuthHeaders = () => {
-    const token = localStorage.getItem('token');
-    return {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-    };
-};
 
 const getApiUrl = (pageType: string) => {
     switch (pageType) {
@@ -101,3 +94,46 @@ export const deleteEntity = async (pageType: string, entityId: number) => {
         throw error;
     }
 };
+
+// Only for ordersManagement
+export const updateDeliveryStatus = async (orderId: number, newState: string) => {
+    try {
+        const apiUrl = `/api/delivery/${orderId}/state?newState=${encodeURIComponent(newState)}`;
+        const response = await AxiosInstance.put(apiUrl, null, {
+            headers: getAuthHeaders(),
+        });
+        return response.data;
+    } catch (error) {
+        console.error(`Error updating delivery status for order ${orderId}:`, error);
+        throw error;
+    }
+};
+
+export const updatePaymentStatus = async (orderId: number, paymentStatus: string) => {
+    try {
+        const apiUrl = `/update-status/${orderId}?newStatus=${encodeURIComponent(paymentStatus)}`;
+        const response = await AxiosInstance.put(apiUrl, null, {
+            headers: getAuthHeaders(),
+        });
+        return response.data;
+    } catch (error) {
+        console.error(`Error updating payment status for order ${orderId}:`, error);
+        throw error;
+    }
+};
+
+export const deleteOrders = async (pageType: 'orders', entityId: number, status?: string) => {
+    try {
+        const apiUrl = getApiUrl(pageType);
+        const url = status ? `${apiUrl}/${entityId}?status=${encodeURIComponent(status)}` : `${apiUrl}/${entityId}`;
+        const response = await AxiosInstance.delete(url, {
+            headers: getAuthHeaders(),
+            data: { status }
+        });
+        return response.data;
+    } catch (error) {
+        console.error(`Error deleting entity for ${pageType}:`, error);
+        throw error;
+    }
+};
+

@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getAllOrders } from '../../API/apiGetInfomations';
 import { useSelect } from '../hooks/useSelect';
 import CRUD from '../hooks/useCRUD';
-import { OrderData } from '../../API/apiCRUD';
-
+import { OrderData, updatePaymentStatus, updateDeliveryStatus } from '../../API/apiCRUD';
 
 interface Order {
     orderId: number;
@@ -91,7 +90,7 @@ function OrderManagement() {
                         <th>Order ID</th>
                         <th>User Name</th>
                         <th>Product Name</th>
-                        <th>Order Quantity</th>
+                        <th>Quantity</th>
                         <th>Total Cost</th>
                         <th>Order State</th>
                         <th>Payment Method</th>
@@ -117,13 +116,42 @@ function OrderManagement() {
                             <td>{order.totalCost}</td>
                             <td>{order.orderState}</td>
                             <td>{order.paymentMethod}</td>
-                            <td>{order.paymentStatus}</td>
                             <td>
-                                {order.deliveryAddress.length > 10 ?
-                                    order.deliveryAddress.slice(0, 10) + '...' :
-                                    order.deliveryAddress}
+                                <select disabled={order.paymentStatus === 'Đang chờ'}
+                                    value={order.paymentStatus}
+                                    onChange={async (e) => {
+                                        const newStatus = e.target.value;
+                                        await updatePaymentStatus(order.orderId, newStatus);
+                                        window.location.reload();
+                                    }}
+                                    style={{ background: 'none', border: 'none' }}
+                                >
+                                    <option value="đã trả">Đã Trả</option>
+                                    <option value="chưa trả">Chưa Trả</option>
+                                    <option value="Đang chờ" disabled>Đang chờ</option>
+                                </select>
                             </td>
-                            <td>{order.deliveryStatus}</td>
+                            <td>
+                                {order.deliveryAddress.length > 10
+                                    ? order.deliveryAddress.slice(0, 10) + '...'
+                                    : order.deliveryAddress}
+                            </td>
+                            <td>
+                                <select disabled={order.deliveryStatus === 'Đang chờ'}
+                                    value={order.deliveryStatus}
+                                    onChange={async (e) => {
+                                        const newStatus = e.target.value;
+                                        await updateDeliveryStatus(order.orderId, newStatus);
+                                        window.location.reload();
+                                    }}
+                                    style={{ background: 'none', border: 'none' }}
+                                >
+                                    <option value="chưa giao">Chưa giao</option>
+                                    <option value="đang giao">Đang giao</option>
+                                    <option value="đã giao">Đã giao</option>
+                                    <option value="Đang chờ" disabled>Đang chờ</option>
+                                </select>
+                            </td>
                             <td className='checkBox'>
                                 <input
                                     type="checkbox"

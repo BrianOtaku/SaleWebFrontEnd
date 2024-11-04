@@ -11,6 +11,8 @@ interface OrderModalProps {
     onUpdate?: (orderData: OrderData) => void;
     isEditMode: boolean;
     existingOrderData?: OrderData;
+    onUpdateDeliveryStatus?: (orderId: number, status: string) => void;
+    onUpdatePaymentStatus?: (orderId: number, status: string) => void;
 }
 
 const OrderModal: React.FC<OrderModalProps> = ({
@@ -19,7 +21,7 @@ const OrderModal: React.FC<OrderModalProps> = ({
     onCreate,
     onUpdate,
     isEditMode,
-    existingOrderData
+    existingOrderData,
 }) => {
     const [orderData, setOrderData] = useState<OrderData>({
         orderId: 0,
@@ -40,7 +42,7 @@ const OrderModal: React.FC<OrderModalProps> = ({
         }
     }, [isEditMode, existingOrderData]);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setOrderData({ ...orderData, [name]: value });
     };
@@ -52,7 +54,7 @@ const OrderModal: React.FC<OrderModalProps> = ({
                 console.log('Updating category with data:', orderData);
                 onUpdate(orderData);
             } else if (onCreate) {
-                console.log('Creating order with data:', orderData);
+                console.log('Creating category with data:', orderData);
                 onCreate(orderData);
             }
             handleClose();
@@ -68,13 +70,13 @@ const OrderModal: React.FC<OrderModalProps> = ({
             </Modal.Header>
             <Modal.Body>
                 <Form onSubmit={handleSubmit}>
-                    <Form.Group controlId="formOrderQuantity">
-                        <Form.Label>Quantity</Form.Label>
+                    <Form.Group controlId="formDeliveryAddress">
+                        <Form.Label>Delivery Address</Form.Label>
                         <Form.Control
                             type="text"
-                            placeholder="Enter order quantity"
-                            name="orderQuantity"
-                            value={orderData.orderQuantity}
+                            placeholder="Enter delivery address"
+                            name="deliveryAddress"
+                            value={orderData.deliveryAddress}
                             onChange={handleChange}
                             required
                         />
@@ -82,12 +84,12 @@ const OrderModal: React.FC<OrderModalProps> = ({
                     <Button variant="primary" type="submit" className='CRUDBtn'>
                         {isEditMode ? (
                             <>
-                                Update Order
+                                Update Category
                                 <FontAwesomeIcon icon={faPen} className='iconPen' />
                             </>
                         ) : (
                             <>
-                                Create Order
+                                Create Category
                                 <FontAwesomeIcon icon={faPlus} className='iconPlus' />
                             </>
                         )}

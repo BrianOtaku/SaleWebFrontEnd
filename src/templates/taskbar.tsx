@@ -6,19 +6,21 @@ import SignIn from '../components/signIn';
 import SignUp from '../components/signUp';
 import Accordion from 'react-bootstrap/Accordion';
 import UserConfig from '../components/userConfig';
-import { useCart } from './CartContext'; // Import useCart
-import CartOffcanvas from './CartOffcanvas'; // Import CartOffcanvas
+import { useCart } from './CartContext'; 
+import CartOffcanvas from './CartOffcanvas'; 
+import { useNavigate } from 'react-router-dom';
 
 function Taskbar() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [cartVisible, setCartVisible] = useState(false);
-    const { cartItems } = useCart(); // Sử dụng hook để truy cập CartContext
+    const { cartItems } = useCart();
+    const [searchQuery, setSearchQuery] = useState(""); // State for search input
+    const navigate = useNavigate(); // Hook for navigation
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-        const userProfile = localStorage.getItem('userProfile');
 
-        if (token || userProfile) {
+        if (token) {
             setIsLoggedIn(true);
         }
     }, []);
@@ -28,11 +30,18 @@ function Taskbar() {
     };
 
     const handleCartClick = () => {
-        setCartVisible(true); // Hiển thị giỏ hàng khi nhấp vào icon
+        setCartVisible(true);
     };
 
     const handleCloseCart = () => {
         setCartVisible(false);
+    };
+
+    const handleSearch = (e: React.FormEvent) => {
+        e.preventDefault(); // Prevent the default form submission
+        if (searchQuery) {
+            navigate(`/search/${searchQuery}`); // Navigate to search results
+        }
     };
 
     return (
@@ -41,8 +50,13 @@ function Taskbar() {
                 <button className='logo' title='Home'>
                     <img src="/image/logoSketch.png" alt="Logo" />
                 </button>
-                <form>
-                    <input type="text" placeholder="Search" />
+                <form onSubmit={handleSearch}>
+                    <input 
+                        type="text" 
+                        placeholder="Search" 
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)} // Update search query
+                    />
                     <button type="submit" className="searchButton" title="Search">
                         <FontAwesomeIcon icon={faSearch} className='iconSearch' />
                     </button>
