@@ -1,6 +1,6 @@
 .adminPage
 {
-    height: 80%;
+    height: auto;
     color: white;
     font-size: 10vh;
     width: 100%;
@@ -12,7 +12,7 @@
 .admin 
 {
     display: flex;
-    height: 100vh;
+    min-height: 100vh;
 }
 
 .adminSideBar 
