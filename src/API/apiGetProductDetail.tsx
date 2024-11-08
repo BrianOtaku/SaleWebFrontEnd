@@ -2,6 +2,7 @@ import axios from "axios";
 
 // Product Interface
 export interface Product {
+  categoryId: any;
   productId: number;
   productName: string;
   manufacturer: string;
@@ -75,6 +76,17 @@ export const getProductsByName = async (name: string): Promise<Product[]> => {
     return response.data;
   } catch (error) {
     console.error("Error fetching products by name:", error);
+    throw error;
+  }
+};
+
+// Function to fetch all products
+export const getAllProduct = async (): Promise<Product[]> => {
+  try {
+    const response = await axios.get("http://localhost:8080/api/products");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching all products:", error);
     throw error;
   }
 };

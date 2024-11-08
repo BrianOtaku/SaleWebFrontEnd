@@ -1,23 +1,40 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { useCart } from './CartContext';
-import '../styles/cartOffcanvas.css'; // Make sure to add custom CSS here
+import '../styles/cartOffcanvas.css';
 
-function CartOffcanvas({ show, onHide }: any) {
-    const { cartItems, updateQuantity, removeFromCart } = useCart();
+interface CartOffcanvasProps {
+    show: boolean;
+    onHide: () => void;
+}
+
+const CartOffcanvas: React.FC<CartOffcanvasProps> = ({ show, onHide }) => {
+    const { cartItems, updateQuantity, removeFromCart, updateProductQuantityAPI, isLoggedIn } = useCart();
+    const [editedItems, setEditedItems] = useState<{ [productId: number]: boolean }>({});
 
     const handleIncrease = (productId: number) => {
-        updateQuantity(productId, cartItems.find(item => item.productId === productId)!.quantity + 1);
+        const item = cartItems.find(item => item.productId === productId);
+        if (item) {
+            updateQuantity(productId, item.quantity + 1);
+            setEditedItems({ ...editedItems, [productId]: true });
+        }
     };
 
     const handleDecrease = (productId: number) => {
         const currentItem = cartItems.find(item => item.productId === productId);
         if (currentItem && currentItem.quantity > 1) {
             updateQuantity(productId, currentItem.quantity - 1);
+            setEditedItems({ ...editedItems, [productId]: true });
         } else {
             removeFromCart(productId);
         }
     };
+
+    const handleUpdateQuantity = (cartId: number, quantity: number) => {
+        updateProductQuantityAPI(cartId, quantity);
+        setEditedItems({ ...editedItems, [cartId]: false });
+    };
+    
 
     const calculateTotal = () => {
         return cartItems.reduce((total, item) => total + item.cost * item.quantity, 0);
@@ -44,7 +61,17 @@ function CartOffcanvas({ show, onHide }: any) {
                                         <span>{item.quantity}</span>
                                         <button onClick={() => handleIncrease(item.productId)}>+</button>
                                     </div>
-                                    <button onClick={() => removeFromCart(item.productId)} className="remove-button">Xóa</button>
+                                    {editedItems[item.productId] && (
+                                        <button
+                                            onClick={() => handleUpdateQuantity(item.productId, item.quantity)}
+                                            className="update-quantity-button"
+                                        >
+                                            Thay đổi số lượng
+                                        </button>
+                                    )}
+                                    <button onClick={() => removeFromCart(item.productId)} className="remove-button">
+                                        Xóa
+                                    </button>
                                 </div>
                             </div>
                         ))}
@@ -56,6 +83,6 @@ function CartOffcanvas({ show, onHide }: any) {
             </Offcanvas.Body>
         </Offcanvas>
     );
-}
+};
 
 export default CartOffcanvas;
