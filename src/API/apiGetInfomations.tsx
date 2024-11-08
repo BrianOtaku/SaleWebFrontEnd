@@ -2,8 +2,9 @@ import { AxiosInstance } from "./axiosConfig";
 
 export const getAuthHeaders = () => {
     const token = localStorage.getItem('token');
+    console.log('Token:', token);
     return {
-        Authorization: `Bearer ${token}`,
+        Authorization: token ? `Bearer ${token}` : '',
         'Content-Type': 'application/json',
     };
 };
@@ -13,7 +14,6 @@ export const getUserProfile = async (token: string) => {
         const response = await AxiosInstance.get('/account/myInfo', {
             headers: getAuthHeaders()
         });
-        // localStorage.setItem("userProfile", JSON.stringify(response.data));
         return response.data;
     } catch (error) {
         console.error('Error fetching user profile:', error);

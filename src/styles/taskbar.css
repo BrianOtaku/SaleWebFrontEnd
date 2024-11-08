@@ -172,3 +172,24 @@
 {
     display: inline-block;
 }
+.taskBarIcons {
+    margin-left: auto;
+}
+
+.cartButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0; 
+    color: #ff5722;
+}
+
+.iconCart {
+    font-size: 1.5em;
+    color: #f4f6f6;
+    transition: color 0.3s ease;
+}
+
+.iconCart:hover {
+    color: #ff5722; 
+}
