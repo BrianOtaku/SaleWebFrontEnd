@@ -18,14 +18,14 @@ function Content() {
   const [currentCategory, setCurrentCategory] = useState("all");
 
   const productsPerPage = 10;
-  
-  const { addToCart, isLoggedIn, login, userAccount } = useCart();
+
+  const { addToCart, isLoggedIn, userAccount } = useCart();
 
   const categories: Category[] = [
     { id: "all", name: "All" },
-    { id: "laptops", name: "Laptops" },
-    { id: "pc", name: "PC" },
-    { id: "ram", name: "RAM" },
+    { id: "LAPTOP", name: "LAPTOP" },
+    { id: "PC", name: "PC" },
+    { id: "RAM", name: "RAM" },
   ];
 
   const fetchProducts = async (categoryId: string, page: number) => {
@@ -49,19 +49,15 @@ function Content() {
   const totalPages = Math.ceil(totalProducts / productsPerPage);
 
   const handleAddToCart = (product: Product) => {
-    if (!isLoggedIn) {
+    // Check for token (assumed to be in localStorage for this example)
+    const token = localStorage.getItem("token");
+
+    if (!token) {
       alert("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng.");
-      login({
-        userId: 4,
-        userName: "vănhuy",
-        email: "vanhuy@gmail.com",
-        address: "User's Address", 
-        phoneNumber: 1234567890,
-        role: "user",
-      });
       return;
     }
 
+    // If user is logged in, proceed to add to cart
     if (userAccount) {
       addToCart({
         productId: product.productId,
@@ -70,6 +66,7 @@ function Content() {
         cost: product.cost,
         quantity: 1,
       });
+      console.log("Đã thêm sản phẩm vào giỏ hàng:", product);
     }
   };
 

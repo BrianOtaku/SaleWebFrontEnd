@@ -28,7 +28,7 @@ interface CartContextProps {
   isLoggedIn: boolean;
   login: (userAccount: UserAccount) => void;
   logout: () => void;
-  userAccount: UserAccount | null; 
+  userAccount: UserAccount | null;
 }
 
 const CartContext = createContext<CartContextProps | undefined>(undefined);
@@ -52,7 +52,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         { headers }
       );
 
-      setCartItems([...cartItems, item]);
+      // Cập nhật cartItems với callback để đảm bảo sử dụng trạng thái mới nhất
+      setCartItems((prevCartItems) => [...prevCartItems, item]);
       alert("Đã thêm sản phẩm vào giỏ hàng thành công!");
     } catch (error) {
       console.error("Lỗi khi thêm vào giỏ hàng:", error);
@@ -61,7 +62,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const updateQuantity = (productId: number, quantity: number) => {
-    setCartItems(cartItems.map(item => 
+    setCartItems(cartItems.map(item =>
       item.productId === productId ? { ...item, quantity } : item
     ));
   };
@@ -70,30 +71,30 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (!userAccount) return;
 
     try {
-        const headers = getAuthHeaders();
-        const response = await axios.put(
-            `http://localhost:8080/api/cart/change-quantity?cartId=${cartId}&quantity=${quantity}`,  // Thêm cả cartId và quantity vào URL
-            {},  // Không cần body
-            { headers }
-        );
+      const headers = getAuthHeaders();
+      const response = await axios.put(
+        `http://localhost:8080/api/cart/change-quantity?cartId=${cartId}&quantity=${quantity}`,  // Thêm cả cartId và quantity vào URL
+        {},  // Không cần body
+        { headers }
+      );
 
-        if (response.status === 200) {
-            updateQuantity(cartId, quantity);
-            alert("Số lượng đã được cập nhật thành công!");
-        } else {
-            console.error("Lỗi khi cập nhật số lượng:", response.status, response.data);
-            alert("Không thể cập nhật số lượng. Vui lòng kiểm tra bảng điều khiển để biết chi tiết.");
-        }
-    } catch (error: any) {
-        if (error.response) {
-            console.error("Dữ liệu phản hồi lỗi:", error.response.data);
-            console.error("Trạng thái phản hồi lỗi:", error.response.status);
-        } else {
-            console.error("Lỗi không có phản hồi:", error.message);
-        }
+      if (response.status === 200) {
+        updateQuantity(cartId, quantity);
+        alert("Số lượng đã được cập nhật thành công!");
+      } else {
+        console.error("Lỗi khi cập nhật số lượng:", response.status, response.data);
         alert("Không thể cập nhật số lượng. Vui lòng kiểm tra bảng điều khiển để biết chi tiết.");
+      }
+    } catch (error: any) {
+      if (error.response) {
+        console.error("Dữ liệu phản hồi lỗi:", error.response.data);
+        console.error("Trạng thái phản hồi lỗi:", error.response.status);
+      } else {
+        console.error("Lỗi không có phản hồi:", error.message);
+      }
+      alert("Không thể cập nhật số lượng. Vui lòng kiểm tra bảng điều khiển để biết chi tiết.");
     }
-};
+  };
 
 
   const login = (userAccount: UserAccount) => {
@@ -112,15 +113,15 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <CartContext.Provider value={{ 
-      cartItems, 
-      addToCart, 
-      updateQuantity, 
-      removeFromCart, 
-      updateProductQuantityAPI, 
-      isLoggedIn, 
-      login, 
-      logout, 
+    <CartContext.Provider value={{
+      cartItems,
+      addToCart,
+      updateQuantity,
+      removeFromCart,
+      updateProductQuantityAPI,
+      isLoggedIn,
+      login,
+      logout,
       userAccount
     }}>
       {children}
