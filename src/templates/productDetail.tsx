@@ -7,7 +7,7 @@ import "../styles/productDetail.css";
 import Taskbar from "./taskbar";
 import Footer from "./footer";
 import Slider from "react-slick";
-import { useCart } from "./CartContext";
+import { useCart } from "../API/apiCartContext";
 
 const ProductDetail: React.FC = () => {
   const { productId } = useParams<{ productId: string }>();
@@ -15,7 +15,7 @@ const ProductDetail: React.FC = () => {
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { addToCart } = useCart();
+  const { addToCart, isLoggedIn, login, userAccount } = useCart();
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 3;
@@ -30,13 +30,19 @@ const ProductDetail: React.FC = () => {
           const allProducts = await getAllProduct();
           if (productData) {
             setProduct(productData);
-            setRelatedProducts(allProducts.filter(p => p.categoryId === productData.categoryId && p.productId !== productData.productId));
+            setRelatedProducts(
+              allProducts.filter(
+                (p) =>
+                  p.categoryId === productData.categoryId &&
+                  p.productId !== productData.productId
+              )
+            );
           } else {
-            setError("Product not found.");
+            setError("Không tìm thấy sản phẩm.");
           }
         }
       } catch (error) {
-        setError("Failed to fetch product details.");
+        setError("Không thể lấy thông tin chi tiết sản phẩm.");
       } finally {
         setLoading(false);
       }
@@ -48,7 +54,20 @@ const ProductDetail: React.FC = () => {
   const totalPages = Math.ceil(relatedProducts.length / productsPerPage);
 
   const handleAddToCart = () => {
-    if (product) {
+    if (!isLoggedIn) {
+      alert("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng.");
+      login({
+        userId: 4,
+        userName: "vănhuy",
+        email: "vanhuy@gmail.com",
+        address: "User's Address",
+        phoneNumber: 1234567890,
+        role: "user",
+      });
+      return;
+    }
+
+    if (userAccount && product) {
       addToCart({
         productId: product.productId,
         productName: product.productName,
@@ -56,12 +75,25 @@ const ProductDetail: React.FC = () => {
         cost: product.cost,
         quantity: 1,
       });
-      alert("Product added to cart!");
+      alert("Sản phẩm đã được thêm vào giỏ hàng!");
     }
   };
 
   const handleBuyNow = () => {
-    if (product) {
+    if (!isLoggedIn) {
+      alert("Vui lòng đăng nhập để mua sản phẩm.");
+      login({
+        userId: 4,
+        userName: "vănhuy",
+        email: "vanhuy@gmail.com",
+        address: "User's Address",
+        phoneNumber: 1234567890,
+        role: "user",
+      });
+      return;
+    }
+
+    if (userAccount && product) {
       addToCart({
         productId: product.productId,
         productName: product.productName,
@@ -98,7 +130,6 @@ const ProductDetail: React.FC = () => {
     return Array.from({ length: end - start + 1 }, (_, index) => start + index);
   };
 
-  // Slider settings
   const sliderSettings = {
     dots: false,
     infinite: false,
@@ -111,9 +142,9 @@ const ProductDetail: React.FC = () => {
     },
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <div>Đang tải...</div>;
   if (error) return <div>{error}</div>;
-  if (!product) return <div>No product data found.</div>;
+  if (!product) return <div>Không tìm thấy dữ liệu sản phẩm.</div>;
 
   return (
     <div className="product-detail-page">
@@ -139,7 +170,6 @@ const ProductDetail: React.FC = () => {
         </div>
       </div>
 
-      {/* Related Products Slider */}
       <div className="related-products">
         <h3>Sản phẩm tương tự</h3>
         <Slider ref={sliderRef} {...sliderSettings}>
@@ -151,7 +181,7 @@ const ProductDetail: React.FC = () => {
               <button
                 onClick={() => {
                   navigate(`/product/${relatedProduct.productId}`);
-                  window.scrollTo(0, 0); // Scroll to top
+                  window.scrollTo(0, 0);
                 }}
               >
                 Xem chi tiết
@@ -160,7 +190,6 @@ const ProductDetail: React.FC = () => {
           ))}
         </Slider>
         
-        {/* Custom Pagination */}
         <div className="pagination">
           <button onClick={handlePrevious} disabled={currentPage === 1}>Previous</button>
           {getPageNumbers().map((pageNumber) => (

@@ -6,7 +6,7 @@ import Footer from './templates/footer';
 import Taskbar from './templates/taskbar';
 import DashBoard from './pages/admin/DashBoard';
 import ProductDetail from './templates/productDetail'; // Import for ProductDetail
-import { CartProvider } from './templates/CartContext'; // Import CartProvider
+import { CartProvider } from './API/apiCartContext'; // Import CartProvider
 import './styles/layout.css';
 import './styles/header.css';
 import './styles/taskbar.css';

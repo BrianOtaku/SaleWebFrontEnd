@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../styles/content.css";
 import { getProductsDetail, Product } from "../API/apiGetProductDetail";
-import { useCart } from "./CartContext";
+import { useCart } from "../API/apiCartContext";
 
 interface Category {
   id: string;
@@ -16,15 +16,16 @@ function Content() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalProducts, setTotalProducts] = useState(0);
   const [currentCategory, setCurrentCategory] = useState("all");
-  const productsPerPage = 10;
-  const { addToCart } = useCart();
 
-  // Danh sách các danh mục
+  const productsPerPage = 10;
+  
+  const { addToCart, isLoggedIn, login, userAccount } = useCart();
+
   const categories: Category[] = [
     { id: "all", name: "All" },
-    { id: "laptop", name: "Laptop" },
+    { id: "laptops", name: "Laptops" },
     { id: "pc", name: "PC" },
-    { id: "ram", name: "Ram" },
+    { id: "ram", name: "RAM" },
   ];
 
   const fetchProducts = async (categoryId: string, page: number) => {
@@ -35,7 +36,7 @@ function Content() {
       setProducts(products);
       setTotalProducts(totalProducts);
     } catch (error: any) {
-      setError("An error occurred while fetching products.");
+      setError("Đã xảy ra lỗi khi tìm nạp sản phẩm.");
     } finally {
       setIsLoading(false);
     }
@@ -48,31 +49,52 @@ function Content() {
   const totalPages = Math.ceil(totalProducts / productsPerPage);
 
   const handleAddToCart = (product: Product) => {
-    addToCart({
-      productId: product.productId,
-      productName: product.productName,
-      productImage: product.productImage,
-      cost: product.cost,
-      quantity: 1,
-    });
+    if (!isLoggedIn) {
+      alert("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng.");
+      login({
+        userId: 4,
+        userName: "vănhuy",
+        email: "vanhuy@gmail.com",
+        address: "User's Address", 
+        phoneNumber: 1234567890,
+        role: "user",
+      });
+      return;
+    }
+
+    if (userAccount) {
+      addToCart({
+        productId: product.productId,
+        productName: product.productName,
+        productImage: product.productImage,
+        cost: product.cost,
+        quantity: 1,
+      });
+    }
+  };
+
+  const handlePreviousPage = () => {
+    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+  };
+
+  const handleNextPage = () => {
+    setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
+  };
+
+  const visiblePages = () => {
+    const pageLimit = 5;
+    let startPage = Math.max(currentPage - Math.floor(pageLimit / 2), 1);
+    const endPage = Math.min(startPage + pageLimit - 1, totalPages);
+    if (endPage - startPage < pageLimit - 1) {
+      startPage = Math.max(endPage - pageLimit + 1, 1);
+    }
+    return Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
   };
 
   return (
     <div className="contentContainer">
-      {/* Banner Section */}
-      <div className="banner">
-        <div className="banner-content">
-          <h3>PC MÁY BỘ GVN</h3>
-          <h1>I5 / R5</h1>
-          <p>Học tập, giải trí, làm việc mượt mà</p>
-          <p className="banner-price">Giá chỉ từ <strong>10.000.000đ</strong></p>
-          <button className="installment-button">Trả góp 0%</button>
-        </div>
-      </div>
-
-      {/* Category Header Section */}
       <div className="category-header">
-        <h2 className="category-title">Danh mục sản phẩm</h2>
+        <h2 className="category-title">Product Categories</h2>
         <nav className="product-categories">
           <ul className="category-list">
             {categories.map((category) => (
@@ -81,7 +103,7 @@ function Content() {
                 className={currentCategory === category.id ? "active" : ""}
                 onClick={() => {
                   setCurrentCategory(category.id);
-                  setCurrentPage(1); // Reset lại trang khi đổi danh mục
+                  setCurrentPage(1);
                 }}
               >
                 {category.name}
@@ -90,7 +112,6 @@ function Content() {
           </ul>
         </nav>
       </div>
-
       {isLoading ? (
         <p>Loading...</p>
       ) : error ? (
@@ -101,7 +122,11 @@ function Content() {
             products.map((product) => (
               <div key={product.productId} className="product-card">
                 <Link to={`/product/${product.productId}`}>
-                  <img src={product.productImage} alt={product.productName} className="product-image" />
+                  <img
+                    src={product.productImage}
+                    alt={product.productName}
+                    className="product-image"
+                  />
                 </Link>
                 <h2 className="product-name">{product.productName}</h2>
                 <div className="specs-box">
@@ -109,16 +134,20 @@ function Content() {
                     <li className="product-description">
                       {product.productDescription.split(",").slice(0, 3).join(", ")}
                     </li>
-                    <li className="product-description">Manufacturer: {product.manufacturer}</li>
-                    <li className="product-description">Quantity: {product.productQuantity}</li>
+                    <li className="product-description">
+                      Manufacturer: {product.manufacturer}
+                    </li>
+                    <li className="product-description">
+                      Quantity: {product.productQuantity}
+                    </li>
                   </ul>
                 </div>
                 <p className="product-price">{product.cost} VND</p>
                 <div className="button">
-                  <button className="add-to-cart-button" onClick={() => handleAddToCart(product)}>
-                    Buy
-                  </button>
-                  <button className="add-to-cart-button" onClick={() => handleAddToCart(product)}>
+                  <button
+                    className="add-to-cart-button"
+                    onClick={() => handleAddToCart(product)}
+                  >
                     Add to Cart
                   </button>
                 </div>
@@ -129,18 +158,30 @@ function Content() {
           )}
         </div>
       )}
-
-      {/* Pagination Section */}
       <div className="pagination">
-        {Array.from({ length: totalPages }, (_, index) => (
+        <button
+          className="page-button"
+          onClick={handlePreviousPage}
+          disabled={currentPage === 1}
+        >
+          Previous
+        </button>
+        {visiblePages().map((page) => (
           <button
-            key={index + 1}
-            className={`page-button ${currentPage === index + 1 ? "active" : ""}`}
-            onClick={() => setCurrentPage(index + 1)}
+            key={page}
+            className={`page-button ${currentPage === page ? "active" : ""}`}
+            onClick={() => setCurrentPage(page)}
           >
-            {index + 1}
+            {page}
           </button>
         ))}
+        <button
+          className="page-button"
+          onClick={handleNextPage}
+          disabled={currentPage === totalPages}
+        >
+          Next
+        </button>
       </div>
     </div>
   );

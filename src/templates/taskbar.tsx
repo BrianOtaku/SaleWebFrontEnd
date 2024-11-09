@@ -6,7 +6,7 @@ import SignIn from '../components/signIn';
 import SignUp from '../components/signUp';
 import Accordion from 'react-bootstrap/Accordion';
 import UserConfig from '../components/userConfig';
-import { useCart } from './CartContext'; 
+import { useCart } from '../API/apiCartContext'; 
 import CartOffcanvas from './CartOffcanvas'; 
 import { useNavigate } from 'react-router-dom';
 
