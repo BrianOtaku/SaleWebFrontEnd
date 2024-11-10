@@ -46,31 +46,35 @@ function Content() {
     fetchProducts(currentCategory, currentPage);
   }, [currentCategory, currentPage]);
 
+  useEffect(() => {
+    if (isLoggedIn) {
+      console.log("Đăng nhập thành công");
+    }
+  }, [isLoggedIn]);
+
   const totalPages = Math.ceil(totalProducts / productsPerPage);
 
-  const handleAddToCart = (product: Product) => {
+  const handleAddToCart = async (product: Product) => {
+    if (await checkLoginBeforeAdd()) {
+      if (userAccount) {
+        addToCart({
+          productId: product.productId,
+          productName: product.productName,
+          productImage: product.productImage,
+          cost: product.cost,
+          quantity: 1,
+        });
+      }
+    }
+  };
+
+  const checkLoginBeforeAdd = async () => {
     if (!isLoggedIn) {
       alert("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng.");
-      login({
-        userId: 4,
-        userName: "vănhuy",
-        email: "vanhuy@gmail.com",
-        address: "User's Address", 
-        phoneNumber: 1234567890,
-        role: "user",
-      });
-      return;
+      await login();
+      await new Promise(resolve => setTimeout(resolve, 500));
     }
-
-    if (userAccount) {
-      addToCart({
-        productId: product.productId,
-        productName: product.productName,
-        productImage: product.productImage,
-        cost: product.cost,
-        quantity: 1,
-      });
-    }
+    return isLoggedIn;
   };
 
   const handlePreviousPage = () => {

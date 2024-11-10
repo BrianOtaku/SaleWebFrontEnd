@@ -14,8 +14,8 @@ function Taskbar() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [cartVisible, setCartVisible] = useState(false);
     const { cartItems } = useCart();
-    const [searchQuery, setSearchQuery] = useState(""); // State for search input
-    const navigate = useNavigate(); // Hook for navigation
+    const [searchQuery, setSearchQuery] = useState("");
+    const navigate = useNavigate();
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -38,9 +38,9 @@ function Taskbar() {
     };
 
     const handleSearch = (e: React.FormEvent) => {
-        e.preventDefault(); // Prevent the default form submission
+        e.preventDefault();
         if (searchQuery) {
-            navigate(`/search/${searchQuery}`); // Navigate to search results
+            navigate(`/search/${searchQuery}`); 
         }
     };
 
@@ -55,7 +55,7 @@ function Taskbar() {
                         type="text" 
                         placeholder="Search" 
                         value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)} // Update search query
+                        onChange={(e) => setSearchQuery(e.target.value)}
                     />
                     <button type="submit" className="searchButton" title="Search">
                         <FontAwesomeIcon icon={faSearch} className='iconSearch' />

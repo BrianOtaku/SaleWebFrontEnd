@@ -9,7 +9,7 @@ interface CartOffcanvasProps {
 }
 
 const CartOffcanvas: React.FC<CartOffcanvasProps> = ({ show, onHide }) => {
-    const { cartItems, updateQuantity, removeFromCart, updateProductQuantityAPI } = useCart();
+    const { cartItems, removeFromCart, updateProductQuantity } = useCart();
     const [editingItemId, setEditingItemId] = useState<number | null>(null);
     const [tempQuantities, setTempQuantities] = useState<{ [productId: number]: number }>({});
 
@@ -42,9 +42,9 @@ const CartOffcanvas: React.FC<CartOffcanvasProps> = ({ show, onHide }) => {
     const saveQuantity = (productId: number) => {
         const newQuantity = tempQuantities[productId];
         if (newQuantity !== undefined) {
-            updateProductQuantityAPI(productId, newQuantity);
+            updateProductQuantity(productId, newQuantity);
         }
-        setEditingItemId(null); // Kết thúc chế độ chỉnh sửa
+        setEditingItemId(null);
     };
 
     return (

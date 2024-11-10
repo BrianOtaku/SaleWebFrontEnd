@@ -56,17 +56,10 @@ const ProductDetail: React.FC = () => {
   const handleAddToCart = () => {
     if (!isLoggedIn) {
       alert("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng.");
-      login({
-        userId: 4,
-        userName: "vănhuy",
-        email: "vanhuy@gmail.com",
-        address: "User's Address",
-        phoneNumber: 1234567890,
-        role: "user",
-      });
+      login(); // Ensure that login() is called without parameters like in content.tsx
       return;
     }
-
+  
     if (userAccount && product) {
       addToCart({
         productId: product.productId,
@@ -77,21 +70,7 @@ const ProductDetail: React.FC = () => {
       });
       alert("Sản phẩm đã được thêm vào giỏ hàng!");
     }
-  };
-
-  const handleBuyNow = () => {
-    if (!isLoggedIn) {
-      alert("Vui lòng đăng nhập để mua sản phẩm.");
-      login({
-        userId: 4,
-        userName: "vănhuy",
-        email: "vanhuy@gmail.com",
-        address: "User's Address",
-        phoneNumber: 1234567890,
-        role: "user",
-      });
-      return;
-    }
+  
 
     if (userAccount && product) {
       addToCart({
@@ -101,9 +80,28 @@ const ProductDetail: React.FC = () => {
         cost: product.cost,
         quantity: 1,
       });
-      navigate("/cart");
     }
   };
+
+  const handleBuyNow = () => {
+    if (!isLoggedIn) {
+      alert("Vui lòng đăng nhập để mua sản phẩm.");
+      login(); // Use the login function without parameters, similar to `handleAddToCart`
+      return;
+    }
+  
+    if (userAccount && product) {
+      addToCart({
+        productId: product.productId,
+        productName: product.productName,
+        productImage: product.productImage,
+        cost: product.cost,
+        quantity: 1,
+      });
+      navigate("/cart"); // Redirect to the cart page after adding the product
+    }
+  };
+  
 
   const handlePageClick = (pageNumber: number) => {
     setCurrentPage(pageNumber);
