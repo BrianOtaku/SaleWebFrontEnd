@@ -108,7 +108,8 @@
     margin-left: auto;
 }
 
-.signInButton, .signUpButton, .searchButton, .Menu, .MsignInButton, .MsignUpButton, .UserIcon
+.signInButton, .signUpButton, .searchButton, .Menu, .MsignInButton, 
+.MsignUpButton, .UserIcon, .cartButton 
 {
     border: none;
     border-bottom: 1px solid black;
@@ -145,7 +146,8 @@
     justify-content: center;
 }
 
-.searchButton:hover, .signInButton:hover, .signUpButton:hover, .Menu:hover, .MsignInButton:hover, .MsignUpButton:hover, .UserIcon:hover
+.searchButton:hover, .signInButton:hover, .signUpButton:hover, .Menu:hover, 
+.MsignInButton:hover, .MsignUpButton:hover, .UserIcon:hover, .cartButton:hover
 {
     border: none;
     border-bottom: 1px solid white;
@@ -172,24 +174,20 @@
 {
     display: inline-block;
 }
-.taskBarIcons {
-    margin-left: auto;
-}
 
-.cartButton {
+/* {
     background: none;
     border: none;
-    cursor: pointer;
     padding: 0; 
     color: #ff5722;
-}
+} */
 
-.iconCart {
+/* .iconCart {
     font-size: 1.5em;
     color: #f4f6f6;
     transition: color 0.3s ease;
-}
+} */
 
-.iconCart:hover {
+/* .iconCart:hover {
     color: #ff5722; 
-}
+} */

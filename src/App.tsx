@@ -1,23 +1,32 @@
+// import library
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+
+// import templates
 import Header from './templates/header';
 import Content from './templates/content';
 import Footer from './templates/footer';
 import Taskbar from './templates/taskbar';
+
+// import admin pages
 import DashBoard from './pages/admin/DashBoard';
-import ProductDetail from './templates/productDetail'; // Import for ProductDetail
-import { CartProvider } from './API/apiCartContext'; // Import CartProvider
+
+// import styles
 import './styles/layout.css';
 import './styles/header.css';
 import './styles/taskbar.css';
 import './styles/offcanvas.css';
 import './styles/content.css';
 import './styles/footer.css';
+
+// import components
 import { getUserRoleFromToken } from './API/apiAccount';
+import ProductDetail from './templates/productDetail';
+import { CartProvider } from './API/apiCartContext';
 
 function App() {
   const [role, setRole] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(true); // State to handle loading
+  // const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -25,16 +34,16 @@ function App() {
       const userRole = getUserRoleFromToken(token);
       setRole(userRole);
     }
-    setLoading(false); // Set loading to false after determining role
+    // setLoading(false);
   }, []);
 
-  if (loading) {
-    return <div>Loading...</div>; // Loading state
-  }
+  // if (loading) {
+  //   return <div>Loading...</div>;
+  // }
 
   return (
     <Router>
-      <CartProvider> {/* Wrap everything with CartProvider */}
+      <CartProvider>
         <Routes>
           {role === 'Admin' ? (
             <>
@@ -54,7 +63,7 @@ function App() {
                   </>
                 }
               />
-              <Route path="/product/:productId" element={<ProductDetail />} /> {/* Route for product detail */}
+              <Route path="/product/:productId" element={<ProductDetail />} />
               <Route path="*" element={<Navigate to="/" />} />
             </>
           )}

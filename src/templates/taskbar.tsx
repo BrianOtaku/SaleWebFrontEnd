@@ -19,7 +19,6 @@ function Taskbar() {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-
         if (token) {
             setIsLoggedIn(true);
         }
@@ -27,6 +26,7 @@ function Taskbar() {
 
     const handleLogin = () => {
         setIsLoggedIn(true);
+        window.location.reload();
     };
 
     const handleCartClick = () => {
@@ -40,7 +40,7 @@ function Taskbar() {
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
         if (searchQuery) {
-            navigate(`/search/${searchQuery}`); 
+            navigate(`/search?name=${searchQuery}&page=1&limit=5`); // Redirect with query params for search
         }
     };
 
@@ -107,7 +107,7 @@ function Taskbar() {
                 </div>
             </div>
 
-            {/* Giỏ hàng Offcanvas */}
+            {/* Cart Offcanvas */}
             <CartOffcanvas show={cartVisible} onHide={handleCloseCart} />
         </div>
     );

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { getAuthHeaders, getUserProfile } from './apiGetInfomations';
 
@@ -27,6 +27,7 @@ interface CartContextProps {
   removeFromCart: (productId: number) => void;
   isLoggedIn: boolean;
   login: () => Promise<void>;
+  logout: () => void;
   userAccount: UserAccount | null;
 }
 
@@ -37,7 +38,22 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userAccount, setUserAccount] = useState<UserAccount | null>(null);
 
-  // Hàm thêm sản phẩm vào giỏ hàng
+  useEffect(() => {
+    const initializeUser = async () => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        try {
+          const userData: UserAccount = await getUserProfile(token);
+          setIsLoggedIn(true);
+          setUserAccount(userData);
+        } catch (error) {
+          console.error("Không thể lấy thông tin người dùng:", error);
+        }
+      }
+    };
+    initializeUser();
+  }, []);
+
   const addToCart = async (item: CartItem) => {
     if (!isLoggedIn || !userAccount) {
       alert("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng.");
@@ -55,9 +71,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (response.status === 200 && response.data.cart?.cartId) {
         const newCartId = response.data.cart.cartId;
         const newItem = { ...item, cartId: newCartId, quantity: response.data.cart.quantity };
-
         setCartItems([...cartItems, newItem]);
-        alert("Sản phẩm đã được thêm vào giỏ hàng thành công!");
       } else {
         console.error("Phản hồi của máy chủ không bao gồm cartId.");
       }
@@ -67,7 +81,6 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  // Hàm cập nhật số lượng sản phẩm trong giỏ hàng
   const updateProductQuantity = async (productId: number, quantity: number) => {
     const item = cartItems.find(cartItem => cartItem.productId === productId);
     if (!item || !item.cartId) {
@@ -99,22 +112,28 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const login = async () => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      alert("Vui lòng đăng nhập.");
-      return;
-    }
-
     try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        return;
+      }
       const userData: UserAccount = await getUserProfile(token);
-      setIsLoggedIn(true);
-      setUserAccount(userData);
-      alert("Chúc mừng bạn đã đăng nhập thành công!");
+      setTimeout(() => {
+        setIsLoggedIn(true);
+        setUserAccount(userData);
+      }, 100);
     } catch (error) {
       console.error("Không đăng nhập được:", error);
+      alert("Đăng nhập không thành công. Vui lòng thử lại.");
       setIsLoggedIn(false);
       setUserAccount(null);
     }
+  };
+  
+  const logout = () => {
+    setIsLoggedIn(false);
+    setUserAccount(null);
+    setCartItems([]);
   };
 
   const removeFromCart = (productId: number) => {
@@ -129,6 +148,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       removeFromCart,
       isLoggedIn,
       login,
+      logout,
       userAccount
     }}>
       {children}

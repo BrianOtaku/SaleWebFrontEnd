@@ -56,7 +56,7 @@ const ProductDetail: React.FC = () => {
   const handleAddToCart = () => {
     if (!isLoggedIn) {
       alert("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng.");
-      login(); 
+      login(); // Ensure that login() is called without parameters like in content.tsx
       return;
     }
   

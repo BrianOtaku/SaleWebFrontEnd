@@ -55,26 +55,20 @@ function Content() {
   const totalPages = Math.ceil(totalProducts / productsPerPage);
 
   const handleAddToCart = async (product: Product) => {
-    if (await checkLoginBeforeAdd()) {
-      if (userAccount) {
-        addToCart({
-          productId: product.productId,
-          productName: product.productName,
-          productImage: product.productImage,
-          cost: product.cost,
-          quantity: 1,
-        });
-      }
-    }
-  };
-
-  const checkLoginBeforeAdd = async () => {
     if (!isLoggedIn) {
       alert("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng.");
       await login();
-      await new Promise(resolve => setTimeout(resolve, 500));
     }
-    return isLoggedIn;
+    
+    if (isLoggedIn && userAccount) {
+      addToCart({
+        productId: product.productId,
+        productName: product.productName,
+        productImage: product.productImage,
+        cost: product.cost,
+        quantity: 1,
+      });
+    }
   };
 
   const handlePreviousPage = () => {
