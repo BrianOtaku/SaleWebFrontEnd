@@ -56,7 +56,7 @@ const ProductDetail: React.FC = () => {
   const handleAddToCart = () => {
     if (!isLoggedIn) {
       alert("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng.");
-      login(); // Ensure that login() is called without parameters like in content.tsx
+      login(); 
       return;
     }
   
@@ -68,7 +68,7 @@ const ProductDetail: React.FC = () => {
         cost: product.cost,
         quantity: 1,
       });
-      alert("Sản phẩm đã được thêm vào giỏ hàng!");
+      
     }
   
 

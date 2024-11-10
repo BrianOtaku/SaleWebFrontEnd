@@ -27,7 +27,6 @@ interface CartContextProps {
   removeFromCart: (productId: number) => void;
   isLoggedIn: boolean;
   login: () => Promise<void>;
-  logout: () => void;
   userAccount: UserAccount | null;
 }
 
@@ -100,36 +99,22 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const login = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert("Vui lòng đăng nhập.");
+      return;
+    }
+
     try {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        alert("Vui lòng đăng nhập để nhận token.");
-        return;
-      }
-  
       const userData: UserAccount = await getUserProfile(token);
-      
-      // Hiển thị thông báo đăng nhập thành công
+      setIsLoggedIn(true);
+      setUserAccount(userData);
       alert("Chúc mừng bạn đã đăng nhập thành công!");
-  
-      // Cập nhật trạng thái đăng nhập sau khi hiển thị thông báo
-      setTimeout(() => {
-        setIsLoggedIn(true);
-        setUserAccount(userData);
-      }, 100); // Thời gian delay ngắn để đảm bảo thông báo được hiển thị trước
     } catch (error) {
       console.error("Không đăng nhập được:", error);
-      alert("Đăng nhập không thành công. Vui lòng thử lại.");
       setIsLoggedIn(false);
       setUserAccount(null);
     }
-  };
-  
-
-  const logout = () => {
-    setIsLoggedIn(false);
-    setUserAccount(null);
-    setCartItems([]);
   };
 
   const removeFromCart = (productId: number) => {
@@ -144,7 +129,6 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       removeFromCart,
       isLoggedIn,
       login,
-      logout,
       userAccount
     }}>
       {children}
