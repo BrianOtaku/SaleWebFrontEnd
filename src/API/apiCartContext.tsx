@@ -1,8 +1,9 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
-import { getAuthHeaders } from './apiGetInfomations';
+import { getAuthHeaders, getUserProfile } from './apiGetInfomations';
 
 interface CartItem {
+  cartId?: number;
   productId: number;
   productName: string;
   productImage: string;
@@ -22,11 +23,10 @@ interface UserAccount {
 interface CartContextProps {
   cartItems: CartItem[];
   addToCart: (item: CartItem) => void;
-  updateQuantity: (productId: number, quantity: number) => void;
+  updateProductQuantity: (productId: number, quantity: number) => void;
   removeFromCart: (productId: number) => void;
-  updateProductQuantityAPI: (cartId: number, quantity: number) => void;
   isLoggedIn: boolean;
-  login: (userAccount: UserAccount) => void;
+  login: () => Promise<void>;
   logout: () => void;
   userAccount: UserAccount | null;
 }
@@ -38,6 +38,22 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userAccount, setUserAccount] = useState<UserAccount | null>(null);
 
+  useEffect(() => {
+    const initializeUser = async () => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        try {
+          const userData: UserAccount = await getUserProfile(token);
+          setIsLoggedIn(true);
+          setUserAccount(userData);
+        } catch (error) {
+          console.error("Không thể lấy thông tin người dùng:", error);
+        }
+      }
+    };
+    initializeUser();
+  }, []);
+
   const addToCart = async (item: CartItem) => {
     if (!isLoggedIn || !userAccount) {
       alert("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng.");
@@ -46,62 +62,80 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     try {
       const headers = getAuthHeaders();
-      await axios.post(
+      const response = await axios.post(
         `http://localhost:8080/api/cart/add?userId=${userAccount.userId}&productId=${item.productId}&quantity=${item.quantity}`,
         {},
         { headers }
       );
 
-      // Cập nhật cartItems với callback để đảm bảo sử dụng trạng thái mới nhất
-      setCartItems((prevCartItems) => [...prevCartItems, item]);
-      alert("Đã thêm sản phẩm vào giỏ hàng thành công!");
+      if (response.status === 200 && response.data.cart?.cartId) {
+        const newCartId = response.data.cart.cartId;
+        const newItem = { ...item, cartId: newCartId, quantity: response.data.cart.quantity };
+
+        setCartItems([...cartItems, newItem]);
+        alert("Sản phẩm đã được thêm vào giỏ hàng thành công!");
+      } else {
+        console.error("Phản hồi của máy chủ không bao gồm cartId.");
+      }
     } catch (error) {
       console.error("Lỗi khi thêm vào giỏ hàng:", error);
-      alert("Không thêm được sản phẩm vào giỏ hàng.");
+      alert("Không thêm được sản phẩm vào giỏ.");
     }
   };
 
-  const updateQuantity = (productId: number, quantity: number) => {
-    setCartItems(cartItems.map(item =>
-      item.productId === productId ? { ...item, quantity } : item
-    ));
-  };
-
-  const updateProductQuantityAPI = async (cartId: number, quantity: number) => {
-    if (!userAccount) return;
+  const updateProductQuantity = async (productId: number, quantity: number) => {
+    const item = cartItems.find(cartItem => cartItem.productId === productId);
+    if (!item || !item.cartId) {
+      console.error("Không tìm thấy mục giỏ hàng hoặc cartId bị thiếu.");
+      return;
+    }
 
     try {
       const headers = getAuthHeaders();
       const response = await axios.put(
-        `http://localhost:8080/api/cart/change-quantity?cartId=${cartId}&quantity=${quantity}`,  // Thêm cả cartId và quantity vào URL
-        {},  // Không cần body
+        `http://localhost:8080/api/cart/change-quantity?cartId=${item.cartId}&quantity=${quantity}`,
+        {},
         { headers }
       );
 
       if (response.status === 200) {
-        updateQuantity(cartId, quantity);
-        alert("Số lượng đã được cập nhật thành công!");
+        setCartItems((prevItems) =>
+          prevItems.map((cartItem) =>
+            cartItem.productId === productId ? { ...cartItem, quantity } : cartItem
+          )
+        );
       } else {
-        console.error("Lỗi khi cập nhật số lượng:", response.status, response.data);
-        alert("Không thể cập nhật số lượng. Vui lòng kiểm tra bảng điều khiển để biết chi tiết.");
+        console.error("Không cập nhật được số lượng. Trạng thái phản hồi:", response.status);
       }
-    } catch (error: any) {
-      if (error.response) {
-        console.error("Dữ liệu phản hồi lỗi:", error.response.data);
-        console.error("Trạng thái phản hồi lỗi:", error.response.status);
-      } else {
-        console.error("Lỗi không có phản hồi:", error.message);
-      }
-      alert("Không thể cập nhật số lượng. Vui lòng kiểm tra bảng điều khiển để biết chi tiết.");
+    } catch (error) {
+      console.error("Lỗi cập nhật số lượng:", error);
+      alert("Không cập nhật được số lượng sản phẩm.");
     }
   };
 
-
-  const login = (userAccount: UserAccount) => {
-    setIsLoggedIn(true);
-    setUserAccount(userAccount);
+  const login = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        return;
+      }
+  
+      const userData: UserAccount = await getUserProfile(token);
+  
+      alert("Chúc mừng bạn đã đăng nhập thành công!");
+  
+      setTimeout(() => {
+        setIsLoggedIn(true);
+        setUserAccount(userData);
+      }, 100);
+    } catch (error) {
+      console.error("Không đăng nhập được:", error);
+      alert("Đăng nhập không thành công. Vui lòng thử lại.");
+      setIsLoggedIn(false);
+      setUserAccount(null);
+    }
   };
-
+  
   const logout = () => {
     setIsLoggedIn(false);
     setUserAccount(null);
@@ -116,9 +150,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     <CartContext.Provider value={{
       cartItems,
       addToCart,
-      updateQuantity,
+      updateProductQuantity,
       removeFromCart,
-      updateProductQuantityAPI,
       isLoggedIn,
       login,
       logout,

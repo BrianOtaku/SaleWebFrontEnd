@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const CartOffcanvas = () => {
     const [show, setShow] = useState(false);
 
-    const { cartItems, updateQuantity, removeFromCart, updateProductQuantityAPI } = useCart();
+    const { cartItems, removeFromCart, updateProductQuantity } = useCart();
     const [editingItemId, setEditingItemId] = useState<number | null>(null);
     const [tempQuantities, setTempQuantities] = useState<{ [productId: number]: number }>({});
 
@@ -41,8 +41,7 @@ const CartOffcanvas = () => {
     const saveQuantity = (productId: number) => {
         const newQuantity = tempQuantities[productId];
         if (newQuantity !== undefined) {
-            updateProductQuantityAPI(productId, newQuantity);
-            updateQuantity(productId, newQuantity); // Sync local quantity with cart context
+            updateProductQuantity(productId, newQuantity);
         }
         setEditingItemId(null); // Exit edit mode
     };

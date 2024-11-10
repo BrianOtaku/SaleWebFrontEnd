@@ -21,7 +21,7 @@ import './styles/footer.css';
 
 // import components
 import { getUserRoleFromToken } from './API/apiAccount';
-import ProductDetail from './templates/productDetail';
+// import ProductDetail from './templates/productDetail';
 import { CartProvider } from './API/apiCartContext';
 
 function App() {
@@ -63,7 +63,7 @@ function App() {
                   </>
                 }
               />
-              <Route path="/product/:productId" element={<ProductDetail />} />
+              {/* <Route path="/product/:productId" element={<ProductDetail />} /> */}
               <Route path="*" element={<Navigate to="/" />} />
             </>
           )}

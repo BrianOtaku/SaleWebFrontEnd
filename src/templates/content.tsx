@@ -18,14 +18,14 @@ function Content() {
   const [currentCategory, setCurrentCategory] = useState("all");
 
   const productsPerPage = 10;
-
-  const { addToCart, isLoggedIn, userAccount } = useCart();
+  
+  const { addToCart, isLoggedIn, login, userAccount } = useCart();
 
   const categories: Category[] = [
     { id: "all", name: "All" },
-    { id: "LAPTOP", name: "LAPTOP" },
-    { id: "PC", name: "PC" },
-    { id: "RAM", name: "RAM" },
+    { id: "laptops", name: "Laptops" },
+    { id: "pc", name: "PC" },
+    { id: "ram", name: "RAM" },
   ];
 
   const fetchProducts = async (categoryId: string, page: number) => {
@@ -46,19 +46,21 @@ function Content() {
     fetchProducts(currentCategory, currentPage);
   }, [currentCategory, currentPage]);
 
+  useEffect(() => {
+    if (isLoggedIn) {
+      console.log("Đăng nhập thành công");
+    }
+  }, [isLoggedIn]);
+
   const totalPages = Math.ceil(totalProducts / productsPerPage);
 
-  const handleAddToCart = (product: Product) => {
-    // Check for token (assumed to be in localStorage for this example)
-    const token = localStorage.getItem("token");
-
-    if (!token) {
+  const handleAddToCart = async (product: Product) => {
+    if (!isLoggedIn) {
       alert("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng.");
-      return;
+      await login();
     }
-
-    // If user is logged in, proceed to add to cart
-    if (userAccount) {
+    
+    if (isLoggedIn && userAccount) {
       addToCart({
         productId: product.productId,
         productName: product.productName,
@@ -66,7 +68,6 @@ function Content() {
         cost: product.cost,
         quantity: 1,
       });
-      console.log("Đã thêm sản phẩm vào giỏ hàng:", product);
     }
   };
 
