@@ -142,8 +142,28 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setCartItems([]);
   };
 
-  const removeFromCart = (productId: number) => {
-    setCartItems(cartItems.filter(item => item.productId !== productId));
+  const removeFromCart = async (productId: number) => {
+    const item = cartItems.find(cartItem => cartItem.productId === productId);
+    if (!item || !item.cartId) {
+      console.error("Không tìm thấy sản phẩm hoặc thiếu cartId.");
+      return;
+    }
+    try {
+      const headers = getAuthHeaders();
+      const response = await axios.delete(
+        `http://localhost:8080/api/cart/${item.cartId}`,
+        { headers }
+      );
+      if (response.status === 200) {
+        setCartItems(cartItems.filter(cartItem => cartItem.productId !== productId));
+        alert("Đã xóa sản phẩm thành công");
+      } else {
+        console.error("Không thể xóa sản phẩm. Trạng thái phản hồi:", response.status);
+      }
+    } catch (error) {
+      console.error("Lỗi khi xóa sản phẩm khỏi giỏ hàng:", error);
+      alert("Không thể xóa sản phẩm khỏi giỏ hàng.");
+    }
   };
 
   return (

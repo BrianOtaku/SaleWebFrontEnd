@@ -5,10 +5,8 @@ const images = [
     '/image/banner.jpg',
     '/image/banner1.png',
     '/image/banner2.jpg',
-    '/image/banner5.jpg',
     '/image/banner3.png',
-    '/image/banner4.png',
-    '/image/banner6.png',
+    '/image/banner4.jpg',
 ];
 
 function Header() {
