@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { useCart } from '../API/apiCartContext';
-import '../styles/cartOffcanvas.css';
-import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+import '../styles/cartOffcanvas.css';
 
 const CartOffcanvas = () => {
-    const [show, setShow] = useState(false);
-
     const { cartItems, removeFromCart, updateProductQuantity } = useCart();
     const [editingItemId, setEditingItemId] = useState<number | null>(null);
     const [tempQuantities, setTempQuantities] = useState<{ [productId: number]: number }>({});
 
-    // Increase product quantity
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
     const handleIncrease = (productId: number) => {
         setTempQuantities((prev) => ({
             ...prev,
@@ -20,7 +22,6 @@ const CartOffcanvas = () => {
         }));
     };
 
-    // Decrease product quantity
     const handleDecrease = (productId: number) => {
         setTempQuantities((prev) => ({
             ...prev,
@@ -28,7 +29,6 @@ const CartOffcanvas = () => {
         }));
     };
 
-    // Start editing quantity
     const startEditing = (productId: number, currentQuantity: number) => {
         setEditingItemId(productId);
         setTempQuantities((prev) => ({
@@ -37,24 +37,22 @@ const CartOffcanvas = () => {
         }));
     };
 
-    // Save edited quantity
     const saveQuantity = (productId: number) => {
         const newQuantity = tempQuantities[productId];
         if (newQuantity !== undefined) {
             updateProductQuantity(productId, newQuantity);
         }
-        setEditingItemId(null); // Exit edit mode
+        setEditingItemId(null);
     };
-
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
 
     return (
         <>
-            <button className='cartButton' onClick={handleShow} title="Cart">
-                <FontAwesomeIcon icon={faShoppingCart} className='iconCart' />
+            <button className="cartButton" title="Giỏ hàng" onClick={handleShow}>
+                <FontAwesomeIcon icon={faShoppingCart} className="iconCart" />
                 {cartItems.length > 0 && (
-                    <span className='cart-count'>{cartItems.length}</span>
+                    <span
+                        style={{ marginLeft: '7px' }}
+                        className="cart-count">{cartItems.length}</span>
                 )}
             </button>
 

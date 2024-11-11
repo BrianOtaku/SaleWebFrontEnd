@@ -1,19 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import OffcanvasMenu from '../components/offcanvas';
 import SignIn from '../components/signIn';
 import SignUp from '../components/signUp';
 import Accordion from 'react-bootstrap/Accordion';
 import UserConfig from '../components/userConfig';
-import { useCart } from '../API/apiCartContext'; 
-import CartOffcanvas from './CartOffcanvas'; 
+import CartOffcanvas from '../components/CartOffcanvas';
 import { useNavigate } from 'react-router-dom';
 
 function Taskbar() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [cartVisible, setCartVisible] = useState(false);
-    const { cartItems } = useCart();
     const [searchQuery, setSearchQuery] = useState("");
     const navigate = useNavigate();
 
@@ -30,18 +27,10 @@ function Taskbar() {
         window.location.reload(); // Tải lại trang sau khi đăng nhập thành công
     };
 
-    const handleCartClick = () => {
-        setCartVisible(true);
-    };
-
-    const handleCloseCart = () => {
-        setCartVisible(false);
-    };
-
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
         if (searchQuery) {
-            navigate(`/search/${searchQuery}`); 
+            navigate(`/search/${searchQuery}`);
         }
     };
 
@@ -52,9 +41,9 @@ function Taskbar() {
                     <img src="/image/logoSketch.png" alt="Logo" />
                 </button>
                 <form onSubmit={handleSearch}>
-                    <input 
-                        type="text" 
-                        placeholder="Search" 
+                    <input
+                        type="text"
+                        placeholder="Search"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                     />
@@ -87,14 +76,6 @@ function Taskbar() {
                         </Accordion.Item>
                     </Accordion>
                 </div>
-                <div className='taskBarIcons'>
-                    <button className='cartButton' title="Cart" onClick={handleCartClick}>
-                        <FontAwesomeIcon icon={faShoppingCart} className='iconCart' />
-                        {cartItems.length > 0 && (
-                            <span className='cart-count'>{cartItems.length}</span>
-                        )}
-                    </button>
-                </div>
                 <div className='TaskBarButton'>
                     {!isLoggedIn ? (
                         <>
@@ -102,14 +83,14 @@ function Taskbar() {
                             <SignUp />
                         </>
                     ) : (
-                        <UserConfig />
+                        <>
+                            <CartOffcanvas />
+                            <UserConfig />
+                        </>
                     )}
                     <OffcanvasMenu />
                 </div>
             </div>
-
-            {/* Giỏ hàng Offcanvas */}
-            <CartOffcanvas show={cartVisible} onHide={handleCloseCart} />
         </div>
     );
 }

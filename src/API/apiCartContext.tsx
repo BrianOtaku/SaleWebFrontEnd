@@ -73,7 +73,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const newItem = { ...item, cartId: newCartId, quantity: response.data.cart.quantity };
 
         setCartItems([...cartItems, newItem]);
-        alert("Sản phẩm đã được thêm vào giỏ hàng thành công!");
+        // alert("Sản phẩm đã được thêm vào giỏ hàng thành công!");
       } else {
         console.error("Phản hồi của máy chủ không bao gồm cartId.");
       }
@@ -119,11 +119,11 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (!token) {
         return;
       }
-  
+
       const userData: UserAccount = await getUserProfile(token);
-  
+
       alert("Chúc mừng bạn đã đăng nhập thành công!");
-  
+
       setTimeout(() => {
         setIsLoggedIn(true);
         setUserAccount(userData);
@@ -135,7 +135,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUserAccount(null);
     }
   };
-  
+
   const logout = () => {
     setIsLoggedIn(false);
     setUserAccount(null);
