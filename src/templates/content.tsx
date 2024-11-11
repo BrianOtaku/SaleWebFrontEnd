@@ -70,7 +70,7 @@ function Content() {
       });
     }
   };
-
+  
   const handlePreviousPage = () => {
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
   };

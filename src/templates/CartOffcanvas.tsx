@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { useCart } from '../API/apiCartContext';
 import '../styles/cartOffcanvas.css';
@@ -9,11 +9,15 @@ interface CartOffcanvasProps {
 }
 
 const CartOffcanvas: React.FC<CartOffcanvasProps> = ({ show, onHide }) => {
-    const { cartItems, removeFromCart, updateProductQuantity } = useCart();
+    const { cartItems = [], loadCartItems, removeFromCart, updateProductQuantity } = useCart(); // Default cartItems to an empty array
     const [editingItemId, setEditingItemId] = useState<number | null>(null);
     const [tempQuantities, setTempQuantities] = useState<{ [productId: number]: number }>({});
+    const { isLoggedIn } = useCart();
 
-    // Xử lý tăng số lượng sản phẩm
+    useEffect(() => {
+        loadCartItems();
+    }, []);
+
     const handleIncrease = (productId: number) => {
         setTempQuantities((prev) => ({
             ...prev,
@@ -21,7 +25,6 @@ const CartOffcanvas: React.FC<CartOffcanvasProps> = ({ show, onHide }) => {
         }));
     };
 
-    // Xử lý giảm số lượng sản phẩm
     const handleDecrease = (productId: number) => {
         setTempQuantities((prev) => ({
             ...prev,
@@ -29,7 +32,6 @@ const CartOffcanvas: React.FC<CartOffcanvasProps> = ({ show, onHide }) => {
         }));
     };
 
-    // Bắt đầu chỉnh sửa số lượng
     const startEditing = (productId: number, currentQuantity: number) => {
         setEditingItemId(productId);
         setTempQuantities((prev) => ({
@@ -38,7 +40,6 @@ const CartOffcanvas: React.FC<CartOffcanvasProps> = ({ show, onHide }) => {
         }));
     };
 
-    // Lưu số lượng đã thay đổi
     const saveQuantity = (productId: number) => {
         const newQuantity = tempQuantities[productId];
         if (newQuantity !== undefined) {
@@ -53,11 +54,11 @@ const CartOffcanvas: React.FC<CartOffcanvasProps> = ({ show, onHide }) => {
                 <Offcanvas.Title>Giỏ hàng</Offcanvas.Title>
             </Offcanvas.Header>
             <Offcanvas.Body>
-                {cartItems.length === 0 ? (
+                {Array.isArray(cartItems) && cartItems.length === 0 ? (
                     <p>Giỏ hàng của bạn trống</p>
                 ) : (
                     <div>
-                        {cartItems.map((item) => (
+                        {Array.isArray(cartItems) && cartItems.map((item) => (
                             <div key={item.productId} className="cart-item">
                                 <img src={item.productImage} alt={item.productName} className="cart-item-image" />
                                 <div className="cart-item-details">
