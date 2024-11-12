@@ -148,7 +148,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
 
                         <Col md={6}>
                             <Form.Group controlId="formProductImage">
-                                <Form.Label>Image</Form.Label>
+                                <Form.Label>Image (1:1 scale required)</Form.Label>
                                 <Form.Control
                                     type="text"
                                     placeholder="Enter image URL"
