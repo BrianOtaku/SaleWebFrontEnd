@@ -27,7 +27,6 @@ export const getUserProfileById = async (id: number, token: string) => {
         const response = await AxiosInstance.get(apiUrl, {
             headers: getAuthHeaders()
         });
-        // localStorage.setItem("userProfile", JSON.stringify(response.data));
         return response.data;
     } catch (error) {
         console.error('Error fetching user profile:', error);
@@ -80,6 +79,20 @@ export const getAllProducts = async (token: string) => {
 export const getAllOrders = async (token: string) => {
     try {
         const response = await AxiosInstance.get('/api/orders', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching all orders:', error);
+        throw error;
+    }
+};
+
+export const getAllCarts = async (id: number, token: string) => {
+    try {
+        const response = await AxiosInstance.get(`/api/cart/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },

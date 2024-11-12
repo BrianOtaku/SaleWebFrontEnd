@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import Offcanvas from 'react-bootstrap/Offcanvas';
+import Modal from 'react-bootstrap/Modal';
 import { useCart } from '../API/apiCartContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+import { faMinus, faShoppingCart, faPlus, faBoxesPacking } from '@fortawesome/free-solid-svg-icons';
 import '../styles/cartOffcanvas.css';
+import { Button, ModalFooter } from 'react-bootstrap';
 
-const CartOffcanvas = () => {
+const CartModal = () => {
     const { cartItems, removeFromCart, updateProductQuantity } = useCart();
-    const [editingItemId, setEditingItemId] = useState<number | null>(null);
     const [tempQuantities, setTempQuantities] = useState<{ [productId: number]: number }>({});
 
     const [show, setShow] = useState(false);
@@ -16,33 +16,19 @@ const CartOffcanvas = () => {
     const handleShow = () => setShow(true);
 
     const handleIncrease = (productId: number) => {
-        setTempQuantities((prev) => ({
-            ...prev,
-            [productId]: (prev[productId] || 1) + 1,
-        }));
+        setTempQuantities((prev) => {
+            const newQuantity = (prev[productId] || 1) + 1;
+            updateProductQuantity(productId, newQuantity);  // Cập nhật ngay lập tức khi nhấn "+"
+            return { ...prev, [productId]: newQuantity };
+        });
     };
 
     const handleDecrease = (productId: number) => {
-        setTempQuantities((prev) => ({
-            ...prev,
-            [productId]: Math.max(1, (prev[productId] || 1) - 1),
-        }));
-    };
-
-    const startEditing = (productId: number, currentQuantity: number) => {
-        setEditingItemId(productId);
-        setTempQuantities((prev) => ({
-            ...prev,
-            [productId]: currentQuantity,
-        }));
-    };
-
-    const saveQuantity = (productId: number) => {
-        const newQuantity = tempQuantities[productId];
-        if (newQuantity !== undefined) {
-            updateProductQuantity(productId, newQuantity);
-        }
-        setEditingItemId(null);
+        setTempQuantities((prev) => {
+            const newQuantity = Math.max(1, (prev[productId] || 1) - 1);
+            updateProductQuantity(productId, newQuantity);  // Cập nhật ngay lập tức khi nhấn "-"
+            return { ...prev, [productId]: newQuantity };
+        });
     };
 
     return (
@@ -50,19 +36,17 @@ const CartOffcanvas = () => {
             <button className="cartButton" title="Giỏ hàng" onClick={handleShow}>
                 <FontAwesomeIcon icon={faShoppingCart} className="iconCart" />
                 {cartItems.length > 0 && (
-                    <span
-                        style={{ marginLeft: '7px' }}
-                        className="cart-count">{cartItems.length}</span>
+                    <span style={{ marginLeft: '7px' }} className="cart-count">{cartItems.length}</span>
                 )}
             </button>
 
-            <Offcanvas show={show} onHide={handleClose} placement="end" className="cart-offcanvas">
-                <Offcanvas.Header closeButton>
-                    <Offcanvas.Title>Giỏ hàng</Offcanvas.Title>
-                </Offcanvas.Header>
-                <Offcanvas.Body>
+            <Modal show={show} onHide={handleClose} centered size='lg'>
+                <Modal.Header closeButton>
+                    <Modal.Title>Giỏ Hàng</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
                     {cartItems.length === 0 ? (
-                        <p>Giỏ hàng của bạn trống</p>
+                        <h5 style={{ textAlign: 'center' }}>Giỏ hàng của bạn trống!</h5>
                     ) : (
                         <div>
                             {cartItems.map((item) => (
@@ -71,43 +55,48 @@ const CartOffcanvas = () => {
                                     <div className="cart-item-details">
                                         <h5>{item.productName}</h5>
                                         <p>Giá: {item.cost} VND</p>
-                                        {editingItemId === item.productId ? (
-                                            <div className="quantity-controls">
-                                                <button
-                                                    onClick={() => handleDecrease(item.productId)}
-                                                    disabled={tempQuantities[item.productId] <= 1}
-                                                >
-                                                    -
-                                                </button>
-                                                <span>{tempQuantities[item.productId]}</span>
-                                                <button onClick={() => handleIncrease(item.productId)}>+</button>
-                                                <button onClick={() => saveQuantity(item.productId)} className="save-button">
-                                                    Lưu
-                                                </button>
-                                            </div>
-                                        ) : (
-                                            <div>
-                                                <span>Số lượng: {item.quantity}</span>
-                                                <button
-                                                    onClick={() => startEditing(item.productId, item.quantity)}
-                                                    className="edit-button"
-                                                >
-                                                    Thay đổi số lượng
-                                                </button>
-                                            </div>
-                                        )}
+                                    </div>
+                                    <div className="quantity-controls">
+                                        <button
+                                            onClick={() => handleDecrease(item.productId)}
+                                            disabled={tempQuantities[item.productId] === 1}
+                                        >
+                                            <FontAwesomeIcon icon={faMinus} />
+                                        </button>
+                                        <span>{tempQuantities[item.productId] || item.quantity}</span>
+                                        <button onClick={() => handleIncrease(item.productId)}>
+                                            <FontAwesomeIcon icon={faPlus} />
+                                        </button>
+                                    </div>
+                                    <div className='cartItemButton'>
                                         <button onClick={() => removeFromCart(item.productId)} className="remove-button">
                                             Xóa
+                                        </button>
+                                        <button className="buy-button">
+                                            Mua
                                         </button>
                                     </div>
                                 </div>
                             ))}
                         </div>
                     )}
-                </Offcanvas.Body>
-            </Offcanvas>
+                </Modal.Body>
+                <ModalFooter>
+                    {cartItems.length === 0 ? (
+                        <Button variant='success' className='orderButton' style={{ opacity: '0' }} disabled>
+                            Order
+                            <FontAwesomeIcon icon={faBoxesPacking} />
+                        </Button>
+                    ) : (
+                        <Button variant='success' className='orderButton'>
+                            Order
+                            <FontAwesomeIcon icon={faBoxesPacking} style={{ marginLeft: '7px' }} />
+                        </Button>
+                    )}
+                </ModalFooter>
+            </Modal>
         </>
     );
 };
 
-export default CartOffcanvas;
+export default CartModal;

@@ -18,7 +18,8 @@ import './styles/taskbar.css';
 import './styles/offcanvas.css';
 import './styles/content.css';
 import './styles/footer.css';
-import './styles/productCard.css'
+import './styles/productCard.css';
+import './styles/cartOffcanvas.css';
 
 // import components
 import { getUserRoleFromToken } from './API/apiAccount';

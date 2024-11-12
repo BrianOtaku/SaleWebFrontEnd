@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { getAuthHeaders, getUserProfile } from './apiGetInfomations';
 
-interface CartItem {
+export interface CartItem {
   cartId?: number;
   productId: number;
   productName: string;
@@ -156,7 +156,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       );
       if (response.status === 200) {
         setCartItems(cartItems.filter(cartItem => cartItem.productId !== productId));
-        alert("Đã xóa sản phẩm thành công");
+        // alert("Đã xóa sản phẩm thành công");
       } else {
         console.error("Không thể xóa sản phẩm. Trạng thái phản hồi:", response.status);
       }

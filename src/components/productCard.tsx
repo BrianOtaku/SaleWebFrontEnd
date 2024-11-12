@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Product } from "../API/apiGetProductDetail";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,9 +10,19 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, handleAddToCart }) => {
+    const [isAdded, setIsAdded] = useState(false); // State để kiểm tra sản phẩm đã được thêm hay chưa
+
+    const handleButtonClick = () => {
+        if (!isAdded) {
+            handleAddToCart(product); // Thêm sản phẩm vào giỏ hàng
+            setIsAdded(true); // Đánh dấu sản phẩm đã được thêm
+        } else {
+            alert("Sản phẩm đã có trong giỏ hàng!"); // Hiển thị thông báo nếu sản phẩm đã được thêm
+        }
+    };
+
     return (
         <div className="product-card">
-
             <div className="cardContent">
                 <div className="product-image">
                     <Link to={`/product/${product.productId}`}>
@@ -44,14 +54,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, handleAddToCart }) =
 
             <div className="button">
                 <button
-                    className="add-to-cart-button"
-                    onClick={() => handleAddToCart(product)}
+                    className={`add-to-cart-button ${isAdded ? "added" : ""}`} // Thêm class để thay đổi style nếu muốn
+                    onClick={handleButtonClick}
                 >
-                    Add to Cart
+                    {isAdded ? "Đã thêm" : "Add to Cart"}
                     <FontAwesomeIcon icon={faCartArrowDown} style={{ marginLeft: '7px' }} />
                 </button>
             </div>
-
         </div>
     );
 };
