@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom';
+import Accordion from 'react-bootstrap/Accordion';
+
+//import components
 import OffcanvasMenu from '../components/offcanvas';
 import SignIn from '../components/signIn';
 import SignUp from '../components/signUp';
-import Accordion from 'react-bootstrap/Accordion';
 import UserConfig from '../components/userConfig';
-import CartOffcanvas from '../components/CartOffcanvas';
-import { useNavigate } from 'react-router-dom';
+import CartModal from '../components/productFlow/cartModal';
+import ProductTypeList from '../components/productFlow/productTypeList';
+import ProductManufacturer from '../components/productFlow/productManufacturer';
 
 function Taskbar() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -24,7 +28,7 @@ function Taskbar() {
 
     const handleLogin = () => {
         setIsLoggedIn(true);
-        window.location.reload(); // Tải lại trang sau khi đăng nhập thành công
+        window.location.reload();
     };
 
     const handleSearch = (e: React.FormEvent) => {
@@ -56,10 +60,7 @@ function Taskbar() {
                         <Accordion.Item eventKey="0">
                             <Accordion.Header>MANUFACTURER</Accordion.Header>
                             <Accordion.Body>
-                                <li>Asus</li>
-                                <li>Apple</li>
-                                <li>Lenovo</li>
-                                <li>MSI</li>
+                                <ProductManufacturer />
                             </Accordion.Body>
                         </Accordion.Item>
                     </Accordion>
@@ -69,9 +70,7 @@ function Taskbar() {
                         <Accordion.Item eventKey="0">
                             <Accordion.Header>PRODUCT TYPE</Accordion.Header>
                             <Accordion.Body>
-                                <li>Laptop</li>
-                                <li>Gaming Laptop</li>
-                                <li>Gear</li>
+                                <ProductTypeList />
                             </Accordion.Body>
                         </Accordion.Item>
                     </Accordion>
@@ -84,7 +83,7 @@ function Taskbar() {
                         </>
                     ) : (
                         <>
-                            <CartOffcanvas />
+                            <CartModal />
                             <UserConfig />
                         </>
                     )}

@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { getAuthHeaders, getUserProfile } from './apiGetInfomations';
 
-export interface CartItem {
+interface CartItem {
   cartId?: number;
   productId: number;
   productName: string;
@@ -24,11 +24,12 @@ interface CartContextProps {
   cartItems: CartItem[];
   addToCart: (item: CartItem) => void;
   updateProductQuantity: (productId: number, quantity: number) => void;
-  removeFromCart: (productId: number) => void;
+  removeFromCart: (productId: number, cartId: number) => void;
   isLoggedIn: boolean;
   login: () => Promise<void>;
   logout: () => void;
   userAccount: UserAccount | null;
+  fetchCartItems: (userId: number) => Promise<void>;
 }
 
 const CartContext = createContext<CartContextProps | undefined>(undefined);
@@ -38,6 +39,29 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userAccount, setUserAccount] = useState<UserAccount | null>(null);
 
+  const fetchCartItems = async (userId: number) => {
+    try {
+      const headers = getAuthHeaders();
+      const response = await axios.get(`http://localhost:8080/api/cart/${userId}`, { headers });
+
+      if (response.status === 200) {
+        const items = response.data.map((item: any) => ({
+          cartId: item.cartId,
+          productId: item.product.productId,
+          productName: item.product.productName,
+          productImage: item.product.productImage,
+          cost: item.product.cost,
+          quantity: item.quantity,
+        }));
+        setCartItems(items);
+      } else {
+        console.error("Không thể tải dữ liệu giỏ hàng:", response.status);
+      }
+    } catch (error) {
+      console.error("Lỗi khi tải dữ liệu giỏ hàng:", error);
+    }
+  };
+
   useEffect(() => {
     const initializeUser = async () => {
       const token = localStorage.getItem('token');
@@ -46,8 +70,9 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
           const userData: UserAccount = await getUserProfile(token);
           setIsLoggedIn(true);
           setUserAccount(userData);
+          await fetchCartItems(userData.userId);
         } catch (error) {
-          console.error("Không thể lấy thông tin người dùng:", error);
+          console.error("Unable to fetch user information:", error);
         }
       }
     };
@@ -73,7 +98,6 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const newItem = { ...item, cartId: newCartId, quantity: response.data.cart.quantity };
 
         setCartItems([...cartItems, newItem]);
-        // alert("Sản phẩm đã được thêm vào giỏ hàng thành công!");
       } else {
         console.error("Phản hồi của máy chủ không bao gồm cartId.");
       }
@@ -116,18 +140,13 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const login = async () => {
     try {
       const token = localStorage.getItem('token');
-      if (!token) {
-        return;
-      }
+      if (!token) return;
 
       const userData: UserAccount = await getUserProfile(token);
+      setIsLoggedIn(true);
+      setUserAccount(userData);
 
-      alert("Chúc mừng bạn đã đăng nhập thành công!");
-
-      setTimeout(() => {
-        setIsLoggedIn(true);
-        setUserAccount(userData);
-      }, 100);
+      await fetchCartItems(userData.userId);
     } catch (error) {
       console.error("Không đăng nhập được:", error);
       alert("Đăng nhập không thành công. Vui lòng thử lại.");
@@ -136,27 +155,33 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+
   const logout = () => {
     setIsLoggedIn(false);
     setUserAccount(null);
     setCartItems([]);
   };
 
-  const removeFromCart = async (productId: number) => {
-    const item = cartItems.find(cartItem => cartItem.productId === productId);
-    if (!item || !item.cartId) {
+  const removeFromCart = async (productId: number, cartId: number) => {
+    const item = cartItems.find(
+      (cartItem) => cartItem.productId === productId && cartItem.cartId === cartId
+    );
+    if (!item) {
       console.error("Không tìm thấy sản phẩm hoặc thiếu cartId.");
       return;
     }
+
     try {
       const headers = getAuthHeaders();
-      const response = await axios.delete(
-        `http://localhost:8080/api/cart/${item.cartId}`,
-        { headers }
-      );
+      const response = await axios.delete(`http://localhost:8080/api/cart/${item.cartId}`, {
+        headers,
+      });
+
       if (response.status === 200) {
-        setCartItems(cartItems.filter(cartItem => cartItem.productId !== productId));
-        // alert("Đã xóa sản phẩm thành công");
+        console.log("Đã xóa sản phẩm thành công.");
+        if (userAccount) {
+          fetchCartItems(userAccount.userId); // Tải lại danh sách giỏ hàng sau khi xóa
+        }
       } else {
         console.error("Không thể xóa sản phẩm. Trạng thái phản hồi:", response.status);
       }
@@ -175,7 +200,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       isLoggedIn,
       login,
       logout,
-      userAccount
+      userAccount,
+      fetchCartItems
     }}>
       {children}
     </CartContext.Provider>

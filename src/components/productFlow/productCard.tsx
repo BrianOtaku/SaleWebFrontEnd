@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Product } from "../API/apiGetProductDetail";
+import { Product } from "../../API/apiGetProductDetail";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCartArrowDown } from "@fortawesome/free-solid-svg-icons";
+import { faCartArrowDown, faDollarSign } from "@fortawesome/free-solid-svg-icons";
 
 interface ProductCardProps {
     product: Product;
@@ -10,14 +10,27 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, handleAddToCart }) => {
-    const [isAdded, setIsAdded] = useState(false); // State để kiểm tra sản phẩm đã được thêm hay chưa
+    const [isAdded, setIsAdded] = useState(false);
+
+    // Kiểm tra trạng thái từ localStorage khi component tải
+    useEffect(() => {
+        const cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
+        if (cartItems.includes(product.productId)) {
+            setIsAdded(true);
+        }
+    }, [product.productId]);
 
     const handleButtonClick = () => {
         if (!isAdded) {
-            handleAddToCart(product); // Thêm sản phẩm vào giỏ hàng
-            setIsAdded(true); // Đánh dấu sản phẩm đã được thêm
+            handleAddToCart(product);
+            setIsAdded(true);
+
+            // Lưu productId vào localStorage
+            const cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
+            cartItems.push(product.productId);
+            localStorage.setItem("cartItems", JSON.stringify(cartItems));
         } else {
-            alert("Sản phẩm đã có trong giỏ hàng!"); // Hiển thị thông báo nếu sản phẩm đã được thêm
+            alert("Sản phẩm đã có trong giỏ hàng!");
         }
     };
 
@@ -48,13 +61,17 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, handleAddToCart }) =
                             </li>
                         </ul>
                     </div>
-                    <p className="product-price">{product.cost} VND</p>
+                    <p className="product-price">Giá: {product.cost} VND</p>
                 </div>
             </div>
 
-            <div className="button">
+            <div className="CardButtons">
+                <button className="buyNowCardBtn">
+                    Buy Now!
+                    <FontAwesomeIcon icon={faDollarSign} style={{ marginLeft: '7px' }} />
+                </button>
                 <button
-                    className={`add-to-cart-button ${isAdded ? "added" : ""}`} // Thêm class để thay đổi style nếu muốn
+                    className={`add-to-cart-button ${isAdded ? "added" : ""}`}
                     onClick={handleButtonClick}
                 >
                     {isAdded ? "Đã thêm" : "Add to Cart"}

@@ -1,7 +1,7 @@
 // src/pages/Content.tsx
 import React, { useState, useEffect } from "react";
 import { getProductsDetail, Product } from "../API/apiGetProductDetail";
-import ProductCard from "../components/productCard";
+import ProductCard from "../components/productFlow/productCard";
 import { useCart } from "../API/apiCartContext";
 import { faAnglesLeft, faAnglesRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

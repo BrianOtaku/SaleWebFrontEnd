@@ -1,5 +1,7 @@
 import React from 'react';
 import Accordion from 'react-bootstrap/Accordion';
+import ProductTypeList from './productFlow/productTypeList';
+import ProductManufacturer from './productFlow/productManufacturer';
 
 function List() {
     return (
@@ -7,18 +9,13 @@ function List() {
             <Accordion.Item eventKey="0">
                 <Accordion.Header>MANUFACTURER</Accordion.Header>
                 <Accordion.Body>
-                    <li>Asus</li>
-                    <li>Apple</li>
-                    <li>Lenovo</li>
-                    <li>MSI</li>
+                    <ProductManufacturer />
                 </Accordion.Body>
             </Accordion.Item>
             <Accordion.Item eventKey="1">
                 <Accordion.Header>PRODUCT TYPE</Accordion.Header>
                 <Accordion.Body>
-                    <li>Laptop</li>
-                    <li>Gaming Laptop</li>
-                    <li>Gear</li>
+                    <ProductTypeList />
                 </Accordion.Body>
             </Accordion.Item>
             <Accordion.Item eventKey="2">

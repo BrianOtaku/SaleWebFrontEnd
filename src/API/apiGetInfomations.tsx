@@ -90,17 +90,16 @@ export const getAllOrders = async (token: string) => {
     }
 };
 
-export const getAllCarts = async (id: number, token: string) => {
-    try {
-        const response = await AxiosInstance.get(`/api/cart/${id}`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
-        return response.data;
-    } catch (error) {
-        console.error('Error fetching all orders:', error);
-        throw error;
-    }
-};
-
+// export const getAllCarts = async (id: number, token: string) => {
+//     try {
+//         const response = await AxiosInstance.get(`/api/cart/${id}`, {
+//             headers: {
+//                 Authorization: `Bearer ${token}`,
+//             },
+//         });
+//         return response.data;
+//     } catch (error) {
+//         console.error('Error fetching all orders:', error);
+//         throw error;
+//     }
+// };

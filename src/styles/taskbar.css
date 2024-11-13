@@ -98,8 +98,6 @@
     box-shadow: none;
 }
 
-
-
 /* Buttons */
 .TaskBarButton
 {
@@ -175,19 +173,3 @@
     display: inline-block;
 }
 
-/* {
-    background: none;
-    border: none;
-    padding: 0; 
-    color: #ff5722;
-} */
-
-/* .iconCart {
-    font-size: 1.5em;
-    color: #f4f6f6;
-    transition: color 0.3s ease;
-} */
-
-/* .iconCart:hover {
-    color: #ff5722; 
-} */

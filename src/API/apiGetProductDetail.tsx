@@ -75,6 +75,18 @@ export const getProductsByName = async (name: string): Promise<Product[]> => {
   }
 };
 
+export const getProductsByManufacturer = async (manufacturer: string, page: number, limit: number): Promise<Product[]> => {
+  try {
+    const response = await axios.get("http://localhost:8080/api/products/searchByManufacturer", {
+      params: { manufacturer, page, limit },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching products by manufacturer:", error);
+    throw error;
+  }
+};
+
 export const getAllProduct = async (): Promise<Product[]> => {
   try {
     const response = await axios.get("http://localhost:8080/api/products");

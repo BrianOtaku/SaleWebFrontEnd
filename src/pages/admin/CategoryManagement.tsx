@@ -4,7 +4,6 @@ import { useSelect } from '../hooks/useSelect';
 import CRUD from '../hooks/useCRUD';
 import { CategoryData } from '../../API/apiCRUD';
 
-
 interface Category {
     categoryId: number;
     categoryName: string;

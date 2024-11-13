@@ -2,8 +2,8 @@ import React from 'react';
 import Carousel from 'react-bootstrap/Carousel';
 import 'bootstrap/dist/css/bootstrap.min.css';
 const images = [
-    '/image/banner.jpg',
     '/image/banner1.png',
+    '/image/banner.jpg',
     '/image/banner2.jpg',
     '/image/banner3.png',
     '/image/banner4.jpg',
