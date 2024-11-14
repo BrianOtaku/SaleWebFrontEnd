@@ -25,17 +25,15 @@ function ProductManagement() {
 
     useEffect(() => {
         const fetchProducts = async () => {
-            const token = localStorage.getItem('token');
-            console.log(token);
-            if (token) {
-                try {
-                    const productsData = await getAllProducts(token);
-                    console.log(productsData);
-                    setProducts(productsData);
-                } catch (error) {
-                    console.error('Error fetching product:', error);
-                }
+
+            try {
+                const productsData = await getAllProducts();
+                console.log(productsData);
+                setProducts(productsData);
+            } catch (error) {
+                console.error('Error fetching product:', error);
             }
+
         };
 
         fetchProducts();

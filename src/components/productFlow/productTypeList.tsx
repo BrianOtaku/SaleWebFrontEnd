@@ -15,15 +15,9 @@ const ProductTypeList: React.FC = () => {
 
     useEffect(() => {
         const fetchCategories = async () => {
-            const token = localStorage.getItem('token');
-            if (!token) {
-                setError('Token not found');
-                setLoading(false);
-                return;
-            }
 
             try {
-                const fetchedCategories = await getAllCategories(token);
+                const fetchedCategories = await getAllCategories();
                 setCategories(fetchedCategories);
             } catch (err) {
                 setError('Failed to fetch categories');
@@ -31,6 +25,7 @@ const ProductTypeList: React.FC = () => {
             } finally {
                 setLoading(false);
             }
+
         };
 
         fetchCategories();

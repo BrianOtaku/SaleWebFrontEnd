@@ -18,16 +18,15 @@ function CategoryManagement() {
 
     useEffect(() => {
         const fetchCategories = async () => {
-            const token = localStorage.getItem('token');
-            if (token) {
-                try {
-                    const categoriesData = await getAllCategories(token);
-                    console.log(categoriesData);
-                    setCategories(categoriesData);
-                } catch (error) {
-                    console.error('Error fetching category:', error);
-                }
+
+            try {
+                const categoriesData = await getAllCategories();
+                console.log(categoriesData);
+                setCategories(categoriesData);
+            } catch (error) {
+                console.error('Error fetching category:', error);
             }
+
         };
 
         fetchCategories();

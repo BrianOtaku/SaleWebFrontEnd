@@ -1,4 +1,3 @@
-// src/pages/Content.tsx
 import React, { useState, useEffect } from "react";
 import { getProductsDetail, Product } from "../API/apiGetProductDetail";
 import ProductCard from "../components/productFlow/productCard";

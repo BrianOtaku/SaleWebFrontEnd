@@ -3,9 +3,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Product, getProductById, getAllProduct } from "../API/apiGetProductDetail";
-import "../styles/productDetail.css";
-import Taskbar from "./taskbar";
-import Footer from "./footer";
 import Slider from "react-slick";
 import { useCart } from "../API/apiCartContext";
 
@@ -133,7 +130,6 @@ const ProductDetail: React.FC = () => {
 
     return (
         <div className="detail-page">
-            <Taskbar />
             <div className="detail-container">
                 <div className="detail-image-section">
                     <img src={product.productImage} alt={product.productName} className="detail-image" />
@@ -201,8 +197,6 @@ const ProductDetail: React.FC = () => {
                     </button>
                 </div>
             </div>
-
-            <Footer />
         </div>
     );
 };

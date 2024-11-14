@@ -11,8 +11,8 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, handleAddToCart }) => {
     const [isAdded, setIsAdded] = useState(false);
+    const token = localStorage.getItem('token');
 
-    // Kiểm tra trạng thái từ localStorage khi component tải
     useEffect(() => {
         const cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
         if (cartItems.includes(product.productId)) {
@@ -21,11 +21,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, handleAddToCart }) =
     }, [product.productId]);
 
     const handleButtonClick = () => {
-        if (!isAdded) {
+        if (!token) {
+            alert("Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng!");
+        } else if (!isAdded) {
             handleAddToCart(product);
             setIsAdded(true);
 
-            // Lưu productId vào localStorage
             const cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
             cartItems.push(product.productId);
             localStorage.setItem("cartItems", JSON.stringify(cartItems));
@@ -33,6 +34,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, handleAddToCart }) =
             alert("Sản phẩm đã có trong giỏ hàng!");
         }
     };
+
 
     return (
         <div className="product-card">
@@ -74,7 +76,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, handleAddToCart }) =
                     className={`add-to-cart-button ${isAdded ? "added" : ""}`}
                     onClick={handleButtonClick}
                 >
-                    {isAdded ? "Đã thêm" : "Add to Cart"}
+                    {isAdded && token ? "Đã thêm" : "Add to Cart"}
                     <FontAwesomeIcon icon={faCartArrowDown} style={{ marginLeft: '7px' }} />
                 </button>
             </div>

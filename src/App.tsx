@@ -10,8 +10,8 @@ import Taskbar from './templates/taskbar';
 
 // import admin pages
 import DashBoard from './pages/admin/DashBoard';
-import ProductDetail from './templates/productDetail';
-import ProductManufacturerResult from './templates/productManufacturerResult';
+import ProductDetail from './pages/productDetail';
+import ProductManufacturerResult from './pages/productManufacturerResult';
 
 // import styles
 import './styles/layout.css';
@@ -22,6 +22,7 @@ import './styles/content.css';
 import './styles/footer.css';
 import './styles/productCard.css';
 import './styles/cartModal.css';
+import './styles/productDetail.css';
 
 // import components
 import { getUserRoleFromToken } from './API/apiAccount';
@@ -72,7 +73,6 @@ function App() {
                   <>
                     <Taskbar />
                     <ProductManufacturerResult
-                      manufacturer="Example Manufacturer"
                       handleAddToCart={() => { }}
                       page={1}
                       limit={10}

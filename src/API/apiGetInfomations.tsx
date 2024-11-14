@@ -48,12 +48,12 @@ export const getAllUsers = async (token: string) => {
     }
 };
 
-export const getAllCategories = async (token: string) => {
+export const getAllCategories = async () => {
     try {
         const response = await AxiosInstance.get('/categories', {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
+            // headers: {
+            //     Authorization: `Bearer ${token}`,
+            // },
         });
         return response.data;
     } catch (error) {
@@ -62,12 +62,12 @@ export const getAllCategories = async (token: string) => {
     }
 };
 
-export const getAllProducts = async (token: string) => {
+export const getAllProducts = async () => {
     try {
         const response = await AxiosInstance.get('/api/products', {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
+            // headers: {
+            //     Authorization: `Bearer ${token}`,
+            // },
         });
         return response.data;
     } catch (error) {
@@ -89,17 +89,3 @@ export const getAllOrders = async (token: string) => {
         throw error;
     }
 };
-
-// export const getAllCarts = async (id: number, token: string) => {
-//     try {
-//         const response = await AxiosInstance.get(`/api/cart/${id}`, {
-//             headers: {
-//                 Authorization: `Bearer ${token}`,
-//             },
-//         });
-//         return response.data;
-//     } catch (error) {
-//         console.error('Error fetching all orders:', error);
-//         throw error;
-//     }
-// };

@@ -20,7 +20,6 @@ function Taskbar() {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-
         if (token) {
             setIsLoggedIn(true);
         }
@@ -38,10 +37,14 @@ function Taskbar() {
         }
     };
 
+    const handleLogoClick = () => {
+        navigate('/');
+    };
+
     return (
         <div className='taskBar'>
             <div className='function'>
-                <button className='logo' title='Home'>
+                <button className='logo' title='Home' onClick={handleLogoClick}>
                     <img src="/image/logoSketch.png" alt="Logo" />
                 </button>
                 <form onSubmit={handleSearch}>

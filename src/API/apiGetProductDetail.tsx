@@ -53,6 +53,38 @@ export const getProductsDetail = async (
   }
 };
 
+export const getProductsByManufacturer = async (
+  manufacturer: string,
+  page: number = 1,
+  limit: number = 10
+): Promise<ProductDataResponse> => {
+  try {
+    const response = await axios.get("http://localhost:8080/api/products/searchByManufacturer", {
+      params: { manufacturer, page, limit },
+    });
+    const data = response.data;
+
+    const products = data.content.map((item: any) => ({
+      productId: item.productId,
+      productName: item.productName,
+      manufacturer: item.manufacturer,
+      productDescription: item.productDescription,
+      cost: item.cost,
+      productImage: item.productImage,
+      productQuantity: item.productQuantity,
+      category: item.category ? {
+        categoryId: item.category.categoryId,
+        categoryName: item.category.categoryName,
+      } : { categoryId: null, categoryName: "Unknown" },
+    }));
+
+    return { products, totalProducts: data.totalElements, totalPages: data.totalPages };
+  } catch (error) {
+    console.error("Error fetching products by manufacturer:", error);
+    throw error;
+  }
+};
+
 export const getProductById = async (productId: number): Promise<Product | null> => {
   try {
     const response = await axios.get(`http://localhost:8080/api/products/${productId}`);
@@ -71,18 +103,6 @@ export const getProductsByName = async (name: string): Promise<Product[]> => {
     return response.data;
   } catch (error) {
     console.error("Error fetching products by name:", error);
-    throw error;
-  }
-};
-
-export const getProductsByManufacturer = async (manufacturer: string, page: number, limit: number): Promise<Product[]> => {
-  try {
-    const response = await axios.get("http://localhost:8080/api/products/searchByManufacturer", {
-      params: { manufacturer, page, limit },
-    });
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching products by manufacturer:", error);
     throw error;
   }
 };

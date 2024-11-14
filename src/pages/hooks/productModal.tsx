@@ -45,8 +45,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const token = localStorage.getItem('token');
-                const categoriesData = await getAllCategories(token || '');
+                const categoriesData = await getAllCategories();
                 setCategories(categoriesData);
             } catch (error) {
                 console.error('Error fetching categories:', error);

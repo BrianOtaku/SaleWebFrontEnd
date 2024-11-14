@@ -9,15 +9,9 @@ const ProductManufacturer = () => {
 
     useEffect(() => {
         const fetchProducts = async () => {
-            const token = localStorage.getItem("token");
-            if (!token) {
-                setError("Token not found");
-                setLoading(false);
-                return;
-            }
 
             try {
-                const fetchedProducts = await getAllProducts(token);
+                const fetchedProducts = await getAllProducts();
                 setProducts(fetchedProducts);
             } catch (err) {
                 setError("Failed to fetch products");
@@ -25,6 +19,7 @@ const ProductManufacturer = () => {
             } finally {
                 setLoading(false);
             }
+
         };
 
         fetchProducts();
@@ -48,7 +43,7 @@ const ProductManufacturer = () => {
                 <p>Không có nhà sản xuất nào.</p>
             ) : (
                 manufacturers.map((manufacturer) => (
-                    <li>
+                    <li key={manufacturer}>
                         <Link
                             to={`/products/manufacturer/${manufacturer}`}
                             onClick={() => handleManufacturerClick(manufacturer)}
@@ -56,7 +51,6 @@ const ProductManufacturer = () => {
                                 color: 'black',
                                 textDecoration: 'none'
                             }}
-                            key={manufacturer}
                         >
                             {manufacturer}
                         </Link>
