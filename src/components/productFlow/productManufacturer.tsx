@@ -26,11 +26,9 @@ const ProductManufacturer = () => {
     }, []);
 
     const handleManufacturerClick = (manufacturer: string) => {
-        // Chuyển sang trang sản phẩm của nhà sản xuất khi người dùng click vào tên nhà sản xuất
         console.log("Chọn nhà sản xuất:", manufacturer);
     };
 
-    // Lấy danh sách các nhà sản xuất từ mảng sản phẩm
     const manufacturers = Array.from(new Set(products.map((product) => product.manufacturer)));
 
     return (

@@ -31,6 +31,7 @@
     object-fit: cover;
     margin-right: 16px;
     border-radius: 8px;
+    border: 1px solid rgb(213, 213, 213);
 }
 
 .cart-item-details {
@@ -131,7 +132,7 @@
     font-size: 0.8rem;
 }
 
-.orderButton
+.orderButton, .emptyCartButton
 {
     transition: transform 0.3s ease;
     border: none;
@@ -144,8 +145,15 @@
     transform: scale(1.1);
 }
 
+.emptyCartButton:hover
+{
+    background-color: rgb(255, 0, 0);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    transform: scale(1.1);
+}
+
 .blurred {
     filter: blur(5px);
-    opacity: 0.5;
-    transition: opacity 0.3s ease, filter 0.3s ease;
+    opacity: 0.3;
+    transition: opacity 0.3s ease;
 }

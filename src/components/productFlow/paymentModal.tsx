@@ -1,10 +1,8 @@
-// paymentModal.tsx
 import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import { Button, Form } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCreditCard } from '@fortawesome/free-solid-svg-icons';
-// import '../styles/paymentModal.css';
 
 interface PaymentModalProps {
     show: boolean;
@@ -22,7 +20,12 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ show, handleClose }) => {
     };
 
     return (
-        <Modal show={show} onHide={handleClose} centered>
+        <Modal
+            show={show}
+            onHide={handleClose}
+            centered
+            className='customModal'
+        >
             <Modal.Header closeButton>
                 <Modal.Title>Thanh Toán</Modal.Title>
             </Modal.Header>

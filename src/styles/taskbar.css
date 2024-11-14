@@ -107,7 +107,7 @@
 }
 
 .signInButton, .signUpButton, .searchButton, .Menu, .MsignInButton, 
-.MsignUpButton, .UserIcon, .cartButton 
+.MsignUpButton, .UserIcon, .cartButton, .notificationButton
 {
     border: none;
     border-bottom: 1px solid black;
@@ -145,7 +145,8 @@
 }
 
 .searchButton:hover, .signInButton:hover, .signUpButton:hover, .Menu:hover, 
-.MsignInButton:hover, .MsignUpButton:hover, .UserIcon:hover, .cartButton:hover
+.MsignInButton:hover, .MsignUpButton:hover, .UserIcon:hover, .cartButton:hover,
+.notificationButton:hover
 {
     border: none;
     border-bottom: 1px solid white;

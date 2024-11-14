@@ -41,6 +41,16 @@ const CartModal = () => {
         localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
     };
 
+    const handleEmptyCart = () => {
+        cartItems.forEach((item) => {
+            if (item.cartId) {
+                removeFromCart(item.productId, item.cartId);
+            }
+        });
+        localStorage.removeItem("cartItems");
+        setTempQuantities({});
+    };
+
     const handleOrderClick = () => {
         setShowPaymentModal(true);
     };
@@ -60,7 +70,9 @@ const CartModal = () => {
                 centered size='lg'
             >
                 <Modal.Header closeButton >
-                    <Modal.Title>Giỏ Hàng</Modal.Title>
+                    <Modal.Title className={showPaymentModal ? 'blurred' : ''}>
+                        Giỏ Hàng
+                    </Modal.Title>
                 </Modal.Header >
                 <Modal.Body className={showPaymentModal ? 'blurred' : ''}>
                     {cartItems.length === 0 ? (
@@ -113,10 +125,15 @@ const CartModal = () => {
                             <FontAwesomeIcon icon={faBoxesPacking} />
                         </Button>
                     ) : (
-                        <Button variant='success' className='orderButton' onClick={handleOrderClick}>
-                            Order
-                            <FontAwesomeIcon icon={faBoxesPacking} style={{ marginLeft: '7px' }} />
-                        </Button>
+                        <>
+                            <Button variant='danger' className='emptyCartButton' onClick={handleEmptyCart}>
+                                Empty Cart
+                            </Button>
+                            <Button variant='success' className='orderButton' onClick={handleOrderClick}>
+                                Order
+                                <FontAwesomeIcon icon={faBoxesPacking} style={{ marginLeft: '7px' }} />
+                            </Button>
+                        </>
                     )}
                 </ModalFooter>
             </Modal>

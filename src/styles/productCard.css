@@ -22,7 +22,6 @@
     border: 1px solid #f2f2f2;
     padding: 10px;
     border-radius: 8px;
-    text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -58,6 +57,8 @@
 
 .product-info
 {
+    display: flex;
+    flex-direction: column;
     max-height: 300px;
     width: 55%;
 }
@@ -81,7 +82,6 @@
     background-color: #f0f0f5;
     padding: 10px;
     border-radius: 8px;
-    /* margin: 10px 0; */
 }
 
 .specs-box ul {
@@ -92,10 +92,12 @@
 }
 
 .product-price {
+    display: flex;
+    margin-top: auto;
+    margin-bottom: 0px;
     font-size: 20px;
     color: #ff4747;
     font-weight: bold;
-    margin: 0px;
     position: relative;
 }
 

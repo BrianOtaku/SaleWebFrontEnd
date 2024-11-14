@@ -10,8 +10,8 @@ import Taskbar from './templates/taskbar';
 
 // import admin pages
 import DashBoard from './pages/admin/DashBoard';
-import ProductDetail from './pages/productDetail';
-import ProductManufacturerResult from './pages/productManufacturerResult';
+import ProductDetail from './pages/user/productDetail';
+import ProductManufacturerResult from './pages/user/productManufacturerResult';
 
 // import styles
 import './styles/layout.css';
@@ -23,6 +23,7 @@ import './styles/footer.css';
 import './styles/productCard.css';
 import './styles/cartModal.css';
 import './styles/productDetail.css';
+import './styles/paymentModal.css';
 
 // import components
 import { getUserRoleFromToken } from './API/apiAccount';

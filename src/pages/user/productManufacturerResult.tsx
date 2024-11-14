@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Product } from "../API/apiGetProductDetail";
-import { getProductsByManufacturer } from "../API/apiGetProductDetail";
-import ProductCard from "../components/productFlow/productCard";
+import { Product } from "../../API/apiGetProductDetail";
+import { getProductsByManufacturer } from "../../API/apiGetProductDetail";
+import ProductCard from "../../components/productFlow/productCard";
 import { faAnglesLeft, faAnglesRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 

@@ -12,6 +12,7 @@ import UserConfig from '../components/userConfig';
 import CartModal from '../components/productFlow/cartModal';
 import ProductTypeList from '../components/productFlow/productTypeList';
 import ProductManufacturer from '../components/productFlow/productManufacturer';
+import NotificationModal from '../components/productFlow/notificationModal';
 
 function Taskbar() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -88,6 +89,7 @@ function Taskbar() {
                         <>
                             <CartModal />
                             <UserConfig />
+                            <NotificationModal />
                         </>
                     )}
                     <OffcanvasMenu />

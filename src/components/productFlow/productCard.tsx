@@ -35,7 +35,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, handleAddToCart }) =
         }
     };
 
-
     return (
         <div className="product-card">
             <div className="cardContent">
@@ -63,7 +62,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, handleAddToCart }) =
                             </li>
                         </ul>
                     </div>
-                    <p className="product-price">Giá: {product.cost} VND</p>
+                    <p className="product-price">Giá: {product.cost.toLocaleString()} VND</p>
                 </div>
             </div>
 

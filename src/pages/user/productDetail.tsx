@@ -2,9 +2,12 @@ import React, { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { Product, getProductById, getAllProduct } from "../API/apiGetProductDetail";
+import { Product, getProductById, getAllProduct } from "../../API/apiGetProductDetail";
 import Slider from "react-slick";
-import { useCart } from "../API/apiCartContext";
+import { useCart } from "../../API/apiCartContext";
+import { Button } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCartArrowDown, faDollarSign } from "@fortawesome/free-solid-svg-icons";
 
 const ProductDetail: React.FC = () => {
     const { productId } = useParams<{ productId: string }>();
@@ -53,7 +56,7 @@ const ProductDetail: React.FC = () => {
     const handleAddToCart = () => {
         if (!isLoggedIn) {
             alert("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng.");
-            login(); // Ensure that login() is called without parameters like in content.tsx
+            login();
             return;
         }
 
@@ -71,7 +74,7 @@ const ProductDetail: React.FC = () => {
     const handleBuyNow = () => {
         if (!isLoggedIn) {
             alert("Vui lòng đăng nhập để mua sản phẩm.");
-            login(); // Use the login function without parameters, similar to `handleAddToCart`
+            login();
             return;
         }
 
@@ -83,7 +86,7 @@ const ProductDetail: React.FC = () => {
                 cost: product.cost,
                 quantity: 1,
             });
-            navigate("/cart"); // Redirect to the cart page after adding the product
+            navigate("/cart");
         }
     };
 
@@ -138,15 +141,28 @@ const ProductDetail: React.FC = () => {
                 <div className="detail-info-section">
                     <h2 className="detail-title">{product.productName}</h2>
                     <div className="detail-information">
-                        <p><strong>Product Description</strong></p>
-                        <p>{product.productDescription}</p>
+                        <p>Product Description: {product.productDescription}</p>
                     </div>
                     <p className="detail-price">
                         Giá: <span className="detail-price-value">{product.cost.toLocaleString()} VND</span>
                     </p>
                     <div className="detail-button-group">
-                        <button className="detail-buy-now-button" onClick={handleBuyNow}>Mua ngay</button>
-                        <button className="detail-add-to-cart-button" onClick={handleAddToCart}>Thêm vào giỏ hàng</button>
+                        <Button
+                            variant='danger'
+                            className="detail-buy-now-button"
+                            onClick={handleBuyNow}
+                        >
+                            Mua ngay
+                            <FontAwesomeIcon icon={faDollarSign} style={{ marginLeft: '7px' }} />
+                        </Button>
+                        <Button
+                            variant="success"
+                            className="detail-add-to-cart-button"
+                            onClick={handleAddToCart}
+                        >
+                            Thêm vào giỏ hàng
+                            <FontAwesomeIcon icon={faCartArrowDown} style={{ marginLeft: '7px' }} />
+                        </Button>
                     </div>
                 </div>
             </div>
