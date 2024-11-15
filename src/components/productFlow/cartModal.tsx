@@ -12,7 +12,7 @@ const CartModal = () => {
     const [tempQuantities, setTempQuantities] = useState<{ [productId: number]: number }>({});
     const [show, setShow] = useState(false);
     const [showPaymentModal, setShowPaymentModal] = useState(false);
-
+    const [removeCart, isRemoveCart] = useState(false);
     const orderContext = useContext(OrderContext);
     if (!orderContext) {
         throw new Error('OrderContext must be used within an OrderProvider');
@@ -22,7 +22,11 @@ const CartModal = () => {
     
     const handleClose = () => {
         setShow(false);
-        window.location.reload();
+        if(removeCart){
+            window.location.reload();
+            isRemoveCart(false)
+        }
+        else {isRemoveCart(false)}
     };
     const handleShow = () => setShow(true);
 
@@ -48,6 +52,7 @@ const CartModal = () => {
         const cartItems = JSON.parse(localStorage.getItem(`cartItems_${localUser}`) || "[]");
         const updatedCartItems = cartItems.filter((id: number) => id !== productId);
         localStorage.setItem(`cartItems_${localUser}`, JSON.stringify(updatedCartItems));
+        isRemoveCart(true);
     };
     const localUser = localStorage.getItem('userId') ?? '';
     if (localUser === null) {
@@ -63,9 +68,10 @@ const CartModal = () => {
         });
         localStorage.removeItem(`cartItems_${localUser}`);
         setTempQuantities({});
+        isRemoveCart(true)
     };
 
-    const handleOrderClick = (name:string, productId: number, orderQuantity: number, totalCost: number) => {
+     const handleOrderClick = (name:string, productId: number, orderQuantity: number, totalCost: number) => {
         setProductName(name)
         setProductId(productId); 
         setOrderQuantity(orderQuantity); 
