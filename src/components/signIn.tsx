@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignIn } from '@fortawesome/free-solid-svg-icons';
 import { signIn, getUserRoleFromToken } from '../API/apiAccount';
+import { getUserProfile } from '../API/apiGetInfomations';
 
 interface SignInProps {
     onLogin: () => void;
@@ -27,6 +28,9 @@ function SignIn({ onLogin }: SignInProps) {
 
             if (token) {
                 localStorage.setItem('token', token);
+                const userProfile = await getUserProfile(token);
+                const userId = userProfile.userId;
+                localStorage.setItem("userId", userId);
             }
 
             const role = getUserRoleFromToken(token);

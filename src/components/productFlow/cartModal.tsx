@@ -35,19 +35,21 @@ const CartModal = () => {
     };
 
     const handleRemoveFromCart = (productId: number, cartId: number) => {
+        const localUser = localStorage.getItem('userId');
         removeFromCart(productId, cartId);
-        const cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
+        const cartItems = JSON.parse(localStorage.getItem(`cartItems_${localUser}`) || "[]");
         const updatedCartItems = cartItems.filter((id: number) => id !== productId);
-        localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
+        localStorage.setItem(`cartItems_${localUser}`, JSON.stringify(updatedCartItems));
     };
 
     const handleEmptyCart = () => {
+        const localUser = localStorage.getItem('userId');
         cartItems.forEach((item) => {
             if (item.cartId) {
                 removeFromCart(item.productId, item.cartId);
             }
         });
-        localStorage.removeItem("cartItems");
+        localStorage.removeItem(`cartItems_${localUser}`);
         setTempQuantities({});
     };
 

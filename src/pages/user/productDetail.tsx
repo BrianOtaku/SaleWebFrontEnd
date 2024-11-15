@@ -141,28 +141,31 @@ const ProductDetail: React.FC = () => {
                 <div className="detail-info-section">
                     <h2 className="detail-title">{product.productName}</h2>
                     <div className="detail-information">
-                        <p>Product Description: {product.productDescription}</p>
+                        <p><strong>Product Description: {product.productDescription}</strong></p>
+                        <p><strong>Manufacturer: {product.manufacturer}</strong></p>
                     </div>
-                    <p className="detail-price">
-                        Giá: <span className="detail-price-value">{product.cost.toLocaleString()} VND</span>
-                    </p>
-                    <div className="detail-button-group">
-                        <Button
-                            variant='danger'
-                            className="detail-buy-now-button"
-                            onClick={handleBuyNow}
-                        >
-                            Mua ngay
-                            <FontAwesomeIcon icon={faDollarSign} style={{ marginLeft: '7px' }} />
-                        </Button>
-                        <Button
-                            variant="success"
-                            className="detail-add-to-cart-button"
-                            onClick={handleAddToCart}
-                        >
-                            Thêm vào giỏ hàng
-                            <FontAwesomeIcon icon={faCartArrowDown} style={{ marginLeft: '7px' }} />
-                        </Button>
+                    <div className="detail-footer">
+                        <div className="detail-price">
+                            Giá: <span className="detail-price-value">{product.cost.toLocaleString()} VND</span>
+                        </div>
+                        <div className="detail-button-group">
+                            <Button
+                                variant='danger'
+                                className="detail-buy-now-button"
+                                onClick={handleBuyNow}
+                            >
+                                Mua ngay
+                                <FontAwesomeIcon icon={faDollarSign} style={{ marginLeft: '7px' }} />
+                            </Button>
+                            <Button
+                                variant="success"
+                                className="detail-add-to-cart-button"
+                                onClick={handleAddToCart}
+                            >
+                                Thêm vào giỏ hàng
+                                <FontAwesomeIcon icon={faCartArrowDown} style={{ marginLeft: '7px' }} />
+                            </Button>
+                        </div>
                     </div>
                 </div>
             </div>

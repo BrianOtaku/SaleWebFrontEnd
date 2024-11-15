@@ -5,8 +5,9 @@ import { getProductsByManufacturer } from "../../API/apiGetProductDetail";
 import ProductCard from "../../components/productFlow/productCard";
 import { faAnglesLeft, faAnglesRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useCart } from "../../API/apiCartContext";
 
-const ProductManufacturerResult: React.FC<any> = ({ handleAddToCart }) => {
+const ProductManufacturerResult: React.FC<any> = () => {
     const { manufacturer } = useParams<{ manufacturer: string }>();
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -14,6 +15,8 @@ const ProductManufacturerResult: React.FC<any> = ({ handleAddToCart }) => {
     const [totalProducts, setTotalProducts] = useState(0);
     const page = 1;
     const limit = 10;
+
+    const { addToCart } = useCart();
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -62,6 +65,17 @@ const ProductManufacturerResult: React.FC<any> = ({ handleAddToCart }) => {
         return Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
     };
 
+    const handleAddToCart = (product: Product) => {
+        const item = {
+            productId: product.productId,
+            productName: product.productName,
+            productImage: product.productImage,
+            cost: product.cost,
+            quantity: 1,
+        };
+        addToCart(item);
+    };
+
     return (
         <div className="contentContainer">
             <h2>-- SẢN PHẨM CỦA {manufacturer?.toUpperCase()} --</h2>
@@ -74,7 +88,7 @@ const ProductManufacturerResult: React.FC<any> = ({ handleAddToCart }) => {
                             <ProductCard
                                 key={product.productId}
                                 product={product}
-                                handleAddToCart={handleAddToCart}
+                                handleAddToCart={() => handleAddToCart(product)}
                             />
                         ))
                     ) : (

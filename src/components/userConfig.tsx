@@ -30,6 +30,7 @@ function UserConfig() {
 
     const handleLogout = () => {
         localStorage.removeItem('token');
+        localStorage.removeItem('userId');
         navigate('/');
         window.location.reload();
     };
@@ -86,7 +87,6 @@ function UserConfig() {
                 <span style={{ marginLeft: '7px' }}>{userData.userName}</span>
             </button>
 
-            {/* User Info Modal */}
             <Modal show={showModal} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>User Information</Modal.Title>
@@ -112,7 +112,6 @@ function UserConfig() {
                 </ModalFooter>
             </Modal>
 
-            {/* Update User Info Modal */}
             <Modal show={showUpdateModal} onHide={handleUpdateClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Update User Information</Modal.Title>
