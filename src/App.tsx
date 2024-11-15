@@ -1,4 +1,3 @@
-// import library
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 
@@ -28,10 +27,10 @@ import './styles/paymentModal.css';
 // import components
 import { getUserRoleFromToken } from './API/apiAccount';
 import { CartProvider } from './API/apiCartContext';
+import { OrderProvider } from './Context/orderContext'; // Import OrderProvider
 
 function App() {
   const [role, setRole] = useState<string | null>(null);
-  // const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -39,63 +38,62 @@ function App() {
       const userRole = getUserRoleFromToken(token);
       setRole(userRole);
     }
-    // setLoading(false);
   }, []);
-
-  // if (loading) {
-  //   return <div>Loading...</div>;
-  // }
 
   return (
     <Router>
-      <CartProvider>
-        <Routes>
-          {role === 'Admin' ? (
-            <>
-              <Route path="/admin" element={<DashBoard />} />
-              <Route path="*" element={<Navigate to="/admin" />} />
-            </>
-          ) : (
-            <>
-              <Route
-                path="/"
-                element={
-                  <>
-                    <Taskbar />
-                    <Header />
-                    <Content />
-                    <Footer />
-                  </>
-                }
-              />
-              <Route
-                path="/products/manufacturer/:manufacturer"
-                element={
-                  <>
-                    <Taskbar />
-                    <ProductManufacturerResult
-                      handleAddToCart={() => { }}
-                      page={1}
-                      limit={10}
-                    />
-                    <Footer />
-                  </>
-                }
-              />
-              <Route
-                path="/product/:productId"
-                element={
-                  <>
-                    <Taskbar />
-                    <ProductDetail />
-                    <Footer />
-                  </>}
-              />
-              <Route path="*" element={<Navigate to="/" />} />
-            </>
-          )}
-        </Routes>
-      </CartProvider>
+      {/* Bọc toàn bộ ứng dụng trong cả CartProvider và OrderProvider */}
+      <OrderProvider>
+        <CartProvider>
+          <Routes>
+            {role === 'Admin' ? (
+              <>
+                <Route path="/admin" element={<DashBoard />} />
+                <Route path="*" element={<Navigate to="/admin" />} />
+              </>
+            ) : (
+              <>
+                <Route
+                  path="/"
+                  element={
+                    <>
+                      <Taskbar />
+                      <Header />
+                      <Content />
+                      <Footer />
+                    </>
+                  }
+                />
+                <Route
+                  path="/products/manufacturer/:manufacturer"
+                  element={
+                    <>
+                      <Taskbar />
+                      <ProductManufacturerResult
+                        handleAddToCart={() => { }}
+                        page={1}
+                        limit={10}
+                      />
+                      <Footer />
+                    </>
+                  }
+                />
+                <Route
+                  path="/product/:productId"
+                  element={
+                    <>
+                      <Taskbar />
+                      <ProductDetail />
+                      <Footer />
+                    </>
+                  }
+                />
+                <Route path="*" element={<Navigate to="/" />} />
+              </>
+            )}
+          </Routes>
+        </CartProvider>
+      </OrderProvider>
     </Router>
   );
 }

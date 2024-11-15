@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import { useCart } from '../../API/apiCartContext';
 import PaymentModal from './paymentModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinus, faShoppingCart, faPlus, faBoxesPacking } from '@fortawesome/free-solid-svg-icons';
 import { Button, ModalFooter } from 'react-bootstrap';
+import { OrderContext } from '../../Context/orderContext';
 
 const CartModal = () => {
     const { cartItems, removeFromCart, updateProductQuantity } = useCart();
@@ -12,6 +13,13 @@ const CartModal = () => {
     const [show, setShow] = useState(false);
     const [showPaymentModal, setShowPaymentModal] = useState(false);
 
+    const orderContext = useContext(OrderContext);
+    if (!orderContext) {
+        throw new Error('OrderContext must be used within an OrderProvider');
+    }
+    const { setProductId, setUserId, setOrderQuantity, setTotalCost, setProductName } = orderContext;
+
+    
     const handleClose = () => {
         setShow(false);
         window.location.reload();
@@ -41,9 +49,13 @@ const CartModal = () => {
         const updatedCartItems = cartItems.filter((id: number) => id !== productId);
         localStorage.setItem(`cartItems_${localUser}`, JSON.stringify(updatedCartItems));
     };
+    const localUser = localStorage.getItem('userId') ?? '';
+    if (localUser === null) {
+        console.log("userId không tồn tại trong localStorage");
+      }
 
     const handleEmptyCart = () => {
-        const localUser = localStorage.getItem('userId');
+        
         cartItems.forEach((item) => {
             if (item.cartId) {
                 removeFromCart(item.productId, item.cartId);
@@ -53,9 +65,15 @@ const CartModal = () => {
         setTempQuantities({});
     };
 
-    const handleOrderClick = () => {
+    const handleOrderClick = (name:string, productId: number, orderQuantity: number, totalCost: number) => {
+        setProductName(name)
+        setProductId(productId); 
+        setOrderQuantity(orderQuantity); 
+        setTotalCost(totalCost); 
         setShowPaymentModal(true);
-    };
+        setUserId(parseInt(localUser))
+      };
+      
 
     return (
         <>
@@ -111,7 +129,7 @@ const CartModal = () => {
                                         >
                                             Xóa
                                         </button>
-                                        <button className="buy-button">
+                                        <button className="buy-button" onClick={() => handleOrderClick(item.productName, item.productId, item.quantity,(item.cost * item.quantity))}>
                                             Mua
                                         </button>
                                     </div>
@@ -131,7 +149,8 @@ const CartModal = () => {
                             <Button variant='danger' className='emptyCartButton' onClick={handleEmptyCart}>
                                 Empty Cart
                             </Button>
-                            <Button variant='success' className='orderButton' onClick={handleOrderClick}>
+                            {/* tam thoi chuyen order button len tren nut "Mua" do khong lay duoc tat ca san pham trong gio */}
+                            <Button variant='success' className='orderButton' onClick={() => {}}> 
                                 Order
                                 <FontAwesomeIcon icon={faBoxesPacking} style={{ marginLeft: '7px' }} />
                             </Button>
