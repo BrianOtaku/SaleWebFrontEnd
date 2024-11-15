@@ -84,7 +84,11 @@ function UserConfig() {
         <>
             <button className='UserIcon' onClick={handleShow}>
                 <FontAwesomeIcon icon={faUserCircle} />
-                <span style={{ marginLeft: '7px' }}>{userData.userName}</span>
+                <span
+                    style={{ marginLeft: '7px' }}
+                >
+                    {userData.userName.length > 5 ? userData.userName.slice(0, 5) + '...' : userData.userName}
+                </span>
             </button>
 
             <Modal show={showModal} onHide={handleClose}>
