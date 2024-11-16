@@ -70,7 +70,7 @@
     /* margin-top: 8px; */
 }
 
-.quantity-controls button {
+.quantity-controls Button {
     width: 28px;
     height: 28px;
     background-color: inherit;

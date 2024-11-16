@@ -4,7 +4,7 @@ import { Button, Form } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCreditCard } from '@fortawesome/free-solid-svg-icons';
 import { OrderContext } from '../../Context/orderContext';
-import { postOrder, Order } from '../../API/apiPayment'; // Import the postOrder function and Order interface
+import { postOrder, Order } from '../../API/apiPayment';
 
 interface PaymentModalProps {
     show: boolean;
@@ -12,7 +12,7 @@ interface PaymentModalProps {
 }
 
 const PaymentModal: React.FC<PaymentModalProps> = ({ show, handleClose }) => {
-    const {productName, productId, userId, orderQuantity, setOrderQuantity, totalCost } = useContext(OrderContext)!;
+    const { productName, productId, userId, orderQuantity, setOrderQuantity, totalCost } = useContext(OrderContext)!;
     const [calculatedTotalCost, setCalculatedTotalCost] = useState<number>(totalCost);
     const [voucherId, setVoucherId] = useState<null>(null);
     const [deliveryAddress, setDeliveryAddress] = useState<string>('');
@@ -25,7 +25,6 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ show, handleClose }) => {
     }, [orderQuantity]);
 
     const handlePayment = async () => {
-        // Create the order object
         const order: Order = {
             productId,
             userId,
@@ -40,15 +39,15 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ show, handleClose }) => {
         try {
             const response = await postOrder(order); // Call the API to post the order
             console.log(response)
-            if(response.status === 200) {
-                if(paymentMethod === "chuyển khoản") {
+            if (response.status === 200) {
+                if (paymentMethod === "chuyển khoản") {
                     console.log('Redirecting to:', response.data.redirectUrl);
                     window.open(response.data.redirectUrl);
                 } else {
                     alert("Đặt hàng thành công, vui lòng kiểm tra danh sách đơn hàng")
                 }
             }
-        
+
         } catch (error: any) {
             console.log(error.response)
         }

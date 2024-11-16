@@ -1,3 +1,4 @@
+//import libraries
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 
@@ -11,6 +12,7 @@ import Taskbar from './templates/taskbar';
 import DashBoard from './pages/admin/DashBoard';
 import ProductDetail from './pages/user/productDetail';
 import ProductManufacturerResult from './pages/user/productManufacturerResult';
+import ProductCategoryResult from './pages/user/productCategoryResult';
 
 // import styles
 import './styles/layout.css';
@@ -27,7 +29,7 @@ import './styles/paymentModal.css';
 // import components
 import { getUserRoleFromToken } from './API/apiAccount';
 import { CartProvider } from './API/apiCartContext';
-import { OrderProvider } from './Context/orderContext'; // Import OrderProvider
+import { OrderProvider } from './Context/orderContext';
 
 function App() {
   const [role, setRole] = useState<string | null>(null);
@@ -42,7 +44,6 @@ function App() {
 
   return (
     <Router>
-      {/* Bọc toàn bộ ứng dụng trong cả CartProvider và OrderProvider */}
       <OrderProvider>
         <CartProvider>
           <Routes>
@@ -84,6 +85,16 @@ function App() {
                     <>
                       <Taskbar />
                       <ProductDetail />
+                      <Footer />
+                    </>
+                  }
+                />
+                <Route
+                  path="/products/category/:categoryName"
+                  element={
+                    <>
+                      <Taskbar />
+                      <ProductCategoryResult />
                       <Footer />
                     </>
                   }

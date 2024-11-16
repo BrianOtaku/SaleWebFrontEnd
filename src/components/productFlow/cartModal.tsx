@@ -19,7 +19,7 @@ const CartModal = () => {
     }
     const { setProductId, setUserId, setOrderQuantity, setTotalCost, setProductName } = orderContext;
 
-    
+
     const handleClose = () => {
         setShow(false);
         if(removeCart){
@@ -57,10 +57,10 @@ const CartModal = () => {
     const localUser = localStorage.getItem('userId') ?? '';
     if (localUser === null) {
         console.log("userId không tồn tại trong localStorage");
-      }
+    }
 
     const handleEmptyCart = () => {
-        
+
         cartItems.forEach((item) => {
             if (item.cartId) {
                 removeFromCart(item.productId, item.cartId);
@@ -71,15 +71,16 @@ const CartModal = () => {
         isRemoveCart(true)
     };
 
-     const handleOrderClick = (name:string, productId: number, orderQuantity: number, totalCost: number) => {
+
+    const handleOrderClick = (name: string, productId: number, orderQuantity: number, totalCost: number) => {
         setProductName(name)
-        setProductId(productId); 
-        setOrderQuantity(orderQuantity); 
-        setTotalCost(totalCost); 
+        setProductId(productId);
+        setOrderQuantity(orderQuantity);
+        setTotalCost(totalCost);
         setShowPaymentModal(true);
         setUserId(parseInt(localUser))
-      };
-      
+    };
+
 
     return (
         <>
@@ -135,7 +136,14 @@ const CartModal = () => {
                                         >
                                             Xóa
                                         </button>
-                                        <button className="buy-button" onClick={() => handleOrderClick(item.productName, item.productId, item.quantity,(item.cost * item.quantity))}>
+                                        <button className="buy-button"
+                                            onClick={() => handleOrderClick(
+                                                item.productName,
+                                                item.productId,
+                                                item.quantity,
+                                                (item.cost * item.quantity)
+                                            )}
+                                        >
                                             Mua
                                         </button>
                                     </div>
@@ -155,8 +163,7 @@ const CartModal = () => {
                             <Button variant='danger' className='emptyCartButton' onClick={handleEmptyCart}>
                                 Empty Cart
                             </Button>
-                            {/* tam thoi chuyen order button len tren nut "Mua" do khong lay duoc tat ca san pham trong gio */}
-                            <Button variant='success' className='orderButton' onClick={() => {}}> 
+                            <Button variant='success' className='orderButton' onClick={() => { }}>
                                 Order
                                 <FontAwesomeIcon icon={faBoxesPacking} style={{ marginLeft: '7px' }} />
                             </Button>
@@ -165,7 +172,6 @@ const CartModal = () => {
                 </ModalFooter>
             </Modal>
 
-            {/* PaymentModal */}
             <PaymentModal show={showPaymentModal} handleClose={() => setShowPaymentModal(false)} />
         </>
     );

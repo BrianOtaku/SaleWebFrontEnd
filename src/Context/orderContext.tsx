@@ -1,9 +1,8 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
-// Định nghĩa kiểu dữ liệu cho OrderContext
 interface OrderContextType {
-  productName:string;
-  setProductName: (name:string) => void;
+  productName: string;
+  setProductName: (name: string) => void;
   productId: number;
   setProductId: (id: number) => void;
   userId: number;
@@ -14,14 +13,12 @@ interface OrderContextType {
   setTotalCost: (cost: number) => void;
 }
 
-// Tạo Context với giá trị mặc định
 export const OrderContext = createContext<OrderContextType | undefined>(undefined);
 
 interface OrderProviderProps {
   children: ReactNode;
 }
 
-// Tạo Provider để bao bọc các component con
 export const OrderProvider: React.FC<OrderProviderProps> = ({ children }) => {
   const [productName, setProductName] = useState<string>("");
   const [productId, setProductId] = useState<number>(0);

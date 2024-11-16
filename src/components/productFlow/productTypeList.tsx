@@ -1,17 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { getAllCategories } from '../../API/apiGetInfomations';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { getAllCategories } from "../../API/apiGetInfomations";
+import { Link } from "react-router-dom";
 
-interface Category {
-    categoryId: number;
-    categoryName: string;
-}
-
-const ProductTypeList: React.FC = () => {
-    const [categories, setCategories] = useState<Category[]>([]);
+const ProductTypeList = () => {
+    const [categories, setCategories] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
-    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -20,7 +14,7 @@ const ProductTypeList: React.FC = () => {
                 const fetchedCategories = await getAllCategories();
                 setCategories(fetchedCategories);
             } catch (err) {
-                setError('Failed to fetch categories');
+                setError("Failed to fetch categories");
                 console.error(err);
             } finally {
                 setLoading(false);
@@ -31,26 +25,33 @@ const ProductTypeList: React.FC = () => {
         fetchCategories();
     }, []);
 
-    const handleCategoryClick = (categoryId: number) => {
-        navigate(`/category/${categoryId}`);
+    const handleCategoryClick = (categoryName: string) => {
+        console.log("Chọn danh mục:", categoryName);
     };
 
-    if (loading) {
-        return <div>Loading categories...</div>;
-    }
-
-    if (error) {
-        return <div>{error}</div>;
-    }
+    const categoryName = Array.from(new Set(categories.map((category) => category.categoryName)));
 
     return (
-        <div className="product-type-list">
-            {categories.length === 0 ? (
-                <p>No categories available.</p>
+        <div>
+            {loading ? (
+                <p>Đang tải...</p>
+            ) : error ? (
+                <p style={{ color: "red" }}>{error}</p>
+            ) : categoryName.length === 0 ? (
+                <p>Không có danh mục nào.</p>
             ) : (
-                categories.map((category) => (
-                    <li key={category.categoryId} onClick={() => handleCategoryClick(category.categoryId)}>
-                        {category.categoryName}
+                categoryName.map((categoryName) => (
+                    <li key={categoryName}>
+                        <Link
+                            to={`/products/category/${categoryName}`}
+                            onClick={() => handleCategoryClick(categoryName)}
+                            style={{
+                                color: 'black',
+                                textDecoration: 'none',
+                            }}
+                        >
+                            {categoryName}
+                        </Link>
                     </li>
                 ))
             )}
