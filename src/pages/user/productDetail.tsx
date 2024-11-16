@@ -1,44 +1,44 @@
-import React, { useEffect, useState, useRef } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { Product, getProductById, getAllProduct } from "../../API/apiGetProductDetail";
-import Slider from "react-slick";
 import { useCart } from "../../API/apiCartContext";
 import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartArrowDown, faDollarSign } from "@fortawesome/free-solid-svg-icons";
+import ProductRelated from "../../components/productFlow/productRelated";
 
 const ProductDetail: React.FC = () => {
     const { productId } = useParams<{ productId: string }>();
     const [product, setProduct] = useState<Product | null>(null);
-    const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
+    const [isAdded, setIsAdded] = useState(false);
     const { addToCart, isLoggedIn, login, userAccount } = useCart();
-    const navigate = useNavigate();
-    const [currentPage, setCurrentPage] = useState(1);
-    const productsPerPage = 3;
-    const pagesToShow = 5;
-    const sliderRef = useRef<Slider>(null);
+    const localUser = localStorage.getItem("userId");
 
     useEffect(() => {
         const fetchProduct = async () => {
             try {
                 if (productId) {
                     const productData = await getProductById(parseInt(productId, 10));
-                    const allProducts = await getAllProduct();
                     if (productData) {
                         setProduct(productData);
-                        setRelatedProducts(
-                            allProducts.filter(
-                                (p) =>
-                                    p.categoryId === productData.categoryId &&
-                                    p.productId !== productData.productId
-                            )
+
+                        const allProducts = await getAllProduct();
+
+                        const filteredProducts = allProducts.filter(
+                            (p) => p.productId !== parseInt(productId, 10) && p.categoryId === productData.categoryId
                         );
+                        window.scrollTo(0, 0);
+                        setRelatedProducts(filteredProducts.slice(0, 4));
+
+                        if (localUser) {
+                            const cartItems = JSON.parse(localStorage.getItem(`cartItems_${localUser}`) || "[]");
+                            setIsAdded(cartItems.includes(productData.productId));
+                        }
                     } else {
-                        setError("Không tìm thấy sản phẩm.");
+                        setError("Không thể lấy thông tin sản phẩm.");
                     }
                 }
             } catch (error) {
@@ -49,18 +49,21 @@ const ProductDetail: React.FC = () => {
         };
 
         fetchProduct();
-    }, [productId]);
+    }, [productId, localUser]);
 
-    const totalPages = Math.ceil(relatedProducts.length / productsPerPage);
+    const handleAddToCart = (product: Product) => {
+        if (isAdded) {
+            alert("Sản phẩm này đã có trong giỏ hàng!");
+            return;
+        }
 
-    const handleAddToCart = () => {
         if (!isLoggedIn) {
             alert("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng.");
             login();
             return;
         }
 
-        if (userAccount && product) {
+        if (userAccount) {
             addToCart({
                 productId: product.productId,
                 productName: product.productName,
@@ -68,63 +71,16 @@ const ProductDetail: React.FC = () => {
                 cost: product.cost,
                 quantity: 1,
             });
+
+            if (localUser) {
+                const cartItems = JSON.parse(localStorage.getItem(`cartItems_${localUser}`) || "[]");
+                if (!cartItems.includes(product.productId)) {
+                    cartItems.push(product.productId);
+                    localStorage.setItem(`cartItems_${localUser}`, JSON.stringify(cartItems));
+                }
+            }
+            setIsAdded(true);
         }
-    };
-
-    const handleBuyNow = () => {
-        if (!isLoggedIn) {
-            alert("Vui lòng đăng nhập để mua sản phẩm.");
-            login();
-            return;
-        }
-
-        if (userAccount && product) {
-            addToCart({
-                productId: product.productId,
-                productName: product.productName,
-                productImage: product.productImage,
-                cost: product.cost,
-                quantity: 1,
-            });
-            navigate("/cart");
-        }
-    };
-
-    const handlePageClick = (pageNumber: number) => {
-        setCurrentPage(pageNumber);
-        if (sliderRef.current) {
-            sliderRef.current.slickGoTo((pageNumber - 1) * productsPerPage);
-        }
-    };
-
-    const handlePrevious = () => {
-        if (currentPage > 1) {
-            handlePageClick(currentPage - 1);
-        }
-    };
-
-    const handleNext = () => {
-        if (currentPage < totalPages) {
-            handlePageClick(currentPage + 1);
-        }
-    };
-
-    const getPageNumbers = () => {
-        const start = Math.max(1, currentPage - Math.floor(pagesToShow / 2));
-        const end = Math.min(totalPages, start + pagesToShow - 1);
-        return Array.from({ length: end - start + 1 }, (_, index) => start + index);
-    };
-
-    const sliderSettings = {
-        dots: false,
-        infinite: false,
-        speed: 500,
-        slidesToShow: productsPerPage,
-        slidesToScroll: productsPerPage,
-        autoplay: false,
-        afterChange: (currentSlide: number) => {
-            setCurrentPage(Math.floor(currentSlide / productsPerPage) + 1);
-        },
     };
 
     if (loading) return <div>Đang tải...</div>;
@@ -150,70 +106,47 @@ const ProductDetail: React.FC = () => {
                         </div>
                         <div className="detail-button-group">
                             <Button
-                                variant='danger'
+                                variant="danger"
                                 className="detail-buy-now-button"
-                                onClick={handleBuyNow}
                             >
                                 Mua ngay
-                                <FontAwesomeIcon icon={faDollarSign} style={{ marginLeft: '7px' }} />
+                                <FontAwesomeIcon icon={faDollarSign} style={{ marginLeft: "7px" }} />
                             </Button>
                             <Button
                                 variant="success"
-                                className="detail-add-to-cart-button"
-                                onClick={handleAddToCart}
+                                className={`detail-add-to-cart-button ${isAdded ? "added" : ""}`}
+                                onClick={() => handleAddToCart(product)}
                             >
-                                Thêm vào giỏ hàng
-                                <FontAwesomeIcon icon={faCartArrowDown} style={{ marginLeft: '7px' }} />
+                                {isAdded ? "Đã thêm" : "Thêm vào giỏ hàng"}
+                                <FontAwesomeIcon icon={faCartArrowDown} style={{ marginLeft: "7px" }} />
                             </Button>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <div className="related-products">
-                <h3>Sản phẩm tương tự</h3>
-                <Slider ref={sliderRef} {...sliderSettings}>
-                    {relatedProducts.map((relatedProduct) => (
-                        <div key={relatedProduct.productId} className="related-product-item">
-                            <img src={relatedProduct.productImage} alt={relatedProduct.productName} />
-                            <h4>{relatedProduct.productName}</h4>
-                            <p>{relatedProduct.cost.toLocaleString()} VND</p>
-                            <button
-                                onClick={() => {
-                                    navigate(`/product/${relatedProduct.productId}`);
-                                    window.scrollTo(0, 0);
-                                }}
-                            >
-                                Xem chi tiết
-                            </button>
-                        </div>
-                    ))}
-                </Slider>
-
-                <div className="pagination">
-                    <button
-                        className="previous"
-                        onClick={handlePrevious}
-                        disabled={currentPage === 1}
+            <div className="content-below">
+                <div className="below-left">
+                    {/* Nội dung khác nếu cần */}
+                </div>
+                <div className="below-right">
+                    <h3
+                        style={{
+                            marginBottom: '20px',
+                            fontWeight: 'bold',
+                            textAlign: 'center',
+                        }}
                     >
-                        Previous
-                    </button>
-                    {getPageNumbers().map((pageNumber) => (
-                        <button
-                            key={pageNumber}
-                            onClick={() => handlePageClick(pageNumber)}
-                            className={currentPage === pageNumber ? "active" : ""}
-                        >
-                            {pageNumber}
-                        </button>
-                    ))}
-                    <button
-                        className="next"
-                        onClick={handleNext}
-                        disabled={currentPage === totalPages}
-                    >
-                        Next
-                    </button>
+                        SẢN PHẨM LIÊN QUAN
+                    </h3>
+                    <div className="related-products">
+                        {relatedProducts.map((relatedProduct) => (
+                            <ProductRelated
+                                key={relatedProduct.productId}
+                                product={relatedProduct}
+                                categoryId={relatedProduct.categoryId}
+                            />
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>
