@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { Product } from "../../API/apiGetProductDetail";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartArrowDown, faDollarSign } from "@fortawesome/free-solid-svg-icons";
 import { getUserProfile } from "../../API/apiGetInfomations";
-
+import PaymentModal from "./paymentModal";
+import { OrderContext } from '../../Context/orderContext';
 interface ProductCardProps {
     product: Product;
     handleAddToCart: (product: Product) => void;
@@ -13,8 +14,13 @@ interface ProductCardProps {
 const ProductCard: React.FC<ProductCardProps> = ({ product, handleAddToCart }) => {
     const [isAdded, setIsAdded] = useState(false);
     const token = localStorage.getItem("token");
+    const [show, setShow] = useState(false);
+    const [showPaymentModal, setShowPaymentModal] = useState(false);
+    
     const localUser = localStorage.getItem("userId");
-
+    if (localUser === null) {
+        console.log("userId không tồn tại trong localStorage");
+      }
     useEffect(() => {
         if (localUser) {
             const cartItems = JSON.parse(localStorage.getItem(`cartItems_${localUser}`) || "[]");
@@ -23,6 +29,33 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, handleAddToCart }) =
             setIsAdded(false);
         }
     }, [product.productId, localUser]);
+
+ 
+
+    const handleOrderClick = (name:string, productId: number, orderQuantity: number, totalCost: number) => {
+        setProductName(name)
+        setProductId(productId); 
+        setOrderQuantity(orderQuantity); 
+        setTotalCost(totalCost); 
+        setShowPaymentModal(true);
+        if (localUser) {
+            setUserId(parseInt(localUser));
+        } else {
+            console.error("localUser is null");
+        }
+      };
+
+    const handleBuyNowClick = () => {
+        handleOrderClick(product.productName, product.productId, 1, product.cost);
+    };
+
+    const orderContext = useContext(OrderContext);
+    if (!orderContext) {
+        throw new Error('OrderContext must be used within an OrderProvider');
+    }
+    const { setProductId, setUserId, setOrderQuantity, setTotalCost, setProductName } = orderContext;
+
+    
 
     const handleButtonClick = async () => {
         if (!token || !localUser) {
@@ -75,7 +108,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, handleAddToCart }) =
             </div>
 
             <div className="CardButtons">
-                <button className="buyNowCardBtn">
+                <button className="buyNowCardBtn" onClick={handleBuyNowClick}>
                     Buy Now!
                     <FontAwesomeIcon icon={faDollarSign} style={{ marginLeft: "7px" }} />
                 </button>
@@ -87,6 +120,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, handleAddToCart }) =
                     <FontAwesomeIcon icon={faCartArrowDown} style={{ marginLeft: "7px" }} />
                 </button>
             </div>
+            <PaymentModal show={showPaymentModal} handleClose={() => setShowPaymentModal(false)} />
         </div>
     );
 };
