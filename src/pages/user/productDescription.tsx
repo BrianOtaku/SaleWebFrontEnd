@@ -5,7 +5,7 @@ interface ProductDescriptionProps {
 }
 
 const ProductDescription: React.FC<ProductDescriptionProps> = ({ description }) => {
-    const remainingDescriptions = description.split(",").slice(4);
+    const remainingDescriptions = description.split(",").slice(5);
 
     return (
         <div>

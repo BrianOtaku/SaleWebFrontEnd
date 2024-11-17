@@ -22,11 +22,11 @@ const CartModal = () => {
 
     const handleClose = () => {
         setShow(false);
-        if(removeCart){
+        if (removeCart) {
             window.location.reload();
             isRemoveCart(false)
         }
-        else {isRemoveCart(false)}
+        else { isRemoveCart(false) }
     };
     const handleShow = () => setShow(true);
 

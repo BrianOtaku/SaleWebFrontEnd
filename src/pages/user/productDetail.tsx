@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartArrowDown, faDollarSign } from "@fortawesome/free-solid-svg-icons";
 import ProductRelated from "../../components/productFlow/productRelated";
 import ProductDescription from "./productDescription";
+import ProductReview from "../../components/productFlow/productReview";
 
 const ProductDetail: React.FC = () => {
     const { productId } = useParams<{ productId: string }>();
@@ -104,11 +105,18 @@ const ProductDetail: React.FC = () => {
                     <div className="detail-information">
                         <ul>
                             <div>
-                                {product.productDescription.split(",").slice(0, 4).map((desc, index) => (
+                                {product.productDescription.split(",").slice(0, 3).map((desc, index) => (
                                     <li key={index} className="detail-description">
                                         <strong>{desc.trim()}</strong>
                                     </li>
                                 ))}
+                                <div className="additional-description">
+                                    {product.productDescription.split(",").slice(3, 5).map((desc, index) => (
+                                        <li key={index} className="detail-description">
+                                            <strong>{desc.trim()}</strong>
+                                        </li>
+                                    ))}
+                                </div>
                             </div>
                             <li>
                                 Manufacturer: {product.manufacturer}
@@ -127,7 +135,7 @@ const ProductDetail: React.FC = () => {
                                 variant="danger"
                                 className="detail-buy-now-button"
                             >
-                                Mua ngay
+                                Mua Ngay
                                 <FontAwesomeIcon icon={faDollarSign} style={{ marginLeft: "7px" }} />
                             </Button>
                             <Button
@@ -175,6 +183,9 @@ const ProductDetail: React.FC = () => {
                         ))}
                     </div>
                 </div>
+            </div>
+            <div className="reviewContainer">
+                <ProductReview />
             </div>
         </div>
     );

@@ -1,8 +1,12 @@
 import { faDiscord, faFacebook, faGoogle, faTwitter, faYoutube } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
+import { Link } from 'react-router-dom';
 
 function Footer() {
+    const handleScrollToTop = () => {
+        window.scrollTo(0, 0);
+    };
+
     return (
         <footer>
             <div className='upRow'>
@@ -13,7 +17,12 @@ function Footer() {
                 </div> */}
                 <div className='footerContent'>
                     <div className='contactIcons'>
-                        <span><FontAwesomeIcon icon={faFacebook} className='footerIcons' title='Facebook' /></span>
+                        <span
+                            onClick={() => window.open('http://surl.li/jclhkf', '_blank')}
+                            title="Facebook"
+                        >
+                            <FontAwesomeIcon icon={faFacebook} className='footerIcons' title='Facebook' />
+                        </span>
                         <span><FontAwesomeIcon icon={faTwitter} className='footerIcons' title='Twitter' /></span>
                         <span><FontAwesomeIcon icon={faYoutube} className='footerIcons' title='Youtube' /></span>
                         <span><FontAwesomeIcon icon={faGoogle} className='footerIcons' title='Google' /></span>
@@ -22,7 +31,13 @@ function Footer() {
                     <div className='footerTaskBar'>
                         <p>RECOMMEND</p>
                         <p>OUR TEAM</p>
-                        <h5>HOME</h5>
+                        <Link
+                            to="/"
+                            className="footer-link"
+                            onClick={handleScrollToTop}
+                        >
+                            <h5>HOME</h5>
+                        </Link>
                         <p>CONTACT US</p>
                         <p>SUPPORT US</p>
                     </div>

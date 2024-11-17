@@ -6,6 +6,7 @@ import { faCartArrowDown, faDollarSign } from "@fortawesome/free-solid-svg-icons
 import { getUserProfile } from "../../API/apiGetInfomations";
 import PaymentModal from "./paymentModal";
 import { OrderContext } from '../../Context/orderContext';
+
 interface ProductCardProps {
     product: Product;
     handleAddToCart: (product: Product) => void;
@@ -29,8 +30,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, handleAddToCart }) =
         }
     }, [product.productId, localUser]);
 
-
-
     const handleOrderClick = (name: string, productId: number, orderQuantity: number, totalCost: number) => {
         setProductName(name)
         setProductId(productId);
@@ -53,8 +52,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, handleAddToCart }) =
         throw new Error('OrderContext must be used within an OrderProvider');
     }
     const { setProductId, setUserId, setOrderQuantity, setTotalCost, setProductName } = orderContext;
-
-
 
     const handleButtonClick = async () => {
         if (!token || !localUser) {
@@ -95,12 +92,19 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, handleAddToCart }) =
                     <div className="product-name">{product.productName}</div>
                     <div className="specs-box">
                         <ul>
-                            <div className="product-description">
-                                {product.productDescription.split(",").slice(0, 4).map((desc, index) => (
+                            <div>
+                                {product.productDescription.split(",").slice(0, 3).map((desc, index) => (
                                     <li key={index} className="product-description">
                                         <strong>{desc.trim()}</strong>
                                     </li>
                                 ))}
+                                <div className="additional-description">
+                                    {product.productDescription.split(",").slice(3, 5).map((desc, index) => (
+                                        <li key={index} className="product-description">
+                                            <strong>{desc.trim()}</strong>
+                                        </li>
+                                    ))}
+                                </div>
                             </div>
                             <li>
                                 Manufacturer: {product.manufacturer}

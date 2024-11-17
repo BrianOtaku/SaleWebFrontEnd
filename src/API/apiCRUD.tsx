@@ -51,6 +51,8 @@ const getApiUrl = (pageType: string) => {
             return '/categories';
         case 'orders':
             return '/api/orders';
+        case 'reviews':
+            return '/api/reviews';
         default:
             throw new Error('Unknown page type');
     }

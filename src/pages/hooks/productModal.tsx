@@ -26,7 +26,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
         productId: 0,
         productName: '',
         manufacturer: '',
-        productDescription: 'Card đồ họa: ,\nCPU: ,\nRAM: - SSD: ,\nMàn: ,\n/thông tin cụ thể/',
+        productDescription: 'VGA: ,\nCPU: ,\nDisplay: ,\nRAM: ,\nSSD: ,\n/thông tin cụ thể/',
         cost: 0,
         categoryId: 0,
         categoryName: '',
@@ -75,14 +75,14 @@ const ProductModal: React.FC<ProductModalProps> = ({
     };
 
     return (
-        <Modal show={show} onHide={handleClose} size="lg">
+        <Modal show={show} onHide={handleClose} size="xl">
             <Modal.Header closeButton>
                 <Modal.Title>{isEditMode ? 'Update Product' : 'Create Product'}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form onSubmit={handleSubmit}>
                     <Row>
-                        <Col md={6}>
+                        <Col md={4}>
                             <Form.Group controlId="formProductName">
                                 <Form.Label>Product Name</Form.Label>
                                 <Form.Control
@@ -145,7 +145,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
                             </Form.Group>
                         </Col>
 
-                        <Col md={6}>
+                        <Col md={8}>
                             <Form.Group controlId="formProductImage">
                                 <Form.Label>Image (1:1 scale required)</Form.Label>
                                 <Form.Control

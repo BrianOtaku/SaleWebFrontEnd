@@ -37,7 +37,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ show, handleClose }) => {
         };
 
         try {
-            const response = await postOrder(order); // Call the API to post the order
+            const response = await postOrder(order);
             console.log(response)
             if (response.status === 200) {
                 if (paymentMethod === "chuyển khoản") {

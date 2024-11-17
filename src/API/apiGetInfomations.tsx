@@ -89,3 +89,17 @@ export const getAllOrders = async (token: string) => {
         throw error;
     }
 };
+
+export const getReviewByProductId = async (id: number, token: string) => {
+    try {
+        const response = await AxiosInstance.get(`/api/reviews/${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching all orders:', error);
+        throw error;
+    }
+};
