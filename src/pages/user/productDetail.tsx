@@ -6,6 +6,7 @@ import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartArrowDown, faDollarSign } from "@fortawesome/free-solid-svg-icons";
 import ProductRelated from "../../components/productFlow/productRelated";
+import ProductDescription from "./productDescription";
 
 const ProductDetail: React.FC = () => {
     const { productId } = useParams<{ productId: string }>();
@@ -30,8 +31,12 @@ const ProductDetail: React.FC = () => {
                         const filteredProducts = allProducts.filter(
                             (p) => p.productId !== parseInt(productId, 10) && p.categoryId === productData.categoryId
                         );
+
+                        const shuffledProducts = filteredProducts.sort(() => 0.5 - Math.random());
+
+                        setRelatedProducts(shuffledProducts.slice(0, 4));
+
                         window.scrollTo(0, 0);
-                        setRelatedProducts(filteredProducts.slice(0, 4));
 
                         if (localUser) {
                             const cartItems = JSON.parse(localStorage.getItem(`cartItems_${localUser}`) || "[]");
@@ -91,14 +96,27 @@ const ProductDetail: React.FC = () => {
         <div className="detail-page">
             <div className="detail-container">
                 <div className="detail-image-section">
-                    <img src={product.productImage} alt={product.productName} className="detail-image" />
+                    <img src={product.productImage} alt={product.productImage} className="detail-image" />
                 </div>
 
                 <div className="detail-info-section">
                     <h2 className="detail-title">{product.productName}</h2>
                     <div className="detail-information">
-                        <p><strong>Product Description: {product.productDescription}</strong></p>
-                        <p><strong>Manufacturer: {product.manufacturer}</strong></p>
+                        <ul>
+                            <div>
+                                {product.productDescription.split(",").slice(0, 4).map((desc, index) => (
+                                    <li key={index} className="detail-description">
+                                        <strong>{desc.trim()}</strong>
+                                    </li>
+                                ))}
+                            </div>
+                            <li>
+                                Manufacturer: {product.manufacturer}
+                            </li>
+                            <li>
+                                Quantity: {product.productQuantity}
+                            </li>
+                        </ul>
                     </div>
                     <div className="detail-footer">
                         <div className="detail-price">
@@ -126,7 +144,16 @@ const ProductDetail: React.FC = () => {
             </div>
             <div className="content-below">
                 <div className="below-left">
-                    {/* Nội dung khác nếu cần */}
+                    <h3
+                        style={{
+                            marginBottom: '20px',
+                            fontWeight: 'bold',
+                            textAlign: 'center',
+                        }}
+                    >
+                        THÔNG TIN CHI TIẾT
+                    </h3>
+                    <ProductDescription description={product.productDescription} />
                 </div>
                 <div className="below-right">
                     <h3

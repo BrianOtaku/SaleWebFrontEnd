@@ -25,19 +25,24 @@ const ProductRelated: React.FC<ProductCardProps> = React.memo(({ product, catego
                     </Link>
                 </div>
 
-                <div className="product-info">
-                    <h2 className="product-name">{
-                        product.productName.length > 15 ?
-                            product.productName.slice(0, 15) + '...' :
-                            product.productName
-                    }</h2>
-                    <div className="specs-box">
+                <div className="product-info-related">
+                    <h2 className="product-name-related">
+                        {
+                            product.productName.length > 15 ?
+                                product.productName.slice(0, 15) + '...' :
+                                product.productName
+                        }
+                    </h2>
+                    <div className="specs-box-related">
                         <ul>
-                            <li className="product-description">
-                                {product.productDescription.split(",").slice(0, 3).join(", ")}
-                            </li>
-                            <li className="product-description">Manufacturer: {product.manufacturer}</li>
-                            <li className="product-description">Quantity: {product.productQuantity}</li>
+                            <div className="product-description">
+                                {product.productDescription.split(",").slice(0, 2).map((desc, index) => (
+                                    <li key={index} className="product-description">
+                                        <strong>{desc.trim()}</strong>
+                                    </li>
+                                ))}
+                                {product.productDescription.split(",").length > 3 && " ..."}
+                            </div>
                         </ul>
                     </div>
                     <p className="product-price">Giá: {formatPrice(product.cost)}</p>

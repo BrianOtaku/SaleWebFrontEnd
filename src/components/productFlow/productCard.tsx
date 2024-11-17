@@ -14,13 +14,12 @@ interface ProductCardProps {
 const ProductCard: React.FC<ProductCardProps> = ({ product, handleAddToCart }) => {
     const [isAdded, setIsAdded] = useState(false);
     const token = localStorage.getItem("token");
-    const [show, setShow] = useState(false);
     const [showPaymentModal, setShowPaymentModal] = useState(false);
-    
+
     const localUser = localStorage.getItem("userId");
     if (localUser === null) {
         console.log("userId không tồn tại trong localStorage");
-      }
+    }
     useEffect(() => {
         if (localUser) {
             const cartItems = JSON.parse(localStorage.getItem(`cartItems_${localUser}`) || "[]");
@@ -30,20 +29,20 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, handleAddToCart }) =
         }
     }, [product.productId, localUser]);
 
- 
 
-    const handleOrderClick = (name:string, productId: number, orderQuantity: number, totalCost: number) => {
+
+    const handleOrderClick = (name: string, productId: number, orderQuantity: number, totalCost: number) => {
         setProductName(name)
-        setProductId(productId); 
-        setOrderQuantity(orderQuantity); 
-        setTotalCost(totalCost); 
+        setProductId(productId);
+        setOrderQuantity(orderQuantity);
+        setTotalCost(totalCost);
         setShowPaymentModal(true);
         if (localUser) {
             setUserId(parseInt(localUser));
         } else {
             console.error("localUser is null");
         }
-      };
+    };
 
     const handleBuyNowClick = () => {
         handleOrderClick(product.productName, product.productId, 1, product.cost);
@@ -55,7 +54,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, handleAddToCart }) =
     }
     const { setProductId, setUserId, setOrderQuantity, setTotalCost, setProductName } = orderContext;
 
-    
+
 
     const handleButtonClick = async () => {
         if (!token || !localUser) {
@@ -93,17 +92,25 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, handleAddToCart }) =
                 </div>
 
                 <div className="product-info">
-                    <h2 className="product-name">{product.productName}</h2>
+                    <div className="product-name">{product.productName}</div>
                     <div className="specs-box">
                         <ul>
-                            <li className="product-description">
-                                {product.productDescription.split(",").slice(0, 3).join(", ")}
+                            <div className="product-description">
+                                {product.productDescription.split(",").slice(0, 4).map((desc, index) => (
+                                    <li key={index} className="product-description">
+                                        <strong>{desc.trim()}</strong>
+                                    </li>
+                                ))}
+                            </div>
+                            <li>
+                                Manufacturer: {product.manufacturer}
                             </li>
-                            <li className="product-description">Manufacturer: {product.manufacturer}</li>
-                            <li className="product-description">Quantity: {product.productQuantity}</li>
+                            <li>
+                                Quantity: {product.productQuantity}
+                            </li>
                         </ul>
                     </div>
-                    <p className="product-price">Giá: {product.cost.toLocaleString()} VND</p>
+                    <div className="product-price">Giá: {product.cost.toLocaleString()} VND</div>
                 </div>
             </div>
 

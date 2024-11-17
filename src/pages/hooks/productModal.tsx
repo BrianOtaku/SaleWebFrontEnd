@@ -26,7 +26,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
         productId: 0,
         productName: '',
         manufacturer: '',
-        productDescription: '',
+        productDescription: 'Card đồ họa: ,\nCPU: ,\nRAM: - SSD: ,\nMàn: ,\n/thông tin cụ thể/',
         cost: 0,
         categoryId: 0,
         categoryName: '',
