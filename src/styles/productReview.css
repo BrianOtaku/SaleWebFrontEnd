@@ -1,3 +1,4 @@
+/* Comment and review side */
 .review
 {
     width: 100%;
@@ -59,6 +60,23 @@
     margin-bottom: 0px;
 }
 
+.review-button
+{
+    margin-top: 10px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.review-button button
+{
+    border: none;
+    padding: 4px 10px;
+    font-size: large;
+    transition: all 0.3s ease;
+}
+
+/* Rating side */
 .rating
 {
     padding: 10px;

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { getReviewByProductId, getUserProfileById } from '../../API/apiGetInfomations';
-import { createEntity } from '../../API/apiCRUD';  // Thêm hàm createEntity từ apiCRUD
+import { createEntity, updateEntity, deleteEntity } from '../../API/apiCRUD';
 import { useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
-import { faStar as regularStar } from '@fortawesome/free-regular-svg-icons';
+import { faPenToSquare, faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
+import { faTrashCan, faStar as regularStar } from '@fortawesome/free-regular-svg-icons';
 import '../../styles/productReview.css';
+import { Button } from 'react-bootstrap';
 
 interface Review {
     reviewId: number;
@@ -23,6 +24,8 @@ const ProductReview: React.FC = () => {
     const [rating, setRating] = useState<number>(0);
     const [comment, setComment] = useState<string>('');
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
+    const userId = localStorage.getItem('userId');
 
     const renderStars = (rating: number) => {
         const stars = [];
@@ -72,7 +75,6 @@ const ProductReview: React.FC = () => {
     }, [productId, userNames]);
 
     const handleReviewSubmit = async () => {
-        const userId = localStorage.getItem('userId');
 
         if (rating === 0 && comment.trim() === '') {
             alert('Please provide both a rating and a comment!');
@@ -103,6 +105,27 @@ const ProductReview: React.FC = () => {
             console.error('Error submitting review:', error);
             setIsSubmitting(false);
             alert('Failed to submit review');
+        }
+    };
+
+    const handleUpdateReview = async (reviewId: number) => {
+        const updatedData = { reviewComment: 'Updated comment', reviewStar: 4 };
+        try {
+            const updatedReview = await updateEntity('reviews', reviewId, updatedData);
+            setReviews((prev) =>
+                prev.map((review) => (review.reviewId === reviewId ? updatedReview : review))
+            );
+        } catch (error) {
+            console.error('Error updating review:', error);
+        }
+    };
+
+    const handleDeleteReview = async (reviewId: number) => {
+        try {
+            await deleteEntity('reviews', reviewId);
+            setReviews((prev) => prev.filter((review) => review.reviewId !== reviewId));
+        } catch (error) {
+            console.error('Error deleting review:', error);
         }
     };
 
@@ -141,6 +164,24 @@ const ProductReview: React.FC = () => {
                                                 {review.reviewComment}
                                             </p>
                                         </li>
+                                        <div className="review-button">
+                                            {review.userId === Number(userId) && (
+                                                <>
+                                                    <Button
+                                                        variant="outline-dark"
+                                                        onClick={() => handleUpdateReview(review.reviewId)}
+                                                    >
+                                                        <FontAwesomeIcon icon={faPenToSquare} />
+                                                    </Button>
+                                                    <Button
+                                                        variant="outline-dark"
+                                                        onClick={() => handleDeleteReview(review.reviewId)}
+                                                    >
+                                                        <FontAwesomeIcon icon={faTrashCan} />
+                                                    </Button>
+                                                </>
+                                            )}
+                                        </div>
                                     </div>
                                 ))}
                             </ul>

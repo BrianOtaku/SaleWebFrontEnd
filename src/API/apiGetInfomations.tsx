@@ -92,7 +92,7 @@ export const getAllOrders = async (token: string) => {
 
 export const getReviewByProductId = async (id: number, token: string) => {
     try {
-        const response = await AxiosInstance.get(`/api/reviews/${id}`, {
+        const response = await AxiosInstance.get(`/api/reviews/product/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
