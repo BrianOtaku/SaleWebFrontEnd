@@ -119,10 +119,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, handleAddToCart }) =
             </div>
 
             <div className="CardButtons">
-                <button className="buyNowCardBtn" onClick={handleBuyNowClick}>
+                {localUser ? <button className="buyNowCardBtn" onClick={handleBuyNowClick}>
                     Buy Now!
                     <FontAwesomeIcon icon={faDollarSign} style={{ marginLeft: "7px" }} />
-                </button>
+                </button> : "" }
                 <button
                     className={`add-to-cart-button ${isAdded ? "added" : ""}`}
                     onClick={handleButtonClick}

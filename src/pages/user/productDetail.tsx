@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Product, getProductById, getAllProduct } from "../../API/apiGetProductDetail";
 import { useCart } from "../../API/apiCartContext";
@@ -8,8 +8,15 @@ import { faCartArrowDown, faDollarSign } from "@fortawesome/free-solid-svg-icons
 import ProductRelated from "../../components/productFlow/productRelated";
 import ProductDescription from "./productDescription";
 import ProductReview from "../../components/productFlow/productReview";
+import { OrderContext } from '../../Context/orderContext';
+import PaymentModal from "../../components/productFlow/paymentModal";
 
 const ProductDetail: React.FC = () => {
+    const orderContext = useContext(OrderContext);
+    if (!orderContext) {
+        throw new Error('OrderContext must be used within an OrderProvider');
+    }
+    const { setProductId, setUserId, setOrderQuantity, setTotalCost, setProductName } = orderContext;
     const { productId } = useParams<{ productId: string }>();
     const [product, setProduct] = useState<Product | null>(null);
     const [loading, setLoading] = useState(true);
@@ -18,6 +25,7 @@ const ProductDetail: React.FC = () => {
     const [isAdded, setIsAdded] = useState(false);
     const { addToCart, isLoggedIn, login, userAccount } = useCart();
     const localUser = localStorage.getItem("userId");
+    const [showPaymentModal, setShowPaymentModal] = useState(false);
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -56,6 +64,19 @@ const ProductDetail: React.FC = () => {
 
         fetchProduct();
     }, [productId, localUser]);
+
+    const handleOrderClick = (name: string, productId: number, orderQuantity: number, totalCost: number) => {
+        setProductName(name)
+        setProductId(productId);
+        setOrderQuantity(orderQuantity);
+        setTotalCost(totalCost);
+        setShowPaymentModal(true);
+        if (localUser) {
+            setUserId(parseInt(localUser));
+        } else {
+            console.error("localUser is null");
+        }
+    };
 
     const handleAddToCart = (product: Product) => {
         if (isAdded) {
@@ -131,13 +152,16 @@ const ProductDetail: React.FC = () => {
                             Giá: <span className="detail-price-value">{product.cost.toLocaleString()} VND</span>
                         </div>
                         <div className="detail-button-group">
+                           {localUser ? 
                             <Button
-                                variant="danger"
-                                className="detail-buy-now-button"
-                            >
-                                Mua Ngay
-                                <FontAwesomeIcon icon={faDollarSign} style={{ marginLeft: "7px" }} />
-                            </Button>
+                            variant="danger"
+                            className="detail-buy-now-button"
+                            onClick={() => handleOrderClick(product.productName, product.productId, 1, product.cost)}
+                        >
+                            Mua Ngay
+                            <FontAwesomeIcon icon={faDollarSign} style={{ marginLeft: "7px" }} />
+                        </Button>
+                        : ""}
                             <Button
                                 variant="success"
                                 className={`detail-add-to-cart-button ${isAdded ? "added" : ""}`}
@@ -187,6 +211,10 @@ const ProductDetail: React.FC = () => {
             <div className="reviewContainer">
                 <ProductReview />
             </div>
+            <PaymentModal 
+                show={showPaymentModal} 
+                handleClose={() => setShowPaymentModal(false)}
+            />
         </div>
     );
 };

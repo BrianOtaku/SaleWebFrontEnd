@@ -5,6 +5,8 @@ interface OrderContextType {
   setProductName: (name: string) => void;
   productId: number;
   setProductId: (id: number) => void;
+  address:string;
+  setAddress: (address:string) => void;
   userId: number;
   setUserId: (id: number) => void;
   orderQuantity: number;
@@ -20,6 +22,7 @@ interface OrderProviderProps {
 }
 
 export const OrderProvider: React.FC<OrderProviderProps> = ({ children }) => {
+  const [address, setAddress] = useState<string>("");
   const [productName, setProductName] = useState<string>("");
   const [productId, setProductId] = useState<number>(0);
   const [userId, setUserId] = useState<number>(0);
@@ -29,6 +32,8 @@ export const OrderProvider: React.FC<OrderProviderProps> = ({ children }) => {
   return (
     <OrderContext.Provider
       value={{
+        address,
+        setAddress,
         productName,
         setProductName,
         productId,

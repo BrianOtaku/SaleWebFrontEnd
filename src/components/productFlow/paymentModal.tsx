@@ -12,6 +12,7 @@ interface PaymentModalProps {
 }
 
 const PaymentModal: React.FC<PaymentModalProps> = ({ show, handleClose }) => {
+    const address = localStorage.getItem('address');
     const { productName, productId, userId, orderQuantity, setOrderQuantity, totalCost } = useContext(OrderContext)!;
     const [calculatedTotalCost, setCalculatedTotalCost] = useState<number>(totalCost);
     const [voucherId, setVoucherId] = useState<null>(null);
@@ -22,7 +23,10 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ show, handleClose }) => {
 
     useEffect(() => {
         setCalculatedTotalCost(orderQuantity * totalCost);
-    }, [orderQuantity]);
+        if (address) {
+            setDeliveryAddress(address);
+        }
+    }, [orderQuantity, address]);
 
     const handlePayment = async () => {
         const order: Order = {
