@@ -39,50 +39,50 @@ function SignUp() {
     return (
         <>
             <button className='signUpButton' onClick={handleShow}>
-                Sign Up
+                Đăng ký
             </button>
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Sign Up</Modal.Title>
+                    <Modal.Title>Đăng ký</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form onSubmit={handleSubmit}>
                         <Form.Group controlId="formBasicUserName">
-                            <Form.Label>User Name</Form.Label>
+                            <Form.Label>Tên người dùng</Form.Label>
                             <Form.Control
                                 type="text"
-                                placeholder="Enter user name"
+                                placeholder="Nhập tên người dùng"
                                 value={userName}
                                 onChange={(e) => setUserName(e.target.value)}
                             />
                         </Form.Group>
 
                         <Form.Group controlId="formBasicEmail" className="mt-3">
-                            <Form.Label>Email address</Form.Label>
+                            <Form.Label>Địa chỉ Email</Form.Label>
                             <Form.Control
                                 type="email"
-                                placeholder="Enter email"
+                                placeholder="Nhập Email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                             />
                         </Form.Group>
 
                         <Form.Group controlId="formBasicPassword" className="mt-3">
-                            <Form.Label>Password</Form.Label>
+                            <Form.Label>Mật khẩu</Form.Label>
                             <Form.Control
                                 type="password"
-                                placeholder="Password"
+                                placeholder="Nhập mật khẩu"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                             />
                         </Form.Group>
 
                         <Form.Group controlId="formConfirmPassword" className="mt-3">
-                            <Form.Label>Confirm Password</Form.Label>
+                            <Form.Label>Xác nhận mật khẩu</Form.Label>
                             <Form.Control
                                 type="password"
-                                placeholder="Confirm Password"
+                                placeholder="Nhập mật khẩu"
                                 value={confirmPassword}
                                 onChange={(e) => setConfirmPassword(e.target.value)}
                             />
@@ -97,7 +97,7 @@ function SignUp() {
                         )}
 
                         <button type="submit" className="MsignUpButton">
-                            Sign Up
+                            Đăng ký
                             <FontAwesomeIcon icon={faUserPlus} className='iconfaUserplus' style={{ marginLeft: '10px' }} />
                         </button>
                     </Form>

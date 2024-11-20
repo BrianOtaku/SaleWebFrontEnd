@@ -107,10 +107,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, handleAddToCart }) =
                                 </div>
                             </div>
                             <li>
-                                Manufacturer: {product.manufacturer}
+                                Hãng: {product.manufacturer}
                             </li>
                             <li>
-                                Quantity: {product.productQuantity}
+                                Số lượng: {product.productQuantity}
                             </li>
                         </ul>
                     </div>
@@ -120,14 +120,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, handleAddToCart }) =
 
             <div className="CardButtons">
                 <button className="buyNowCardBtn" onClick={handleBuyNowClick}>
-                    Buy Now!
+                    Mua Ngay!
                     <FontAwesomeIcon icon={faDollarSign} style={{ marginLeft: "7px" }} />
                 </button>
                 <button
                     className={`add-to-cart-button ${isAdded ? "added" : ""}`}
                     onClick={handleButtonClick}
                 >
-                    {isAdded ? "Đã thêm" : "Add to Cart"}
+                    {isAdded ? "Đã thêm" : "Thêm vào giỏ hàng"}
                     <FontAwesomeIcon icon={faCartArrowDown} style={{ marginLeft: "7px" }} />
                 </button>
             </div>

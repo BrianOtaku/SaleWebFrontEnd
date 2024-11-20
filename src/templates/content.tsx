@@ -74,7 +74,7 @@ function Content() {
 
   return (
     <div className="contentContainer">
-      <h2>-- OUR PRODUCTS --</h2>
+      <h2>-- SẢN PHẨM NỔI BẬT --</h2>
       {isLoading ? (
         <p>Loading...</p>
       ) : error ? (

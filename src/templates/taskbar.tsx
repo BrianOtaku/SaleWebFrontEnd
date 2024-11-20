@@ -51,7 +51,7 @@ function Taskbar() {
                 <form onSubmit={handleSearch}>
                     <input
                         type="text"
-                        placeholder="Search"
+                        placeholder="Tìm kiếm"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                     />
@@ -62,7 +62,7 @@ function Taskbar() {
                 <div className='taskList'>
                     <Accordion flush>
                         <Accordion.Item eventKey="0">
-                            <Accordion.Header>MANUFACTURER</Accordion.Header>
+                            <Accordion.Header>NHÀ SẢN XUẤT</Accordion.Header>
                             <Accordion.Body>
                                 <ProductManufacturer />
                             </Accordion.Body>
@@ -72,7 +72,7 @@ function Taskbar() {
                 <div className='taskList'>
                     <Accordion flush>
                         <Accordion.Item eventKey="0">
-                            <Accordion.Header>PRODUCT TYPE</Accordion.Header>
+                            <Accordion.Header>LOẠI SẢN PHẨM</Accordion.Header>
                             <Accordion.Body>
                                 <ProductTypeList />
                             </Accordion.Body>

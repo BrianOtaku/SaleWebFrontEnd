@@ -19,7 +19,7 @@ function OffcanvasMenu() {
 
             <Offcanvas show={show} onHide={handleClose} placement="end" scroll={true}>
                 <Offcanvas.Header closeButton>
-                    <Offcanvas.Title>MENU</Offcanvas.Title>
+                    <Offcanvas.Title>DANH MỤC</Offcanvas.Title>
                 </Offcanvas.Header>
                 <Offcanvas.Body >
                     <div className='offcanvasContent'>

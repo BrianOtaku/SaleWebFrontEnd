@@ -41,7 +41,7 @@ const UpdateReviewModal: React.FC<UpdateReviewModalProps> = ({
     return (
         <Modal show={show} onHide={onClose} centered>
             <Modal.Header closeButton>
-                <Modal.Title>Update Review</Modal.Title>
+                <Modal.Title>Cập nhật bình luận</Modal.Title>
             </Modal.Header>
             <Modal.Body>
 
@@ -58,7 +58,7 @@ const UpdateReviewModal: React.FC<UpdateReviewModalProps> = ({
                 </Form.Group>
 
                 <Form.Group controlId="updateComment">
-                    <h5>Comment</h5>
+                    <h5>Bình luận</h5>
                     <Form.Control
                         as="textarea"
                         placeholder="Enter Comment"
@@ -75,10 +75,10 @@ const UpdateReviewModal: React.FC<UpdateReviewModalProps> = ({
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={onClose}>
-                    Close
+                    Hủy
                 </Button>
                 <Button variant="primary" onClick={onSubmit}>
-                    Save Changes
+                    Lưu thay đổi
                 </Button>
             </Modal.Footer>
         </Modal>

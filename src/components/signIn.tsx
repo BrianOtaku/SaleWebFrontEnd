@@ -54,30 +54,30 @@ function SignIn({ onLogin }: SignInProps) {
     return (
         <>
             <button className='signInButton' onClick={handleShow}>
-                Sign In
+                Đăng nhập
             </button>
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Sign In</Modal.Title>
+                    <Modal.Title>Đăng nhập</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form onSubmit={handleSubmit}>
                         <Form.Group controlId="formBasicEmail">
-                            <Form.Label>Email address</Form.Label>
+                            <Form.Label>Địa chỉ Email</Form.Label>
                             <Form.Control
                                 type="email"
-                                placeholder="Enter email"
+                                placeholder="Nhập email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                             />
                         </Form.Group>
 
                         <Form.Group controlId="formBasicPassword" className="mt-3">
-                            <Form.Label>Password</Form.Label>
+                            <Form.Label>Mặt khẩu</Form.Label>
                             <Form.Control
                                 type="password"
-                                placeholder="Password"
+                                placeholder="Nhập mật khẩu"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                             />
@@ -88,7 +88,7 @@ function SignIn({ onLogin }: SignInProps) {
                         )}
 
                         <button type="submit" className="MsignInButton">
-                            Sign In
+                            Đăng nhập
                             <FontAwesomeIcon icon={faSignIn} className='iconfaSignIn' style={{ marginLeft: '10px' }} />
                         </button>
                     </Form>
