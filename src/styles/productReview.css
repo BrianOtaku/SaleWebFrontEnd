@@ -84,3 +84,53 @@
     border-radius: 8px;
     width: 40%;
 }
+
+.avrg-container
+{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+    border: 1px solid rgb(213, 213, 213);
+    border-radius: 8px;
+    height: auto;
+    padding: 10px;
+}
+
+.avrg-rating
+{
+    font-size: 65px;
+    font-weight: bold;
+    color: transparent; 
+    background-image: linear-gradient(to right, #FFD700, #FFD700);
+    background-clip: text; 
+    padding: 2px;
+}
+
+.stars
+{
+    text-align: center;
+    font-size: xx-large;
+    margin-bottom: 10px;
+}
+
+.submit-review
+{
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid black;
+    background-color: black;
+    color: white;
+    font-size: medium;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    padding: 10px;
+}
+
+.submit-review:hover
+{
+    border: none;
+    border-bottom: 1px solid white;
+    box-shadow: 0 2px 5px gray;
+    background-color: white;
+    color: black;
+}

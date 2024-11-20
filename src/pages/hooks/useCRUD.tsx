@@ -7,13 +7,14 @@ import { useState } from 'react';
 import { createEntity, updateEntity, deleteEntity, deleteOrders } from '../../API/apiCRUD';
 
 // import interfaces
-import { UserData, CategoryData, ProductData, OrderData } from '../../API/apiCRUD';
+import { UserData, CategoryData, ProductData, OrderData, ReviewData } from '../../API/apiCRUD';
 
 // import Modal
 import UserModal from './userModal';
 import CategoryModal from './categoryModal';
 import ProductModal from './productModal';
 import OrderModal from './orderModal';
+import ReviewModal from './reviewModal';
 
 export interface CRUDProps {
     pageType: string;
@@ -27,15 +28,17 @@ export interface CRUDProps {
     selectedCategoryData?: CategoryData;
     selectedProductData?: ProductData;
     selectedOrderData?: OrderData;
+    selectedReviewData?: ReviewData;
 
     users?: UserData[];
     categories?: CategoryData[];
     products?: ProductData[];
     orders?: OrderData[];
+    reviews?: ReviewData[];
 }
 
 
-function CRUD({ pageType, onCreate, onUpdate, onDelete, selectedItems, users, categories, products, orders }: CRUDProps) {
+function CRUD({ pageType, onCreate, onUpdate, onDelete, selectedItems, users, categories, products, orders, reviews }: CRUDProps) {
     const [showModal, setShowModal] = useState(false);
     const [isEditMode, setIsEditMode] = useState(false);
 
@@ -55,13 +58,17 @@ function CRUD({ pageType, onCreate, onUpdate, onDelete, selectedItems, users, ca
         ? orders?.find(order => order.orderId === selectedItems[0])
         : undefined;
 
+    const selectedReview: ReviewData | undefined = selectedItems.length === 1 && pageType === 'reviews'
+        ? reviews?.find(review => review.reviewId === selectedItems[0])
+        : undefined;
+
     const handleShowCreate = () => {
         setIsEditMode(false);
         setShowModal(true);
     };
 
     const handleShowUpdate = () => {
-        if (selectedUser || selectedCategory || selectedProduct || selectedOrder) {
+        if (selectedUser || selectedCategory || selectedProduct || selectedOrder || selectedReview) {
             setIsEditMode(true);
             setShowModal(true);
         }
@@ -80,7 +87,7 @@ function CRUD({ pageType, onCreate, onUpdate, onDelete, selectedItems, users, ca
     };
 
     const handleUpdate = async (data: any) => {
-        const id = selectedUser?.userId || selectedCategory?.categoryId || selectedProduct?.productId || selectedOrder?.orderId;
+        const id = selectedUser?.userId || selectedCategory?.categoryId || selectedProduct?.productId || selectedOrder?.orderId || selectedReview?.reviewId;
         if (id !== undefined) {
             try {
                 await updateEntity(pageType, id, data);
@@ -130,7 +137,8 @@ function CRUD({ pageType, onCreate, onUpdate, onDelete, selectedItems, users, ca
                     pageType === 'users' ? 'User' :
                         pageType === 'categories' ? 'Category' :
                             pageType === 'orders' ? 'Order' :
-                                'Product'
+                                pageType === 'reviews' ? 'Review' :
+                                    'Product'
                 }
                 <FontAwesomeIcon icon={faPlus} className='iconPlus' />
             </Button>
@@ -140,7 +148,8 @@ function CRUD({ pageType, onCreate, onUpdate, onDelete, selectedItems, users, ca
                     pageType === 'users' ? 'User' :
                         pageType === 'categories' ? 'Category' :
                             pageType === 'orders' ? 'Order' :
-                                'Product'
+                                pageType === 'reviews' ? 'Review' :
+                                    'Product'
                 }
                 <FontAwesomeIcon icon={faPen} className='iconPen' />
             </Button>
@@ -152,7 +161,8 @@ function CRUD({ pageType, onCreate, onUpdate, onDelete, selectedItems, users, ca
                     pageType === 'users' ? 'User' :
                         pageType === 'categories' ? 'Category' :
                             pageType === 'orders' ? 'Order' :
-                                'Product'
+                                pageType === 'reviews' ? 'Review' :
+                                    'Product'
                 }
                 <FontAwesomeIcon icon={faDeleteLeft} className='iconDelete' />
             </Button>
@@ -198,6 +208,17 @@ function CRUD({ pageType, onCreate, onUpdate, onDelete, selectedItems, users, ca
                     onUpdate={handleUpdate}
                     isEditMode={isEditMode}
                     existingOrderData={selectedOrder}
+                />
+            )}
+
+            {pageType === 'reviews' && (
+                <ReviewModal
+                    show={showModal}
+                    handleClose={handleClose}
+                    onCreate={handleCreate}
+                    onUpdate={handleUpdate}
+                    isEditMode={isEditMode}
+                    existingReviewData={selectedReview}
                 />
             )}
 

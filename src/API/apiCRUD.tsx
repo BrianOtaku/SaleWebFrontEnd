@@ -41,6 +41,15 @@ export interface OrderData {
     deliveryStatus: string;
 }
 
+export interface ReviewData {
+    reviewId: number,
+    userId: number,
+    userName: string,
+    productId: number,
+    reviewComment: string,
+    reviewStar: number
+}
+
 const getApiUrl = (pageType: string) => {
     switch (pageType) {
         case 'users':

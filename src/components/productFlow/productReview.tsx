@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { getReviewByProductId, getUserProfileById } from '../../API/apiGetInfomations';
+import { getReviewByProductId } from '../../API/apiGetInfomations';
 import { createEntity, updateEntity, deleteEntity } from '../../API/apiCRUD';
 import { useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPenToSquare, faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
-import { faTrashCan, faStar as regularStar } from '@fortawesome/free-regular-svg-icons';
+import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
+import { faStar as regularStar } from '@fortawesome/free-regular-svg-icons';
 import '../../styles/productReview.css';
-import { Button } from 'react-bootstrap';
+import UpdateReviewModal from './updateReviewModal';
+import RatingComponent from './rating';
+import ReviewList from './reviewList';
 
 interface Review {
     reviewId: number;
@@ -14,57 +16,45 @@ interface Review {
     userId: number;
     reviewComment: string;
     reviewStar: number;
+    userName?: string;
 }
 
 const ProductReview: React.FC = () => {
     const { productId } = useParams<{ productId: string }>();
     const [reviews, setReviews] = useState<Review[]>([]);
     const [userNames, setUserNames] = useState<Map<number, string>>(new Map());
-
     const [rating, setRating] = useState<number>(0);
     const [comment, setComment] = useState<string>('');
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+    const [showUpdateModal, setShowUpdateModal] = useState<boolean>(false);
+    const [currentReview, setCurrentReview] = useState<Review | null>(null);
+    const [updateComment, setUpdateComment] = useState<string>('');
+    const [updateRating, setUpdateRating] = useState<number>(0);
 
-    const userId = localStorage.getItem('userId');
+    const userId = Number(localStorage.getItem('userId') || '0');
 
-    const renderStars = (rating: number) => {
-        const stars = [];
-        for (let i = 1; i <= 5; i++) {
-            stars.push(
-                <FontAwesomeIcon
-                    key={i}
-                    icon={i <= rating ? solidStar : regularStar}
-                    style={{ color: '#FFD700', marginRight: '5px' }}
-                    onClick={() => setRating(i)}
-                />
-            );
-        }
-        return stars;
+    const renderStars = (rating: number, onClick?: (rating: number) => void) => {
+        return (
+            <>
+                {Array.from({ length: 5 }, (_, i) => (
+                    <FontAwesomeIcon
+                        key={i + 1}
+                        icon={i + 1 <= rating ? solidStar : regularStar}
+                        style={{ color: '#FFD700', marginRight: '5px', cursor: onClick ? 'pointer' : 'default' }}
+                        onClick={() => onClick && onClick(i + 1)}
+                    />
+                ))}
+            </>
+        );
     };
 
     useEffect(() => {
         const fetchReviews = async () => {
-            const token = localStorage.getItem('token') || '';
-            const fetchUserName = async (userId: number) => {
-                if (!userNames.has(userId)) {
-                    try {
-                        const userProfile = await getUserProfileById(userId, token);
-                        const newUserName = userProfile.userName;
-                        setUserNames((prev) => new Map(prev).set(userId, newUserName));
-                    } catch (err) {
-                        console.error(`Failed to fetch userName for userId: ${userId}`, err);
-                    }
-                }
-            };
-
             try {
                 if (productId) {
-                    const response = await getReviewByProductId(Number(productId), token);
-                    const sortedReviews = response.sort((a: any, b: any) => b.reviewId - a.reviewId);
+                    const response = await getReviewByProductId(Number(productId));
+                    const sortedReviews = response.sort((a: Review, b: Review) => b.reviewId - a.reviewId);
                     setReviews(sortedReviews);
-
-                    const uniqueUserIds = Array.from(new Set(response.map((review: Review) => review.userId)));
-                    uniqueUserIds.forEach((userId) => fetchUserName(Number(userId)));
                 }
             } catch (err) {
                 console.error('Error fetching reviews:', err);
@@ -72,20 +62,31 @@ const ProductReview: React.FC = () => {
         };
 
         fetchReviews();
-    }, [productId, userNames]);
+    }, [productId]);
+
+    const calculateAverageRating = () => {
+        if (reviews.length === 0) return 0;
+        let totalRating = 0;
+        reviews.forEach((review) => {
+            totalRating += review.reviewStar;
+        });
+        return totalRating / reviews.length;
+    };
 
     const handleReviewSubmit = async () => {
-
-        if (rating === 0 && comment.trim() === '') {
+        if (rating === 0 || comment.trim() === '') {
             alert('Please provide both a rating and a comment!');
             return;
         }
+
+        const userName = localStorage.getItem('userName') || 'Unknown_User';
 
         const newReview = {
             userId: userId,
             productId: Number(productId),
             reviewComment: comment,
             reviewStar: rating,
+            userName: userName,
         };
 
         setIsSubmitting(true);
@@ -93,10 +94,18 @@ const ProductReview: React.FC = () => {
         try {
             const createdReview = await createEntity('reviews', newReview);
 
+            setUserNames((prevUserNames) => {
+                const updatedUserNames = new Map(prevUserNames);
+                updatedUserNames.set(createdReview.userId, createdReview.userName || 'Unknown_User');
+                return updatedUserNames;
+            });
+
             setReviews((prevReviews) => {
                 const updatedReviews = [createdReview, ...prevReviews];
                 return updatedReviews.sort((a, b) => b.reviewId - a.reviewId);
             });
+
+            window.location.reload();
 
             setComment('');
             setRating(0);
@@ -108,15 +117,29 @@ const ProductReview: React.FC = () => {
         }
     };
 
-    const handleUpdateReview = async (reviewId: number) => {
-        const updatedData = { reviewComment: 'Updated comment', reviewStar: 4 };
-        try {
-            const updatedReview = await updateEntity('reviews', reviewId, updatedData);
-            setReviews((prev) =>
-                prev.map((review) => (review.reviewId === reviewId ? updatedReview : review))
-            );
-        } catch (error) {
-            console.error('Error updating review:', error);
+    const handleUpdateReview = (review: Review) => {
+        setCurrentReview({
+            ...review,
+            userName: review.userName || 'Unknown_User',
+        });
+        setUpdateComment(review.reviewComment);
+        setUpdateRating(review.reviewStar);
+        setShowUpdateModal(true);
+    };
+
+    const handleUpdateSubmit = async () => {
+        if (currentReview) {
+            const updatedData = { reviewComment: updateComment, reviewStar: updateRating };
+            try {
+                const updatedReview = await updateEntity('reviews', currentReview.reviewId, updatedData);
+                setReviews((prev) =>
+                    prev.map((review) => (review.reviewId === currentReview.reviewId ? updatedReview : review))
+                );
+                window.location.reload();
+                setShowUpdateModal(false);
+            } catch (error) {
+                console.error('Error updating review:', error);
+            }
         }
     };
 
@@ -124,6 +147,7 @@ const ProductReview: React.FC = () => {
         try {
             await deleteEntity('reviews', reviewId);
             setReviews((prev) => prev.filter((review) => review.reviewId !== reviewId));
+            window.location.reload();
         } catch (error) {
             console.error('Error deleting review:', error);
         }
@@ -137,76 +161,42 @@ const ProductReview: React.FC = () => {
                 </h3>
                 <div className="product-rating">
                     <div className="users-review">
-                        <h3 style={{ fontSize: '18px', marginBottom: '10px', fontWeight: 'bold', textAlign: 'center' }}>
-                            ĐÁNH GIÁ CỦA MỌI NGƯỜI
-                        </h3>
-                        {reviews.length > 0 ? (
-                            <ul>
-                                {reviews.map((review) => (
-                                    <div key={review.reviewId} className="review-card">
-                                        <li>
-                                            <strong>User:</strong>{' '}
-                                            {userNames.get(review.userId) || 'Unknown_User'}
-                                        </li>
-                                        <li>
-                                            <strong>Rating:</strong> {renderStars(review.reviewStar)}
-                                        </li>
-                                        <li>
-                                            <strong>Comment:</strong>
-                                            <p
-                                                style={{
-                                                    border: '1px solid rgb(213, 213, 213)',
-                                                    borderRadius: '8px',
-                                                    height: 'auto',
-                                                    padding: '10px',
-                                                }}
-                                            >
-                                                {review.reviewComment}
-                                            </p>
-                                        </li>
-                                        <div className="review-button">
-                                            {review.userId === Number(userId) && (
-                                                <>
-                                                    <Button
-                                                        variant="outline-dark"
-                                                        onClick={() => handleUpdateReview(review.reviewId)}
-                                                    >
-                                                        <FontAwesomeIcon icon={faPenToSquare} />
-                                                    </Button>
-                                                    <Button
-                                                        variant="outline-dark"
-                                                        onClick={() => handleDeleteReview(review.reviewId)}
-                                                    >
-                                                        <FontAwesomeIcon icon={faTrashCan} />
-                                                    </Button>
-                                                </>
-                                            )}
-                                        </div>
-                                    </div>
-                                ))}
-                            </ul>
-                        ) : (
-                            <p>No reviews available for this product.</p>
-                        )}
-                    </div>
-                    <div className="rating">
-                        <h3 style={{ fontSize: '18px', marginBottom: '10px', fontWeight: 'bold', textAlign: 'center' }}>
-                            ĐÁNH GIÁ CỦA BẠN
-                        </h3>
-                        <div className="stars">{renderStars(rating)}</div>
-                        <textarea
-                            value={comment}
-                            onChange={(e) => setComment(e.target.value)}
-                            rows={4}
-                            placeholder="Enter your comment"
-                            style={{ width: '100%', marginBottom: '10px' }}
+                        <ReviewList
+                            reviews={reviews as Review[]}
+                            userNames={userNames}
+                            renderStars={renderStars}
+                            userId={String(userId)}
+                            handleUpdateReview={handleUpdateReview}
+                            handleDeleteReview={handleDeleteReview}
                         />
-                        <button onClick={handleReviewSubmit} disabled={isSubmitting} style={{ width: '100%' }}>
-                            {isSubmitting ? 'Submitting...' : 'Submit Review'}
-                        </button>
                     </div>
+                    <RatingComponent
+                        productId={Number(productId)}
+                        calculateAverageRating={calculateAverageRating}
+                        reviews={reviews}
+                        renderStars={renderStars}
+                        rating={rating}
+                        setRating={setRating}
+                        comment={comment}
+                        setComment={setComment}
+                        handleReviewSubmit={handleReviewSubmit}
+                        isSubmitting={isSubmitting}
+                        userId={String(userId)}
+                        handleUpdateReview={handleUpdateReview}
+                        handleDeleteReview={handleDeleteReview}
+                    />
                 </div>
             </div>
+
+            <UpdateReviewModal
+                show={showUpdateModal}
+                onClose={() => setShowUpdateModal(false)}
+                onSubmit={handleUpdateSubmit}
+                updateComment={updateComment}
+                setUpdateComment={setUpdateComment}
+                updateRating={updateRating}
+                setUpdateRating={setUpdateRating}
+            />
         </div>
     );
 };

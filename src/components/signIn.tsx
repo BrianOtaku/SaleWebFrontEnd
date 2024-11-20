@@ -30,7 +30,9 @@ function SignIn({ onLogin }: SignInProps) {
                 localStorage.setItem('token', token);
                 const userProfile = await getUserProfile(token);
                 const userId = userProfile.userId;
+                const userName = userProfile.userName;
                 localStorage.setItem("userId", userId);
+                localStorage.setItem('userName', userName);
             }
 
             const role = getUserRoleFromToken(token);
