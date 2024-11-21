@@ -92,7 +92,7 @@ const RatingComponent: React.FC<RatingComponentProps> = ({
                                         {renderStars(review.reviewStar)}
                                     </li>
                                     <li>
-                                        <strong>Comment:</strong>
+                                        <strong>Bình luận:</strong>
                                         <p
                                             style={{
                                                 border: '1px solid rgb(213, 213, 213)',

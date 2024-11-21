@@ -117,6 +117,38 @@ export const getProductsByCategory = async (
   }
 };
 
+export const searchProducts = async (
+  name: string,
+  page: number = 1,
+  limit: number = 10
+): Promise<ProductDataResponse> => {
+  try {
+    const response = await axios.get("http://localhost:8080/api/products/searchByName", {
+      params: { name, page, limit },
+    });
+    const data = response.data;
+
+    const products = data.content.map((item: any) => ({
+      productId: item.productId,
+      productName: item.productName,
+      manufacturer: item.manufacturer,
+      productDescription: item.productDescription,
+      cost: item.cost,
+      productImage: item.productImage,
+      productQuantity: item.productQuantity,
+      category: item.category ? {
+        categoryId: item.category.categoryId,
+        categoryName: item.category.categoryName,
+      } : { categoryId: null, categoryName: "Unknown" },
+    }));
+
+    return { products, totalProducts: data.totalElements, totalPages: data.totalPages };
+  } catch (error) {
+    console.error("Error searching products by name:", error);
+    throw error;
+  }
+};
+
 export const getProductById = async (productId: number): Promise<Product | null> => {
   try {
     const response = await axios.get(`http://localhost:8080/api/products/${productId}`);

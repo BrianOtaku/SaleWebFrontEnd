@@ -92,26 +92,26 @@ function UserConfig() {
                 </span>
             </button>
 
-            <Modal show={showModal} onHide={handleClose}>
+            <Modal show={showModal} onHide={handleClose} size="lg" >
                 <Modal.Header closeButton>
-                    <Modal.Title>User Information</Modal.Title>
+                    <Modal.Title>Trung tâm người dùng</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p><strong>Name:</strong> {userData.userName}</p>
+                    <p><strong>Tên:</strong> {userData.userName}</p>
                     <p><strong>Email:</strong> {userData.email}</p>
                     <p>
-                        <strong>Password:</strong> {userData.password ? userData.password.slice(0, 10).replace(/./g, '*') : 'No password available'}
+                        <strong>Mật khẩu:</strong> {userData.password ? userData.password.slice(0, 10).replace(/./g, '*') : 'No password available'}
                     </p>
-                    <p><strong>Address:</strong> {userData.address}</p>
-                    <p><strong>Phone Number:</strong> {userData.phoneNumber}</p>
+                    <p><strong>Địa chỉ:</strong> {userData.address}</p>
+                    <p><strong>Số điện thoại:</strong> {userData.phoneNumber}</p>
                 </Modal.Body>
                 <ModalFooter>
                     <Button variant="primary" onClick={handleShowUpdate}>
-                        Update
+                        Chỉnh sửa
                         <FontAwesomeIcon icon={faPen} className="iconPen" />
                     </Button>
                     <Button variant="danger" onClick={handleLogout}>
-                        Sign Out
+                        Đăng xuất
                         <FontAwesomeIcon icon={faArrowRightFromBracket} style={{ marginLeft: '10px' }} />
                     </Button>
                 </ModalFooter>
@@ -119,12 +119,12 @@ function UserConfig() {
 
             <Modal show={showUpdateModal} onHide={handleUpdateClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Update User Information</Modal.Title>
+                    <Modal.Title>Chỉnh sửa thông tin</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
                         <Form.Group>
-                            <Form.Label>Name</Form.Label>
+                            <Form.Label>Tên</Form.Label>
                             <Form.Control
                                 type="text"
                                 value={userData.userName || ''}
@@ -140,7 +140,7 @@ function UserConfig() {
                             />
                         </Form.Group>
                         <Form.Group>
-                            <Form.Label>Password</Form.Label>
+                            <Form.Label>Mật khẩu</Form.Label>
                             <Form.Control
                                 type="password"
                                 value={userData.password || ''}
@@ -148,7 +148,7 @@ function UserConfig() {
                             />
                         </Form.Group>
                         <Form.Group>
-                            <Form.Label>Address</Form.Label>
+                            <Form.Label>Địa chỉ</Form.Label>
                             <Form.Control
                                 type="text"
                                 value={userData.address || ''}
@@ -156,7 +156,7 @@ function UserConfig() {
                             />
                         </Form.Group>
                         <Form.Group>
-                            <Form.Label>Phone Number</Form.Label>
+                            <Form.Label>Só điện thoại</Form.Label>
                             <Form.Control
                                 type="text"
                                 value={userData.phoneNumber || ''}
@@ -167,11 +167,11 @@ function UserConfig() {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="danger" onClick={handleUpdateClose}>
-                        Cancel
+                        Hủy
                         <FontAwesomeIcon icon={faXmark} style={{ marginLeft: '10px' }} />
                     </Button>
                     <Button variant="primary" onClick={handleUpdate}>
-                        Save Changes
+                        Lưu thay đổi
                         <FontAwesomeIcon icon={faFloppyDisk} style={{ marginLeft: '10px' }} />
                     </Button>
                 </Modal.Footer>

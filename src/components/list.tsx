@@ -7,29 +7,29 @@ function List() {
     return (
         <Accordion flush>
             <Accordion.Item eventKey="0">
-                <Accordion.Header>MANUFACTURER</Accordion.Header>
+                <Accordion.Header>NHÀ SẢN XUẤT</Accordion.Header>
                 <Accordion.Body>
                     <ProductManufacturer />
                 </Accordion.Body>
             </Accordion.Item>
             <Accordion.Item eventKey="1">
-                <Accordion.Header>PRODUCT TYPE</Accordion.Header>
+                <Accordion.Header>LOẠI SẢN PHẨM</Accordion.Header>
                 <Accordion.Body>
                     <ProductTypeList />
                 </Accordion.Body>
             </Accordion.Item>
             <Accordion.Item eventKey="2">
-                <Accordion.Header>CONTACT US</Accordion.Header>
+                <Accordion.Header>LIÊN HỆ</Accordion.Header>
                 <Accordion.Body>
                 </Accordion.Body>
             </Accordion.Item>
             <Accordion.Item eventKey="3">
-                <Accordion.Header>SUPPORT US</Accordion.Header>
+                <Accordion.Header>HỖ TRỢ TƯ VẤN</Accordion.Header>
                 <Accordion.Body>
                 </Accordion.Body>
             </Accordion.Item>
             <Accordion.Item eventKey="4">
-                <Accordion.Header>SETTING</Accordion.Header>
+                <Accordion.Header>CÀI ĐẶT</Accordion.Header>
                 <Accordion.Body>
                 </Accordion.Body>
             </Accordion.Item>

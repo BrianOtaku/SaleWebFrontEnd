@@ -30,6 +30,7 @@ import './styles/paymentModal.css';
 import { getUserRoleFromToken } from './API/apiAccount';
 import { CartProvider } from './API/apiCartContext';
 import { OrderProvider } from './Context/orderContext';
+import SearchResult from './pages/user/productSearchResult';
 
 function App() {
   const [role, setRole] = useState<string | null>(null);
@@ -95,6 +96,16 @@ function App() {
                     <>
                       <Taskbar />
                       <ProductCategoryResult />
+                      <Footer />
+                    </>
+                  }
+                />
+                <Route
+                  path="/products/search"
+                  element={
+                    <>
+                      <Taskbar />
+                      <SearchResult />
                       <Footer />
                     </>
                   }

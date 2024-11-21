@@ -161,10 +161,10 @@ const CartModal = () => {
                     ) : (
                         <>
                             <Button variant='danger' className='emptyCartButton' onClick={handleEmptyCart}>
-                                Empty Cart
+                                Xóa hết
                             </Button>
                             <Button variant='success' className='orderButton' onClick={() => { }}>
-                                Order
+                                Đặt hàng
                                 <FontAwesomeIcon icon={faBoxesPacking} style={{ marginLeft: '7px' }} />
                             </Button>
                         </>

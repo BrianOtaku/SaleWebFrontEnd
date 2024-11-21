@@ -43,13 +43,13 @@ const ReviewList: React.FC<ReviewListProps> = ({
                     {reviews.map((review) => (
                         <div key={review.reviewId} className="review-card">
                             <li>
-                                <strong>User:</strong> {review.userName || userNames.get(review.userId) || 'Unknown User'}
+                                <strong>Người dùng:</strong> {review.userName || userNames.get(review.userId) || 'Unknown User'}
                             </li>
                             <li>
-                                <strong>Rating:</strong> {renderStars(review.reviewStar)}
+                                <strong>Đánh giá:</strong> {renderStars(review.reviewStar)}
                             </li>
                             <li>
-                                <strong>Comment:</strong>
+                                <strong>Bình luận:</strong>
                                 <p
                                     style={{
                                         border: '1px solid rgb(213, 213, 213)',
@@ -65,7 +65,7 @@ const ReviewList: React.FC<ReviewListProps> = ({
                     ))}
                 </ul>
             ) : (
-                <p>No reviews available for this product.</p>
+                <p>Chưa có review nào cho sản phẩm này!</p>
             )}
         </div>
     );

@@ -29,17 +29,17 @@ function Footer() {
                         <span><FontAwesomeIcon icon={faDiscord} className='footerIcons' title='Discord' /></span>
                     </div>
                     <div className='footerTaskBar'>
-                        <p>RECOMMEND</p>
-                        <p>OUR TEAM</p>
+                        <p>ĐỀ XUẤT</p>
+                        <p>ĐỊA CHỈ</p>
                         <Link
                             to="/"
                             className="footer-link"
                             onClick={handleScrollToTop}
                         >
-                            <h5>HOME</h5>
+                            <h5>TRANG CHỦ</h5>
                         </Link>
-                        <p>CONTACT US</p>
-                        <p>SUPPORT US</p>
+                        <p>LIÊN HỆ</p>
+                        <p>CƠ SỞ</p>
                     </div>
                 </div>
             </div>
