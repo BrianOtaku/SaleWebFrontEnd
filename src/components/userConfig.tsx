@@ -68,6 +68,7 @@ function UserConfig() {
     const handleUpdate = async () => {
         try {
             await updateEntity('users', userId.userId, userData);
+            localStorage.setItem('address', userData.address)
             handleUpdateClose();
             const token = localStorage.getItem('token');
             if (token) {

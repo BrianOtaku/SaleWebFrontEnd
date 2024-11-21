@@ -1,16 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState , useContext} from 'react';
 import { Modal, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignIn } from '@fortawesome/free-solid-svg-icons';
 import { signIn, getUserRoleFromToken } from '../API/apiAccount';
 import { getUserProfile } from '../API/apiGetInfomations';
+import { OrderContext } from '../Context/orderContext';
 
 interface SignInProps {
     onLogin: () => void;
 }
 
 function SignIn({ onLogin }: SignInProps) {
+    const orderContext = useContext(OrderContext);
+    if (!orderContext) {
+        throw new Error('OrderContext must be used within an OrderProvider');
+    }
+    const {  setAddress  } = orderContext;
     const [show, setShow] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -20,6 +26,7 @@ function SignIn({ onLogin }: SignInProps) {
     const handleShow = () => setShow(true);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        
         e.preventDefault();
         try {
             const loginData = { email, password };
@@ -31,8 +38,10 @@ function SignIn({ onLogin }: SignInProps) {
                 const userProfile = await getUserProfile(token);
                 const userId = userProfile.userId;
                 const userName = userProfile.userName;
+                localStorage.setItem('address', userProfile.address)
                 localStorage.setItem("userId", userId);
                 localStorage.setItem('userName', userName);
+     
             }
 
             const role = getUserRoleFromToken(token);
