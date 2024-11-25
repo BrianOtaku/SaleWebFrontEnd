@@ -36,6 +36,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, handleAddToCart }) =
         setOrderQuantity(orderQuantity);
         setTotalCost(totalCost);
         setShowPaymentModal(true);
+        console.log(totalCost)
         if (localUser) {
             setUserId(parseInt(localUser));
             console.log(totalCost)
@@ -45,7 +46,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, handleAddToCart }) =
     };
 
     const handleBuyNowClick = () => {
-        handleOrderClick(product.productName, product.productId, 1, product.cost);
+        handleOrderClick(product.productName, product.productId, product.productQuantity, product.cost);
     };
 
     const orderContext = useContext(OrderContext);

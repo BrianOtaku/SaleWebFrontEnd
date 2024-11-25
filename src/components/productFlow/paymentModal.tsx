@@ -26,7 +26,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ show, handleClose }) => {
         if (address) {
             setDeliveryAddress(address);
         }
-    }, [orderQuantity, address]);
+    }, [orderQuantity, address, totalCost]);
 
     const handlePayment = async () => {
         const order: Order = {
