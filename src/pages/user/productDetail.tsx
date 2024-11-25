@@ -6,7 +6,7 @@ import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartArrowDown, faDollarSign } from "@fortawesome/free-solid-svg-icons";
 import ProductRelated from "../../components/productFlow/productRelated";
-import ProductDescription from "./productDescription";
+import ProductDescription from "../../components/productFlow/productDescription";
 import ProductReview from "../../components/productFlow/productReview";
 import { OrderContext } from '../../Context/orderContext';
 import PaymentModal from "../../components/productFlow/paymentModal";
@@ -43,7 +43,7 @@ const ProductDetail: React.FC = () => {
 
                         const shuffledProducts = filteredProducts.sort(() => 0.5 - Math.random());
 
-                        setRelatedProducts(shuffledProducts.slice(0, 4));
+                        setRelatedProducts(shuffledProducts.slice(0, 6));
 
                         window.scrollTo(0, 0);
 
@@ -139,11 +139,11 @@ const ProductDetail: React.FC = () => {
                                     ))}
                                 </div>
                             </div>
-                            <li>
-                                Manufacturer: {product.manufacturer}
+                            <li style={{ textTransform: 'uppercase' }}>
+                                Hãng: {product.manufacturer}
                             </li>
                             <li>
-                                Quantity: {product.productQuantity}
+                                Số lượng: {product.productQuantity}
                             </li>
                         </ul>
                     </div>
@@ -152,16 +152,16 @@ const ProductDetail: React.FC = () => {
                             Giá: <span className="detail-price-value">{product.cost.toLocaleString()} VND</span>
                         </div>
                         <div className="detail-button-group">
-                           {localUser ? 
-                            <Button
-                            variant="danger"
-                            className="detail-buy-now-button"
-                            onClick={() => handleOrderClick(product.productName, product.productId, 1, product.cost)}
-                        >
-                            Mua Ngay
-                            <FontAwesomeIcon icon={faDollarSign} style={{ marginLeft: "7px" }} />
-                        </Button>
-                        : ""}
+                            {localUser ?
+                                <Button
+                                    variant="danger"
+                                    className="detail-buy-now-button"
+                                    onClick={() => handleOrderClick(product.productName, product.productId, 1, product.cost)}
+                                >
+                                    Mua Ngay
+                                    <FontAwesomeIcon icon={faDollarSign} style={{ marginLeft: "7px" }} />
+                                </Button>
+                                : ""}
                             <Button
                                 variant="success"
                                 className={`detail-add-to-cart-button ${isAdded ? "added" : ""}`}
@@ -188,13 +188,7 @@ const ProductDetail: React.FC = () => {
                     <ProductDescription description={product.productDescription} />
                 </div>
                 <div className="below-right">
-                    <h3
-                        style={{
-                            marginBottom: '20px',
-                            fontWeight: 'bold',
-                            textAlign: 'center',
-                        }}
-                    >
+                    <h3>
                         SẢN PHẨM LIÊN QUAN
                     </h3>
                     <div className="related-products">
@@ -211,8 +205,8 @@ const ProductDetail: React.FC = () => {
             <div className="reviewContainer">
                 <ProductReview />
             </div>
-            <PaymentModal 
-                show={showPaymentModal} 
+            <PaymentModal
+                show={showPaymentModal}
                 handleClose={() => setShowPaymentModal(false)}
             />
         </div>

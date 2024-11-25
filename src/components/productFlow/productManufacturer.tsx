@@ -47,7 +47,8 @@ const ProductManufacturer = () => {
                             onClick={() => handleManufacturerClick(manufacturer)}
                             style={{
                                 color: 'black',
-                                textDecoration: 'none'
+                                textDecoration: 'none',
+                                textTransform: 'uppercase'
                             }}
                         >
                             {manufacturer}

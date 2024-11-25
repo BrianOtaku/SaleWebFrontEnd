@@ -44,7 +44,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, handleAddToCart }) =
     };
 
     const handleBuyNowClick = () => {
-        handleOrderClick(product.productName, product.productId, 1, product.cost);
+        handleOrderClick(product.productName, product.productId, product.productQuantity, product.cost);
     };
 
     const orderContext = useContext(OrderContext);
@@ -89,7 +89,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, handleAddToCart }) =
                 </div>
 
                 <div className="product-info">
-                    <div className="product-name">{product.productName}</div>
+                    <div className="product-name">
+                        {product.productName.length > 20
+                            ? `${product.productName.slice(0, 20)}...`
+                            : product.productName}
+                    </div>
                     <div className="specs-box">
                         <ul>
                             <div>
@@ -122,7 +126,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, handleAddToCart }) =
                 {localUser ? <button className="buyNowCardBtn" onClick={handleBuyNowClick}>
                     Buy Now!
                     <FontAwesomeIcon icon={faDollarSign} style={{ marginLeft: "7px" }} />
-                </button> : "" }
+                </button> : ""}
                 <button
                     className={`add-to-cart-button ${isAdded ? "added" : ""}`}
                     onClick={handleButtonClick}

@@ -18,7 +18,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ show, handleClose }) => {
     const [voucherId, setVoucherId] = useState<null>(null);
     const [deliveryAddress, setDeliveryAddress] = useState<string>('');
     const [orderState, setOrderState] = useState<string>('đã đặt hàng');
-    const [paymentMethod, setPaymentMethod] = useState<string>('creditCard');
+    const [paymentMethod, setPaymentMethod] = useState<string>('chuyển khoản');
     const [paymentDetails, setPaymentDetails] = useState<string>('');
 
     useEffect(() => {
