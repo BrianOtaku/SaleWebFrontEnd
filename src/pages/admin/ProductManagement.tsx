@@ -68,73 +68,76 @@ function ProductManagement() {
 
     return (
         <div>
-            <h2>Products Management</h2>
-            <CRUD
-                pageType="products"
-                onCreate={handleCreate}
-                onUpdate={handleUpdate}
-                onDelete={handleDelete}
-                selectedItems={selectedItems}
-                selectedProductData={
-                    selectedItems.length === 1
-                        ? products.find(products => products.productId === selectedItems[0])
-                        : undefined
-                }
-                products={products}
-            />
-            <table>
-                <thead>
-                    <tr>
-                        <th>Product ID</th>
-                        <th>Product Name</th>
-                        <th>Manufacturer</th>
-                        <th>Description</th>
-                        <th>Cost</th>
-                        <th>Image URL</th>
-                        <th>Quantity</th>
-                        <th>Category ID</th>
-                        <th>Category Name</th>
-                        <th className='checkBox'>
-                            <input
-                                type="checkbox"
-                                checked={selectAll}
-                                onChange={handleSelectAll}
-                            />
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {products.map(product => (
-                        <tr key={product.productId}>
-                            <td>{product.productId}</td>
-                            <td>{product.productName}</td>
-                            <td>{product.manufacturer}</td>
-                            <td>
-                                {product.productDescription.length > 20 ?
-                                    product.productDescription.slice(0, 20) + '...' :
-                                    product.productDescription}
-                            </td>
-                            <td>{product.cost}</td>
-                            <td>
-                                {product.productImage.length > 15 ?
-                                    product.productImage.slice(0, 15) + '...' :
-                                    product.productImage}
-                            </td>
-                            <td>{product.productQuantity}</td>
-                            <td>{product.categoryId}</td>
-                            <td>{product.categoryName}</td>
-                            <td className='checkBox'>
+            <div className="header-management">
+                <h2>Products Management</h2>
+                <CRUD
+                    pageType="products"
+                    onCreate={handleCreate}
+                    onUpdate={handleUpdate}
+                    onDelete={handleDelete}
+                    selectedItems={selectedItems}
+                    selectedProductData={
+                        selectedItems.length === 1
+                            ? products.find(products => products.productId === selectedItems[0])
+                            : undefined
+                    }
+                    products={products}
+                />
+            </div>
+            <div className="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Product ID</th>
+                            <th>Product Name</th>
+                            <th>Manufacturer</th>
+                            <th>Description</th>
+                            <th>Cost</th>
+                            <th>Image URL</th>
+                            <th>Quantity</th>
+                            <th>Category ID</th>
+                            <th>Category Name</th>
+                            <th className='checkBox'>
                                 <input
                                     type="checkbox"
-                                    checked={selectedItems.includes(product.productId)}
-                                    onChange={() => handleSelectItem(product.productId)}
+                                    checked={selectAll}
+                                    onChange={handleSelectAll}
                                 />
-                            </td>
+                            </th>
                         </tr>
-                    ))}
-                </tbody>
-
-            </table>
+                    </thead>
+                    <tbody>
+                        {products.map(product => (
+                            <tr key={product.productId}>
+                                <td>{product.productId}</td>
+                                <td>{product.productName}</td>
+                                <td>{product.manufacturer}</td>
+                                <td>
+                                    {product.productDescription.length > 20 ?
+                                        product.productDescription.slice(0, 20) + '...' :
+                                        product.productDescription}
+                                </td>
+                                <td>{product.cost}</td>
+                                <td>
+                                    {product.productImage.length > 15 ?
+                                        product.productImage.slice(0, 15) + '...' :
+                                        product.productImage}
+                                </td>
+                                <td>{product.productQuantity}</td>
+                                <td>{product.categoryId}</td>
+                                <td>{product.categoryName}</td>
+                                <td className='checkBox'>
+                                    <input
+                                        type="checkbox"
+                                        checked={selectedItems.includes(product.productId)}
+                                        onChange={() => handleSelectItem(product.productId)}
+                                    />
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 }

@@ -61,50 +61,54 @@ function CategoryManagement() {
 
     return (
         <div>
-            <h2>Categories Management</h2>
-            <CRUD
-                pageType="categories"
-                onCreate={handleCreate}
-                onUpdate={handleUpdate}
-                onDelete={handleDelete}
-                selectedItems={selectedItems}
-                selectedCategoryData={
-                    selectedItems.length === 1
-                        ? categories.find(category => category.categoryId === selectedItems[0])
-                        : undefined
-                }
-                categories={categories}
-            />
-            <table>
-                <thead>
-                    <tr>
-                        <th>Category ID</th>
-                        <th>Category Name</th>
-                        <th className='checkBox'>
-                            <input
-                                type="checkbox"
-                                checked={selectAll}
-                                onChange={handleSelectAll}
-                            />
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {categories.map(category => (
-                        <tr key={category.categoryId}>
-                            <td>{category.categoryId}</td>
-                            <td>{category.categoryName}</td>
-                            <td className='checkBox'>
+            <div className="header-management">
+                <h2>Categories Management</h2>
+                <CRUD
+                    pageType="categories"
+                    onCreate={handleCreate}
+                    onUpdate={handleUpdate}
+                    onDelete={handleDelete}
+                    selectedItems={selectedItems}
+                    selectedCategoryData={
+                        selectedItems.length === 1
+                            ? categories.find(category => category.categoryId === selectedItems[0])
+                            : undefined
+                    }
+                    categories={categories}
+                />
+            </div>
+            <div className="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Category ID</th>
+                            <th>Category Name</th>
+                            <th className='checkBox'>
                                 <input
                                     type="checkbox"
-                                    checked={selectedItems.includes(category.categoryId)}
-                                    onChange={() => handleSelectItem(category.categoryId)}
+                                    checked={selectAll}
+                                    onChange={handleSelectAll}
                                 />
-                            </td>
+                            </th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {categories.map(category => (
+                            <tr key={category.categoryId}>
+                                <td>{category.categoryId}</td>
+                                <td>{category.categoryName}</td>
+                                <td className='checkBox'>
+                                    <input
+                                        type="checkbox"
+                                        checked={selectedItems.includes(category.categoryId)}
+                                        onChange={() => handleSelectItem(category.categoryId)}
+                                    />
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 }

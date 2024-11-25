@@ -27,7 +27,6 @@
     box-shadow: 10px 0px 20px rgba(0, 0, 0, 0.3);
 }
 
-
 .adminSideBar h1 
 {
     display: flex;
@@ -48,7 +47,6 @@
     height: auto;
     width: 80%;
     flex-grow: 1;
-    padding: 20px;
     background: linear-gradient(60deg, rgb(34, 11, 163), rgb(146, 9, 146))
 }
 

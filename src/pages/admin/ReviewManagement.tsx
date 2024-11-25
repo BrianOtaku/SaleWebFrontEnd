@@ -65,58 +65,62 @@ function ReviewManagement() {
 
     return (
         <div>
-            <h2>Reviews Management</h2>
-            <CRUD
-                pageType="reviews"
-                onCreate={handleCreate}
-                onUpdate={handleUpdate}
-                onDelete={handleDelete}
-                selectedItems={selectedItems}
-                selectedReviewData={
-                    selectedItems.length === 1
-                        ? reviews.find(review => review.reviewId === selectedItems[0])
-                        : undefined
-                }
-                reviews={reviews}
-            />
-            <table>
-                <thead>
-                    <tr>
-                        <th>Review ID</th>
-                        <th>User ID</th>
-                        <th>User Name</th>
-                        <th>Product ID</th>
-                        <th>Review Comment</th>
-                        <th>Review Star</th>
-                        <th className='checkBox'>
-                            <input
-                                type="checkbox"
-                                checked={selectAll}
-                                onChange={handleSelectAll}
-                            />
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {reviews.map(review => (
-                        <tr key={review.reviewId}>
-                            <td>{review.reviewId}</td>
-                            <td>{review.userId}</td>
-                            <td>{review.userName}</td>
-                            <td>{review.productId}</td>
-                            <td>{review.reviewComment}</td>
-                            <td>{review.reviewStar}</td>
-                            <td className='checkBox'>
+            <div className="header-management">
+                <h2>Reviews Management</h2>
+                <CRUD
+                    pageType="reviews"
+                    onCreate={handleCreate}
+                    onUpdate={handleUpdate}
+                    onDelete={handleDelete}
+                    selectedItems={selectedItems}
+                    selectedReviewData={
+                        selectedItems.length === 1
+                            ? reviews.find(review => review.reviewId === selectedItems[0])
+                            : undefined
+                    }
+                    reviews={reviews}
+                />
+            </div>
+            <div className="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Review ID</th>
+                            <th>User ID</th>
+                            <th>User Name</th>
+                            <th>Product ID</th>
+                            <th>Review Comment</th>
+                            <th>Review Star</th>
+                            <th className='checkBox'>
                                 <input
                                     type="checkbox"
-                                    checked={selectedItems.includes(review.reviewId)}
-                                    onChange={() => handleSelectItem(review.reviewId)}
+                                    checked={selectAll}
+                                    onChange={handleSelectAll}
                                 />
-                            </td>
+                            </th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {reviews.map(review => (
+                            <tr key={review.reviewId}>
+                                <td>{review.reviewId}</td>
+                                <td>{review.userId}</td>
+                                <td>{review.userName}</td>
+                                <td>{review.productId}</td>
+                                <td>{review.reviewComment}</td>
+                                <td>{review.reviewStar}</td>
+                                <td className='checkBox'>
+                                    <input
+                                        type="checkbox"
+                                        checked={selectedItems.includes(review.reviewId)}
+                                        onChange={() => handleSelectItem(review.reviewId)}
+                                    />
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 }

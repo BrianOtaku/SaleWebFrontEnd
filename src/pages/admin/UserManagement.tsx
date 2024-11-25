@@ -63,58 +63,62 @@ function UserManagement() {
 
     return (
         <div>
-            <h2>Users Management</h2>
-            <CRUD
-                pageType="users"
-                onCreate={handleCreate}
-                onUpdate={handleUpdate}
-                onDelete={handleDelete}
-                selectedItems={selectedItems}
-                selectedUserData={
-                    selectedItems.length === 1
-                        ? users.find(user => user.userId === selectedItems[0])
-                        : undefined
-                }
-                users={users}
-            />
-            <table>
-                <thead>
-                    <tr>
-                        <th>User ID</th>
-                        <th>User Name</th>
-                        <th>Email</th>
-                        <th>Address</th>
-                        <th>Phone Number</th>
-                        <th>Role</th>
-                        <th className='checkBox'>
-                            <input
-                                type="checkbox"
-                                checked={selectAll}
-                                onChange={handleSelectAll}
-                            />
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {users.map(user => (
-                        <tr key={user.userId}>
-                            <td>{user.userId}</td>
-                            <td>{user.userName}</td>
-                            <td>{user.email}</td>
-                            <td>{user.address}</td>
-                            <td>{user.phoneNumber}</td>
-                            <td>{user.role}</td>
-                            <td className='checkBox'>
+            <div className="header-management">
+                <h2>Users Management</h2>
+                <CRUD
+                    pageType="users"
+                    onCreate={handleCreate}
+                    onUpdate={handleUpdate}
+                    onDelete={handleDelete}
+                    selectedItems={selectedItems}
+                    selectedUserData={
+                        selectedItems.length === 1
+                            ? users.find(user => user.userId === selectedItems[0])
+                            : undefined
+                    }
+                    users={users}
+                />
+            </div>
+            <div className="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>User ID</th>
+                            <th>User Name</th>
+                            <th>Email</th>
+                            <th>Address</th>
+                            <th>Phone Number</th>
+                            <th>Role</th>
+                            <th className='checkBox'>
                                 <input
                                     type="checkbox"
-                                    checked={selectedItems.includes(user.userId)}
-                                    onChange={() => handleSelectItem(user.userId)}
+                                    checked={selectAll}
+                                    onChange={handleSelectAll}
                                 />
-                            </td>
+                            </th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {users.map(user => (
+                            <tr key={user.userId}>
+                                <td>{user.userId}</td>
+                                <td>{user.userName}</td>
+                                <td>{user.email}</td>
+                                <td>{user.address}</td>
+                                <td>{user.phoneNumber}</td>
+                                <td>{user.role}</td>
+                                <td className='checkBox'>
+                                    <input
+                                        type="checkbox"
+                                        checked={selectedItems.includes(user.userId)}
+                                        onChange={() => handleSelectItem(user.userId)}
+                                    />
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 }
