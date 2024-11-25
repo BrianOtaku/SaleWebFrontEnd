@@ -148,3 +148,16 @@ export const deleteOrders = async (pageType: 'orders', entityId: number, status?
     }
 };
 
+export const getOrdersByUserId = async (userId: number): Promise<OrderData[]> => {
+    try {
+        const apiUrl = `/api/orders/user/${userId}`;
+        const response = await AxiosInstance.get(apiUrl, {
+            headers: getAuthHeaders(),
+        });
+        return response.data;
+    } catch (error) {
+        console.error(`Error fetching orders for user ${userId}:`, error);
+        throw error;
+    }
+};
+

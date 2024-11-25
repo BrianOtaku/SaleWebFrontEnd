@@ -155,7 +155,7 @@ const CartModal = () => {
                 <ModalFooter className={showPaymentModal ? 'blurred' : ''}>
                     {cartItems.length === 0 ? (
                         <Button variant='success' className='orderButton' style={{ display: 'none' }} >
-                            Order
+                            Đơn hàng
                             <FontAwesomeIcon icon={faBoxesPacking} />
                         </Button>
                     ) : (
