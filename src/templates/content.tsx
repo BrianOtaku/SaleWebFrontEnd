@@ -33,6 +33,7 @@ function Content() {
 
   useEffect(() => {
     fetchProducts(currentCategory, currentPage);
+    window.scrollTo(0, 700);
   }, [currentCategory, currentPage]);
 
   const handleAddToCart = async (product: Product) => {

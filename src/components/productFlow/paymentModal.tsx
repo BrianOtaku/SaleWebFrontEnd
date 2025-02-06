@@ -4,7 +4,7 @@ import { Button, Form } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCreditCard } from '@fortawesome/free-solid-svg-icons';
 import { OrderContext } from '../../Context/orderContext';
-import { postOrder, Order } from '../../API/apiPayment';
+import { postOrder, Order, postMOMO } from '../../API/apiPayment';
 
 interface PaymentModalProps {
     show: boolean;
@@ -28,7 +28,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ show, handleClose }) => {
         }
     }, [orderQuantity, address, totalCost]);
 
-    const handlePayment = async () => {
+    const handleVNPay = async () => {
         const order: Order = {
             productId,
             userId,
@@ -47,6 +47,26 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ show, handleClose }) => {
                 if (paymentMethod === "chuyển khoản") {
                     console.log('Redirecting to:', response.data.redirectUrl);
                     window.open(response.data.redirectUrl);
+                } else {
+                    alert("Đặt hàng thành công, vui lòng kiểm tra danh sách đơn hàng")
+                }
+            }
+
+        } catch (error: any) {
+            console.log(error.response)
+        }
+        handleClose();
+    };
+
+    const handleMOMO = async () => {
+        try {
+            var amount = calculatedTotalCost;
+            const response = await postMOMO(amount);
+            console.log(response)
+            if (response.status === 200) {
+                if (paymentMethod === "chuyển khoản") {
+                    console.log('Redirecting to:', response.data.redirectUrl);
+                    window.open(response.data.payUrl);
                 } else {
                     alert("Đặt hàng thành công, vui lòng kiểm tra danh sách đơn hàng")
                 }
@@ -116,12 +136,14 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ show, handleClose }) => {
                 </Form>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
+                {/* <Button variant="secondary" onClick={handleClose}>
                     Hủy
+                </Button> */}
+                <Button variant="light" onClick={handleVNPay} style={{ border: 'none' }}>
+                    <img src="/image/vnpay-logo.jpg" alt="VNPay" style={{ height: '40px' }} />
                 </Button>
-                <Button variant="success" onClick={handlePayment}>
-                    Thanh Toán
-                    <FontAwesomeIcon icon={faCreditCard} style={{ marginLeft: '7px' }} />
+                <Button variant="light" onClick={handleMOMO} style={{ border: 'none' }}>
+                    <img src="/image/momo-logo.png" alt="MOMO" style={{ height: '40px' }} />
                 </Button>
             </Modal.Footer>
         </Modal>
